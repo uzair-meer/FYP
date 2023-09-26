@@ -1,0 +1,58 @@
+export const employees = [
+  {
+    id: 1,
+    name: "abc",
+    role: "driver",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+  {
+    id: 2,
+    name: "xyz",
+    role: "driver",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+  {
+    id: 3,
+    name: "abc",
+    role: "electrician",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+  {
+    id: 4,
+    name: "abc",
+    role: "labor",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+  {
+    id: 5,
+    name: "abc",
+    role: "driver",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+  {
+    id: 6,
+    name: "lmn",
+    role: "plumber",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+  {
+    id: 7,
+    name: "abc",
+    role: "electritian",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+  {
+    id: 8,
+    name: "abc",
+    role: "driver",
+    phone: "0303189384",
+    email: "abc@gmail.com",
+  },
+];
