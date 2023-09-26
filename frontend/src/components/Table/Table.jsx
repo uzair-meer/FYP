@@ -1,6 +1,6 @@
 import React from "react";
 className = "min-w-[3rem] py-4 px-4 font-medium text-primary ";
-function Table({ data }) {
+function Table({}) {
   return (
     <div>
       <table className="w-full table-auto">

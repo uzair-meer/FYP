@@ -56,3 +56,68 @@ export const employees = [
     email: "abc@gmail.com",
   },
 ];
+
+export const UserHistoryCols = ["Date", "Company Name", "Services", "Quote"];
+export const CompanyHistoryCols = [
+  "Date",
+  "Customer Name",
+  "Services",
+  "Quote",
+  "Status",
+];
+export const UserHistory = [
+  {
+    id: 1,
+    date: "12 jan, 2023",
+    company: "Shehroz & Co",
+    services: "Packing",
+    price: "12, 500",
+    status: "completed",
+    name: "hamza",
+  },
+  {
+    id: 2,
+    date: "2 feb, 2023",
+    company: "Hakim & Co",
+    services: "Packing, unpacking",
+    price: "20, 500",
+    status: "completed",
+    name: "uzair",
+  },
+  {
+    id: 3,
+    date: "24 march, 2023",
+    company: "Shehroz & Co",
+    services: "moving",
+    price: "12, 500",
+    status: "completed",
+    name: "abdul",
+  },
+  {
+    id: 1,
+    date: "12 jan, 2023",
+    company: "Shehroz & Co",
+    services: "Packing",
+    price: "12, 500",
+    status: "completed",
+    name: "haji",
+  },
+  {
+    id: 3,
+    date: "22 jul, 2023",
+    company: "Anjum Movers",
+    services: "Packing, unpacking",
+    price: "5, 500",
+    status: "completed",
+    name: "janum",
+  },
+  {
+    id: 4,
+    date: "11 dec, 2022",
+    company: "Shehroz & Co",
+    services: "moving",
+    price: "7, 200",
+    status: "completed",
+    name: "salman",
+  },
+];
