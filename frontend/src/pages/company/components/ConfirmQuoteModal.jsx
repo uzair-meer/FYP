@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from 'react'
 
 export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
 	const { destination, services, items } = data
 
 	let price = 0
-	items.forEach((item, index) => {
+	items.forEach((item) => {
 		price += item.price * item.quantity
 	})
 
@@ -46,8 +45,8 @@ export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
 							<table>
 								<thead>
 									<tr>
-										<td></td>
-										<th>Variance</th>
+										{/* <td></td> */}
+										<th>name</th>
 										<th>Qty</th>
 										<th>Price</th>
 									</tr>
@@ -56,16 +55,15 @@ export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
 									{items.map((item, index) => (
 										<tr key={index}>
 											<td>{item.name}</td>
-											<td>{item.variance}</td>
+											{/* <td>{item.variance}</td> */}
 											<td>{item.quantity}</td>
 											<td>{item.price}</td>
-											<td>delete</td>
 										</tr>
 									))}
 								</tbody>
 							</table>
 							<div className="mt-16 flex w-full justify-end">
-								<button className="mr-3 rounded-2xl text-white bg-slate-300 px-4 py-1">
+								<button onClick={setToggle.bind(this, false)} className="mr-3 rounded-2xl text-white bg-slate-300 px-4 py-1">
 									Cancel
 								</button>
 								<button className="rounded-2xl text-white bg-primary px-4 py-1">
