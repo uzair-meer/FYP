@@ -20,6 +20,10 @@ const bookingSchema = new Schema({
 	destinationAddress: {
 		type: String,
 	},
+	status: {
+		type: String,
+		default: "requested"
+	},
 	services: {
 		type: [String],
 		required: true,
@@ -36,10 +40,10 @@ const bookingSchema = new Schema({
 			},
 		},
 	],
-	houseHoldInventoryId: {
+	inventoryId: {
 		//it should be the latest id of selected company
 		type: Schema.Types.ObjectId,
-		ref: 'HouseHoldInventory',
+		ref: 'Inventory',
 		required: true,
 	},
 	employees: [

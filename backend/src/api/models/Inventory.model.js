@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const Schema = mongoose.Schema
 
-const houseHoldInventorySchema = new Schema({
+const inventorySchema = new Schema({
 	companyId: {
 		type: Schema.Types.ObjectId,
 		ref: 'User',
@@ -34,9 +34,9 @@ const houseHoldInventorySchema = new Schema({
 	},
 })
 
-const HouseHoldInventory = mongoose.model(
-	'HouseHoldInventory',
-	houseHoldInventorySchema
+const Inventory = mongoose.model(
+	'Inventory',
+	inventorySchema
 )
 
-export default HouseHoldInventory
+export default Inventory

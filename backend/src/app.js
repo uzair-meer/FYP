@@ -1,11 +1,16 @@
-import express from "express";
-import cors from "cors"
+import express from 'express'
+import bodyParser from 'body-parser'
+import cors from 'cors'
 import 'dotenv/config'
+import { clientRoutes } from './api/routes/client.routes.js'
+import './api/utils/database.js' //! connection with mongodb
 
 const app = express()
 app.use(cors())
+app.use(bodyParser.json())
 
 // * Routes
+app.use(clientRoutes)
 
 //? Express Error Middleware
 // eslint-disable-next-line no-unused-vars
