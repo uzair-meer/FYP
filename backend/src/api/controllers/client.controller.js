@@ -75,7 +75,7 @@ export async function getCompanyWithPrices(req, res, next) {
 									input: '$latestInventory.inventory',
 									as: 'item',
 									cond: {
-										$in: ['$$item.name', inventoryItems], //it want its second argument to be a array to select only items whose values match
+										$in: ['$$item.name', inventoryItems], //[tv, sofa]it want its second argument to be a array to select only items whose values match
 									},
 								},
 							},
