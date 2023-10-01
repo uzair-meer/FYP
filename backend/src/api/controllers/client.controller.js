@@ -1,5 +1,7 @@
 import Booking from '../models/Booking.model.js'
 import Inventory from '../models/Inventory.model.js'
+import Review from '../models/Review.model.js'
+import mongoose from 'mongoose';
 
 export async function postBooking(req, res, next) {
 	const {
@@ -88,6 +90,78 @@ export async function getCompanyWithPrices(req, res, next) {
 					},
 				},
 			},
+		])
+
+		res.status(200).json({
+			status: 'ok',
+			data: result,
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function postReview(req, res, next) {
+	const { bookingId, comment, rating } = req.body
+
+	try {
+		const review = new Review({
+			_id: bookingId,
+			comment,
+			rating,
+		})
+
+		const result = await review.save()
+
+		res.status(200).json({
+			status: 'ok',
+			data: result._doc,
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function getReview(req, res, next) {
+	const clientId = new mongoose.Types.ObjectId("6518023f237f71d0a5423a12")
+
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: { clientId: clientId }
+			},
+			{
+				$lookup: {
+					from: 'users', // Replace with the actual name of the User collection
+					localField: 'companyId',
+					foreignField: '_id',
+					as: 'user'
+				}
+			},
+			{
+				$unwind: '$user'
+			},
+			{
+				$lookup: {
+					from: 'reviews', // Replace with the actual name of the Review collection
+					localField: '_id',
+					foreignField: '_id',
+					as: 'review'
+				}
+			},
+			{
+				$unwind: '$review'
+			},
+			{
+				$project: {
+					companyId: 1,
+					companyName: '$user.name',
+					comment: '$review.comment',
+					reply: '$review.reply',
+					rating: '$review.rating',
+					_id: 0 // Exclude _id field
+				}
+			}
 		])
 
 		res.status(200).json({
