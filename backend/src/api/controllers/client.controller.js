@@ -1,7 +1,7 @@
+import mongoose from 'mongoose'
 import Booking from '../models/Booking.model.js'
 import Inventory from '../models/Inventory.model.js'
 import Review from '../models/Review.model.js'
-import mongoose from 'mongoose';
 
 export async function postBooking(req, res, next) {
 	const {
@@ -123,34 +123,34 @@ export async function postReview(req, res, next) {
 }
 
 export async function getReview(req, res, next) {
-	const clientId = new mongoose.Types.ObjectId("6518023f237f71d0a5423a12")
+	const clientId = new mongoose.Types.ObjectId(req.query.clientId)
 
 	try {
 		const result = await Booking.aggregate([
 			{
-				$match: { clientId: clientId }
+				$match: { clientId: clientId },
 			},
 			{
 				$lookup: {
 					from: 'users', // Replace with the actual name of the User collection
 					localField: 'companyId',
 					foreignField: '_id',
-					as: 'user'
-				}
+					as: 'user',
+				},
 			},
 			{
-				$unwind: '$user'
+				$unwind: '$user',
 			},
 			{
 				$lookup: {
 					from: 'reviews', // Replace with the actual name of the Review collection
 					localField: '_id',
 					foreignField: '_id',
-					as: 'review'
-				}
+					as: 'review',
+				},
 			},
 			{
-				$unwind: '$review'
+				$unwind: '$review',
 			},
 			{
 				$project: {
@@ -159,9 +159,9 @@ export async function getReview(req, res, next) {
 					comment: '$review.comment',
 					reply: '$review.reply',
 					rating: '$review.rating',
-					_id: 0 // Exclude _id field
-				}
-			}
+					_id: 0, // Exclude _id field
+				},
+			},
 		])
 
 		res.status(200).json({
