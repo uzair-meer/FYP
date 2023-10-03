@@ -1,5 +1,12 @@
 import express from 'express'
-import { postEmployee, deleteEmployee, putEmployee, getClientReviews, putClientReviews } from '../controllers/company.controller.js'
+import {
+	deleteEmployee,
+	getAllClientBookings,
+	getClientReviews,
+	postEmployee,
+	putClientReviews,
+	putEmployee,
+} from '../controllers/company.controller.js'
 
 const router = express.Router()
 
@@ -10,5 +17,6 @@ router.delete(`${route}/employee`, deleteEmployee)
 router.put(`${route}/employee`, putEmployee)
 router.get(`${route}/client-reviews`, getClientReviews)
 router.put(`${route}/client-reviews`, putClientReviews)
+router.get(`${route}/client-bookings`, getAllClientBookings)
 
 export { router as companyRoutes }

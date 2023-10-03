@@ -147,3 +147,92 @@ export async function putClientReviews(req, res, next) {
 		next(error)
 	}
 }
+
+export async function getAllClientBookings(req, res, next) {
+	const companyId = new mongoose.Types.ObjectId(req.query.companyId)
+
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: { companyId: companyId },
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'clientId', // Match clientId in bookings with _id in users
+					foreignField: '_id',
+					as: 'client',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories', // Name of the inventories collection
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$unwind: '$client',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$project: {
+					clientId: 1,
+					clientName: '$client.name', // Use the client's name from the 'client' field
+					pickupAddress: '$pickUpAddress',
+					destinationAddress: '$destinationAddress',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: ['$inventory.inventory.movingPrice', {
+										$indexOfArray: ['$inventory.inventory.name', '$$cartItem.name'],
+									}],
+								},
+								packingPrice: {
+									$arrayElemAt: ['$inventory.inventory.packingPrice', {
+										$indexOfArray: ['$inventory.inventory.name', '$$cartItem.name'],
+									}],
+								},
+								unpackingPrice: {
+									$arrayElemAt: ['$inventory.inventory.unpackingPrice', {
+										$indexOfArray: ['$inventory.inventory.name', '$$cartItem.name'],
+									}],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: '$employeesData.name', // Use the names of employees from the new 'employeesData' field
+					createdAt: 1,
+				},
+			},
+		])
+
+		console.log("hello")
+
+		res.status(200).json({
+			status: 'ok',
+			data: result,
+		})
+	} catch (error) {
+		next(error)
+	}
+}

@@ -172,3 +172,108 @@ export async function getReview(req, res, next) {
 		next(error)
 	}
 }
+
+export async function getAllBookings(req, res, next) {
+	const clientId = new mongoose.Types.ObjectId(req.query.clientId)
+
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: { clientId: clientId },
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'companyId',
+					foreignField: '_id',
+					as: 'company',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories', // Name of the inventories collection
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$unwind: '$company',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$project: {
+					companyId: '$company._id',
+					companyName: '$company.name',
+					pickupAddress: '$pickUpAddress',
+					destinationAddress: '$destinationAddress',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								packingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								unpackingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: '$employeesData.name', // Use the names of employees from the new 'employeesData' field
+					createdAt: 1,
+				},
+			},
+		])
+
+		res.status(200).json({
+			status: 'ok',
+			data: result,
+		})
+	} catch (error) {
+		next(error)
+	}
+}
