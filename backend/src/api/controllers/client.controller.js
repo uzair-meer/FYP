@@ -1,7 +1,7 @@
+import mongoose from 'mongoose'
 import Booking from '../models/Booking.model.js'
 import Inventory from '../models/Inventory.model.js'
 import Review from '../models/Review.model.js'
-import mongoose from 'mongoose';
 
 export async function postBooking(req, res, next) {
 	const {
@@ -123,34 +123,34 @@ export async function postReview(req, res, next) {
 }
 
 export async function getReview(req, res, next) {
-	const clientId = new mongoose.Types.ObjectId("6518023f237f71d0a5423a12")
+	const clientId = new mongoose.Types.ObjectId(req.query.clientId)
 
 	try {
 		const result = await Booking.aggregate([
 			{
-				$match: { clientId: clientId }
+				$match: { clientId: clientId },
 			},
 			{
 				$lookup: {
 					from: 'users', // Replace with the actual name of the User collection
 					localField: 'companyId',
 					foreignField: '_id',
-					as: 'user'
-				}
+					as: 'user',
+				},
 			},
 			{
-				$unwind: '$user'
+				$unwind: '$user',
 			},
 			{
 				$lookup: {
 					from: 'reviews', // Replace with the actual name of the Review collection
 					localField: '_id',
 					foreignField: '_id',
-					as: 'review'
-				}
+					as: 'review',
+				},
 			},
 			{
-				$unwind: '$review'
+				$unwind: '$review',
 			},
 			{
 				$project: {
@@ -159,9 +159,114 @@ export async function getReview(req, res, next) {
 					comment: '$review.comment',
 					reply: '$review.reply',
 					rating: '$review.rating',
-					_id: 0 // Exclude _id field
-				}
-			}
+					_id: 0, // Exclude _id field
+				},
+			},
+		])
+
+		res.status(200).json({
+			status: 'ok',
+			data: result,
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function getAllBookings(req, res, next) {
+	const clientId = new mongoose.Types.ObjectId(req.query.clientId)
+
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: { clientId: clientId },
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'companyId',
+					foreignField: '_id',
+					as: 'company',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories', // Name of the inventories collection
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$unwind: '$company',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$project: {
+					companyId: '$company._id',
+					companyName: '$company.name',
+					pickupAddress: '$pickUpAddress',
+					destinationAddress: '$destinationAddress',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								packingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								unpackingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: '$employeesData.name', // Use the names of employees from the new 'employeesData' field
+					createdAt: 1,
+				},
+			},
 		])
 
 		res.status(200).json({
