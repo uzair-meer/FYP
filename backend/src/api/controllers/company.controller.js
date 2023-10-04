@@ -1,8 +1,9 @@
 import mongoose from 'mongoose'
 import Booking from '../models/Booking.model.js'
 import Employee from '../models/Employee.model.js'
-import User from '../models/User.model.js'
+import Inventory from '../models/Inventory.model.js'
 import Review from '../models/Review.model.js'
+import User from '../models/User.model.js'
 
 export async function postEmployee(req, res, next) {
 	const { name, email, password, phone, companyId, title } = req.body
@@ -112,7 +113,7 @@ export async function getClientReviews(req, res, next) {
 			{
 				$project: {
 					companyId: 1,
-          reviewId: '$review._id',
+					reviewId: '$review._id',
 					clientName: '$user.name',
 					comment: '$review.comment',
 					reply: '$review.reply',
@@ -132,12 +133,12 @@ export async function getClientReviews(req, res, next) {
 }
 
 export async function putClientReviews(req, res, next) {
-	const {reviewId, reply} = req.body
+	const { reviewId, reply } = req.body
 
 	const reviewIdObj = new mongoose.Types.ObjectId(reviewId)
 
 	try {
-		const result = await Review.findByIdAndUpdate(reviewIdObj, {reply})
+		const result = await Review.findByIdAndUpdate(reviewIdObj, { reply })
 
 		res.status(200).json({
 			status: 'ok',
@@ -202,19 +203,37 @@ export async function getAllClientBookings(req, res, next) {
 								name: '$$cartItem.name',
 								quantity: '$$cartItem.quantity',
 								movingPrice: {
-									$arrayElemAt: ['$inventory.inventory.movingPrice', {
-										$indexOfArray: ['$inventory.inventory.name', '$$cartItem.name'],
-									}],
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
 								},
 								packingPrice: {
-									$arrayElemAt: ['$inventory.inventory.packingPrice', {
-										$indexOfArray: ['$inventory.inventory.name', '$$cartItem.name'],
-									}],
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
 								},
 								unpackingPrice: {
-									$arrayElemAt: ['$inventory.inventory.unpackingPrice', {
-										$indexOfArray: ['$inventory.inventory.name', '$$cartItem.name'],
-									}],
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
 								},
 							},
 						},
@@ -226,8 +245,71 @@ export async function getAllClientBookings(req, res, next) {
 			},
 		])
 
-		console.log("hello")
+		console.log('hello')
 
+		res.status(200).json({
+			status: 'ok',
+			data: result,
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+export async function postProduct(req, res, next) {
+	// const companyId = new mongoose.Types.ObjectId(req.body.companyId)
+	const { companyId, inventory } = req.body
+
+	try {
+		//? Check if the company exists in the Inventory collection
+		// Check if the company exists in the Inventory collection
+		const existingInventory = await Inventory.findOne({ companyId }).sort({ createdAt: -1 })
+		let result
+		let message
+		if (!existingInventory) {
+			// If the company doesn't exist, insert the data as a new document
+			const newInventory = new Inventory({ companyId, inventory })
+			result = await newInventory.save()
+			message = "case 1: first time inventory created"
+		} else {
+			let shouldCreateNewCollection = false
+
+			// Filter out existing products from the new inventory
+			const filteredInventory = inventory.filter((product) => {
+				const existingProductIndex = existingInventory.inventory.findIndex(
+					(existingProduct) => existingProduct.name === product.name
+				)
+
+				if (existingProductIndex === -1) {
+					// Product doesn't exist in the current inventory, add it
+					return true
+				} else {
+					// Product already exists in the current inventory, update its prices
+					existingInventory.inventory[existingProductIndex] = product
+					shouldCreateNewCollection = true
+					return false
+				}
+			})
+
+			if (shouldCreateNewCollection) {
+				// Create a new inventory document with the existing products and the new products
+				const updatedInventory = new Inventory({
+					companyId,
+					inventory: [...existingInventory.inventory, ...filteredInventory],
+				})
+
+				result = await updatedInventory.save()
+				message = "case 2: new inventory created as some product already existed"
+			} else {
+				// Update the existing inventory with the filtered inventory
+				existingInventory.inventory = [
+					...existingInventory.inventory,
+					...filteredInventory,
+				]
+				result = await existingInventory.save()
+				message = "case 3: add product to latest collection"
+			}
+		}
+		console.log(message)
 		res.status(200).json({
 			status: 'ok',
 			data: result,

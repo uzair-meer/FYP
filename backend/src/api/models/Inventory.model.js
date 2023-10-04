@@ -13,6 +13,7 @@ const inventorySchema = new Schema({
 			name: {
 				type: String,
 				required: true,
+				unique: true,
 			},
 			movingPrice: {
 				type: Number,

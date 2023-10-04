@@ -4,6 +4,7 @@ import {
 	getAllClientBookings,
 	getClientReviews,
 	postEmployee,
+	postProduct,
 	putClientReviews,
 	putEmployee,
 } from '../controllers/company.controller.js'
@@ -18,5 +19,6 @@ router.put(`${route}/employee`, putEmployee)
 router.get(`${route}/client-reviews`, getClientReviews)
 router.put(`${route}/client-reviews`, putClientReviews)
 router.get(`${route}/client-bookings`, getAllClientBookings)
+router.post(`${route}/product`, postProduct)
 
 export { router as companyRoutes }
