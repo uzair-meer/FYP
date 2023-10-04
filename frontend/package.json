@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "proxy": "http://localhost:5000",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
@@ -11,6 +12,7 @@
   },
   "dependencies": {
     "@react-google-maps/api": "^2.19.2",
+    "http-proxy-middleware": "^2.0.6",
     "react": "^18.2.0",
     "react-cookie": "^6.1.1",
     "react-dom": "^18.2.0",

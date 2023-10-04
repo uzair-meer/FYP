@@ -21,7 +21,6 @@ const RegisterUser = () => {
   };
 
   const handleSubmit = async (e) => {
-    console.log("hi");
     e.preventDefault();
     // Validate form data
     const errors = {};
@@ -52,16 +51,14 @@ const RegisterUser = () => {
     try {
       // Send request to server to create new user
       //  console.log(selectedDate)
-      console.log(formData);
-      const response = await fetch("/api/register/user", {
+      const response = await fetch("http://localhost:5000/api/register/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      console.log(formData);
-      history("/login/user");
+      history("/user/login");
       // setErrors(data);
     } catch (err) {
       // Server-side validation errors
