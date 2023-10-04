@@ -56,8 +56,10 @@ export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
                   {items.map((item, index) => (
                     <tr key={index}>
                       <td>{item.name}</td>
+                      <td>{item.variance}</td>
                       <td>{item.quantity}</td>
                       <td>{item.price}</td>
+                      <td>delete</td>
                     </tr>
                   ))}
                 </tbody>
