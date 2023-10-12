@@ -34,10 +34,10 @@ function Footer() {
               <li className="mx-2 p-1">Home</li>
             </Link>
 
-            <Link to="/about">
+            <Link>
               <li className="mx-2 p-1">About</li>
             </Link>
-            <Link to="/about">
+            <Link to="/user/register">
               <li className="mx-2 p-1">Services</li>
             </Link>
           </ul>

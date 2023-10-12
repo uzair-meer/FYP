@@ -1,5 +1,9 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router";
+
 export default function Sidebar({ listItems }) {
+  const history = useNavigate();
+
   return (
     <div className="bg-primary px-11 text-white h-screen">
       <div className="flex justify-center pt-16">
@@ -48,7 +52,7 @@ export default function Sidebar({ listItems }) {
             </Link>
           </li>
           <li className="py-3">
-            <Link className="flex flex-row" to="#">
+            <Link className="flex flex-row" to="/user/history">
               <svg
                 width="24"
                 height="24"
@@ -64,11 +68,13 @@ export default function Sidebar({ listItems }) {
                   strokeLinejoin="round"
                 />
               </svg>
-              <span className="pl-7">History</span>
+              <span className="pl-7" onClick={() => console.log("hi")}>
+                History
+              </span>
             </Link>
           </li>
           <li className="py-3">
-            <Link className="flex flex-row" to="#">
+            <Link className="flex flex-row">
               <svg
                 width="24"
                 height="24"
@@ -86,6 +92,9 @@ export default function Sidebar({ listItems }) {
               </svg>
               <span className="pl-7">Reviews</span>
             </Link>
+            <li className="my-2 px-2">
+              <Link to="/">LogOut</Link>
+            </li>
           </li>
         </ul>
       </div>
