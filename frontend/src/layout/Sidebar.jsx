@@ -92,6 +92,9 @@ export default function Sidebar({ listItems }) {
               </svg>
               <span className="pl-7">Reviews</span>
             </Link>
+            <li className="my-2 px-2">
+              <Link to="/">LogOut</Link>
+            </li>
           </li>
         </ul>
       </div>

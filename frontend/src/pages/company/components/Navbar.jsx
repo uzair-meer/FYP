@@ -13,7 +13,7 @@ function Navbar() {
         <Link to="#about">
           <li className="hover:text-primary">About</li>
         </Link>
-        <Link to="user/login">
+        <Link to="/login">
           <li className="hover:text-primary">login</li>
         </Link>
       </ul>

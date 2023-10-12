@@ -22,19 +22,22 @@ export default function UserSignIn() {
     try {
       // Send request to server to get creditienals
 
-      const response = await fetch("http://localhost:5000/api/login/user", {
+      const response = await fetch("http://localhost:5000/auth/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      const data = await response.json();
-      const { status, name, phone } = data;
+      const user = await response.json();
+      const { status, data } = user;
       if (status === "ok") {
-        console.log(name);
-        console.log(phone);
-        history("/services");
+        console.log(data.name);
+        if (data.role === "company") {
+          history("/company/profile", { state: { name: data.name } });
+        } else {
+          history("/user/profile", { state: { name: data.name } });
+        }
       }
     } catch (err) {
       // Server-side validation errors

@@ -10,6 +10,7 @@ const RegisterUser = () => {
     name: "",
     email: "",
     password: "",
+    role: "user",
     phone: "",
   });
   const [errors, setErrors] = useState({});
@@ -51,14 +52,14 @@ const RegisterUser = () => {
     try {
       // Send request to server to create new user
       //  console.log(selectedDate)
-      const response = await fetch("http://localhost:5000/api/register/user", {
+      const response = await fetch("http://localhost:5000/auth/register", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(formData),
       });
-      history("/user/login");
+      history("/login");
       // setErrors(data);
     } catch (err) {
       // Server-side validation errors
@@ -70,7 +71,7 @@ const RegisterUser = () => {
     <div className="w-[20%] mx-auto my-5">
       <div className="form-container">
         <form onSubmit={handleSubmit} className="form">
-          <h3 className="text-primary text-headings">User Sign Up</h3>
+          <h3 className="text-primary text-headings"> Sign Up</h3>
           <div className="my-1">
             <label htmlFor="name" className="font-bold">
               Name
@@ -120,13 +121,29 @@ const RegisterUser = () => {
               <div className="invalid-feedback">{errors.password}</div>
             )}
           </div>
+          <div className="my-1">
+            <label htmlFor="role" className="font-bold">
+              Role
+            </label>
+            <select
+              id="role"
+              name="role"
+              value={formData.role}
+              onChange={handleChange}
+              className="w-full p-2 rounded-md border my-1"
+              required
+            >
+              <option value="user">User</option>
+              <option value="company">Company</option>
+            </select>
+          </div>
 
           <div className="my-1">
             <label htmlFor="phone" className="font-bold">
               Phone Number
             </label>
             <input
-              type="tel"
+              type="text"
               name="phone"
               id="phone"
               value={phone}
