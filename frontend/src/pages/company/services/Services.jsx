@@ -3,8 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import { Autocomplete } from "@react-google-maps/api";
 import { AiOutlineDelete } from "react-icons/ai";
-import Layout from "../../../layout/Layout";
-import ConfirmQuoteModal from "../components/ConfirmQuoteModal";
+import ConfirmQuoteModal from "../components/ConfirmQuoteModal.jsx";
 import { useLocation } from "react-router";
 
 const data = {
@@ -62,16 +61,16 @@ function Services() {
     // navigate('get/quote', { state: { pickupLocation, destinationLocation } })
   };
   const location = useLocation();
-  const userName = location.state.name;
+  // const userName = location.state.name;
   return (
-    <Layout>
+     <>
       <div className="flex">
         <form
           onSubmit={(e) => e.preventDefault()}
           action=""
           className="w-[60%]  p-5"
         >
-          <h1 className="text-headings">{userName} Dashbord</h1>
+          <h1 className="text-headings">Dashbord</h1>
 
           <div className="flex gap-5 my-2">
             <div>
@@ -226,8 +225,7 @@ function Services() {
         }}
         showModal={showConfirmQuoteModal}
         setToggle={setShowConfirmQuoteModal}
-      />
-    </Layout>
+      /></>
   );
 }
 
