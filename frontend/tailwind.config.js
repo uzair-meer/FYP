@@ -10,6 +10,7 @@ export default {
       colors: {
         primary: "#E4503A",
         secondary: "#C9CAC866",
+        sky: "#557cf2",
       },
     },
   },

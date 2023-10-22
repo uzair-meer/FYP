@@ -5,7 +5,7 @@ import { FaUsers } from "react-icons/fa";
 import { CgProfile } from "react-icons/cg";
 import { MdReviews } from "react-icons/md";
 import { BsFillCalendarCheckFill } from "react-icons/bs";
-
+import { MdPriceChange } from "react-icons/md";
 export const EMPLOYES_TABLE_COLUMNS = [
   {
     Header: "Name",
@@ -236,11 +236,18 @@ export const ADMIN_ROUTES = [
       <BsFillCalendarCheckFill className="text-[1.4rem] text-white hover:text-primary  mx-2 cursor-pointer" />
     ),
   },
+  // {
+  //   name: "Reviews",
+  //   route: "/company/reviews",
+  //   icon: (
+  //     <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+  //   ),
+  // },
   {
-    name: "Reviews",
-    route: "/company/reviews",
+    name: "SetPrices",
+    route: "/company/setprice",
     icon: (
-      <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+      <MdPriceChange className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
     ),
   },
 ];
