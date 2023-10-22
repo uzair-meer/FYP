@@ -1,6 +1,7 @@
 import React from "react";
-import truck from "../../../assets/truck.png";
 import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
+import truck from "src/assets/truck.png";
 
 function Footer() {
   return (
@@ -24,22 +25,27 @@ function Footer() {
 
         <div className="p-4 sm:flex justify-between border-t mt-6 border-teal-50 items-center">
           <div>
-            <img src={truck} />
+            <img src={truck} className="w-[3rem]" />
             <h3 className="text-white text-left">
               We are the best in bussiness.
             </h3>
           </div>
-          <ul className="text-white">
-            <Link to="/">
-              <li className="mx-2 p-1">Home</li>
-            </Link>
-
-            <Link>
-              <li className="mx-2 p-1">About</li>
-            </Link>
-            <Link to="/user/register">
-              <li className="mx-2 p-1">Services</li>
-            </Link>
+          <ul className="flex items-center text-white decoration-2">
+            <li className="mx-2 cursor-pointer text-link  hover:underline active:underline active:text-primary decoration-secondary">
+              <ScrollLink activeClass=" underline" smooth spy to="home">
+                Home
+              </ScrollLink>
+            </li>
+            <li className="mx-2 cursor-pointer text-link hover:underline  decoration-secondary">
+              <ScrollLink activeClass=" underline" smooth spy to="portfolio">
+                Portfolio
+              </ScrollLink>
+            </li>
+            <li className="mx-2 cursor-pointer hover:underline decoration-secondary">
+              <ScrollLink activeClass=" underline" smooth spy to="services">
+                Services
+              </ScrollLink>
+            </li>
           </ul>
         </div>
 
