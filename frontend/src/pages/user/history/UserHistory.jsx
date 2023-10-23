@@ -1,12 +1,12 @@
 import Table from "src/components/Table/Table";
-import { COMPANY_BOOKINGS_TABLE_COLUMNS } from "src/constants/constants";
 import { User_History } from "src/constants/constants";
+import { USER_BOOKINGS_TABLE_COLUMNS } from "src/constants/constants";
 
-export default function CompanyHistory() {
+export default function UserHistory() {
   return (
     <div>
       <Table
-        columns={COMPANY_BOOKINGS_TABLE_COLUMNS}
+        columns={USER_BOOKINGS_TABLE_COLUMNS}
         data={User_History}
         loading={false}
       ></Table>

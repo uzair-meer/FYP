@@ -3,18 +3,17 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const companySchema = new Schema({
-  _id: {
+  owner: {
     //this is basically company_id
     type: Schema.Types.ObjectId,
     ref: "User", // Reference to the User model
     required: true,
   },
-  title: {
-    type: String,
-    required: true,
-  },
-  about: {
-    type: String,
+
+  services: {
+    //this is basically company_id
+    type: [Schema.Types.ObjectId],
+    ref: "Service", // Reference to the User model
     required: true,
   },
 });
