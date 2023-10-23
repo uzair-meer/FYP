@@ -1,11 +1,10 @@
 import { RiDashboardFill } from "react-icons/ri";
-import { FaBarsProgress } from "react-icons/fa6";
-import { BsFillInfoCircleFill } from "react-icons/bs";
+
 import { FaUsers } from "react-icons/fa";
-import { CgProfile } from "react-icons/cg";
 import { MdReviews } from "react-icons/md";
 import { BsFillCalendarCheckFill } from "react-icons/bs";
 import { MdPriceChange } from "react-icons/md";
+import { BiSolidUserCircle } from "react-icons/bi";
 export const EMPLOYES_TABLE_COLUMNS = [
   {
     Header: "Name",
@@ -113,7 +112,7 @@ export const employees = [
 //   "Status",
 // ];
 
-const USER_HISTORY_TABLE_COLUMNS = [
+export const USER_BOOKINGS_TABLE_COLUMNS = [
   {
     Header: "Date",
     accessor: "date",
@@ -132,7 +131,7 @@ const USER_HISTORY_TABLE_COLUMNS = [
   },
 ];
 
-export const UserHistory = [
+export const User_History = [
   {
     id: 1,
     date: "12 jan, 2023",
@@ -192,25 +191,20 @@ export const UserHistory = [
 export const CLIENT_PORTAL_ROUTES = [
   {
     name: "Dashboard",
-    route: "/portal",
+    route: "/user",
     icon: <RiDashboardFill className="text-[1.4rem]  mx-2 cursor-pointer" />,
   },
   {
-    name: "Projects",
-    route: "/portal/projects",
-    icon: <FaBarsProgress className="text-[1.4rem] mx-2 cursor-pointer" />,
+    name: "Bookings",
+    route: "/user/bookings",
+    icon: (
+      <BsFillCalendarCheckFill className="text-[1.4rem]  mx-2 cursor-pointer" />
+    ),
   },
   {
     name: "Profile",
-    route: "/portal/profile",
-    icon: <CgProfile className="text-[1.4rem]  mx-2 cursor-pointer" />,
-  },
-  {
-    name: "About",
-    route: "/portal/about",
-    icon: (
-      <BsFillInfoCircleFill className="text-[1.4rem]  mx-2 cursor-pointer" />
-    ),
+    route: "/user/profile",
+    icon: <BiSolidUserCircle className="text-[1.4rem]  mx-2 cursor-pointer" />,
   },
 ];
 
