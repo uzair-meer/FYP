@@ -9,6 +9,10 @@ import Company from "../pages/company";
 import User from "../pages/user";
 import UserHistory from "../pages/user/history/UserHistory";
 import SignUp from "../components/Signup/SignUp";
+import Admin from "../pages/admin";
+import { AdminDashboard } from "../pages/admin/dashboard/AdminDashboard";
+import Companies from "../pages/admin/companies/Companies";
+import Services from "../pages/admin/services/Services";
 const AppRouter = () => {
   return (
     <Routes>
@@ -26,6 +30,12 @@ const AppRouter = () => {
         <Route path="bookings" element={<CompanyHistory />} />
         <Route path="employes" element={<Employes />} />
         <Route path="setprice" element={<SetPricesForm />} />
+      </Route>
+
+      <Route path="admin" element={<Admin />}>
+        <Route index element={<AdminDashboard />} />
+        <Route path="companies" element={<Companies />} />
+        <Route path="services" element={<Services />} />
       </Route>
     </Routes>
   );

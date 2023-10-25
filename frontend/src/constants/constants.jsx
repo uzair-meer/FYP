@@ -5,6 +5,8 @@ import { MdReviews } from "react-icons/md";
 import { BsFillCalendarCheckFill } from "react-icons/bs";
 import { MdPriceChange } from "react-icons/md";
 import { BiSolidUserCircle } from "react-icons/bi";
+import { BsBookmark } from "react-icons/bs";
+import { BsGear } from "react-icons/bs";
 export const EMPLOYES_TABLE_COLUMNS = [
   {
     Header: "Name",
@@ -24,6 +26,54 @@ export const EMPLOYES_TABLE_COLUMNS = [
   },
 ];
 
+export const TOTAL_COMPANIES_COLS = [
+  {
+    Header: "Company Name",
+    accessor: "companyname",
+  },
+  {
+    Header: "Company Services",
+    accessor: "companyservices",
+  },
+  {
+    Header: "Company Contact",
+    accessor: "companycontact",
+  },
+  {
+    Header: "Company Status",
+    accessor: "companystatus",
+  },
+];
+export const COMPANIES_DATA = [
+  {
+    id: 1,
+    companyname: "abc",
+    companyservices: ["packing", "unpacking"],
+    companycontact: "+921334550",
+    companystatus: "pending",
+  },
+  {
+    id: 2,
+    companyname: "xyz",
+    companyservices: ["packing", "unpacking"],
+    companycontact: "+921334550",
+    companystatus: "approved",
+  },
+  {
+    id: 3,
+    companyname: "qwerty",
+    companyservices: ["packing", "unpacking"],
+    companystatus: "approved",
+    companycontact: "+921339950",
+  },
+  {
+    id: 4,
+    companyname: "batmbolies",
+    companyservices: ["packing", "unpacking"],
+    companycontact: "+921334550",
+    companystatus: "declines",
+  },
+];
 export const COMPANY_BOOKINGS_TABLE_COLUMNS = [
   {
     Header: "Date",
@@ -208,7 +258,7 @@ export const CLIENT_PORTAL_ROUTES = [
   },
 ];
 
-export const ADMIN_ROUTES = [
+export const COMPANY_PORTAL_ROUTES = [
   {
     name: "Dashboard",
     route: "/company",
@@ -243,5 +293,27 @@ export const ADMIN_ROUTES = [
     icon: (
       <MdPriceChange className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
     ),
+  },
+];
+
+export const ADMIN_ROUTES = [
+  {
+    name: "Dashboard",
+    route: "/admin",
+    icon: (
+      <RiDashboardFill className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+    ),
+  },
+  {
+    name: "Companeies",
+    route: "/admin/companies",
+    icon: (
+      <BsBookmark className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+    ),
+  },
+  {
+    name: "Services",
+    route: "/admin/services",
+    icon: <BsGear className="text-[1.4rem] text-white  mx-2 cursor-pointer" />,
   },
 ];
