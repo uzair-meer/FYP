@@ -1,28 +1,26 @@
-import mongoose from 'mongoose'
+import mongoose from "mongoose";
 
-const Schema = mongoose.Schema
+const Schema = mongoose.Schema;
 
 const companySchema = new Schema({
-	_id: {
-		//this is basically company_id
-		type: Schema.Types.ObjectId,
-		ref: 'User', // Reference to the User model
-		required: true,
-	},
-	title: {
-		type: String,
-		required: true,
-	},
-	about: {
-		type: String,
-		required: true,
-	},
-	createdAt: {
-		type: Date,
-		default: Date.now,
-	},
-})
+  owner: {
+    //this is basically company_id
+    type: Schema.Types.ObjectId,
+    ref: "User", // Reference to the User model
+    required: true,
+  },
+  services: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Service', // Reference to the Service model
+    },
+  ],
+  approve:{
+    type:String,
+    default:"PENDING"
+  }
+});
 
-const Company = mongoose.model('Company', companySchema)
+const Company = mongoose.model("Company", companySchema);
 
-export default Company
+export default Company;
