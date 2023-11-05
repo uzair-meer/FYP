@@ -2,7 +2,6 @@
 import { createContext, useContext, useState } from "react";
 import httpCommon from "src/api/http-common.js";
 import {
-  getCookie,
   getCookieObject,
   setCookieObject,
   setHeadersInCookies,
@@ -14,16 +13,10 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(getCookieObject("user"));
-
-  const login = (email, password) => {
-    AuthService.login(email, password).then((res) => {
-      const user = res.user;
-      setUser(user);
-      httpCommon.defaults.headers.common[
-        "Authorization"
-      ] = `Bearer ${res.access_token}`;
-      setHeadersInCookies(res);
-      setCookieObject("user", user);
+  const login = async (email, password) => {
+    await AuthService.login(email, password).then((res) => {
+      setUser(res);
+      setCookieObject("user", res);
     });
   };
 

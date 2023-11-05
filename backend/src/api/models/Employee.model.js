@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const employeeSchema = new Schema({
-  _id: {
+  employeeId: {
     //this is basically employeeId
     type: Schema.Types.ObjectId,
     ref: "User",
