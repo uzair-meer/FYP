@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-
+import AuthService from "src/api/services/auth.service";
+const { register, login } = AuthService;
 function SignUp() {
   const [mode, setMode] = useState("user");
   const [formData, setFormData] = useState({
@@ -28,6 +29,13 @@ function SignUp() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Form Data:", formData);
+    register(formData);
+    setFormData({
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+    });
   };
 
   return (

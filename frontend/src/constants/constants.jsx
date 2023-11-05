@@ -317,3 +317,70 @@ export const ADMIN_ROUTES = [
     icon: <BsGear className="text-[1.4rem] text-white  mx-2 cursor-pointer" />,
   },
 ];
+
+export const Driver_Routes = [
+  {
+    name: "Dashboard",
+    route: "/driver",
+    icon: (
+      <RiDashboardFill className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+    ),
+  },
+  {
+    name: "Bookings",
+    route: "/driver/bookings",
+    icon: (
+      <BsFillCalendarCheckFill className="text-[1.4rem] text-white hover:text-primary  mx-2 cursor-pointer" />
+    ),
+  },
+];
+
+export const Driver_History_Cols = [
+  {
+    Header: "Date",
+    accessor: "date",
+  },
+  {
+    Header: "Customer Name",
+    accessor: "name",
+  },
+  {
+    Header: "Customer phone",
+    accessor: "phone",
+  },
+  {
+    Header: "Services",
+    accessor: "services",
+  },
+  {
+    Header: "Status",
+    accessor: "status",
+  },
+];
+
+export const Driver_History = [
+  {
+    id: 1,
+    date: "12 jan, 2023",
+    services: "Packing",
+    phone: "+92132223",
+    status: "completed",
+    name: "hamza",
+  },
+  {
+    id: 2,
+    date: "2 feb, 2023",
+    services: "Packing, unpacking",
+    phone: "12330011",
+    status: "completed",
+    name: "uzair",
+  },
+  {
+    id: 3,
+    date: "24 march, 2023",
+    services: "moving",
+    phone: "12341122",
+    status: "completed",
+    name: "abdul",
+  },
+];

@@ -6,6 +6,7 @@ import { clientRoutes } from "./api/routes/client.routes.js";
 import { companyRoutes } from "./api/routes/company.routes.js";
 import { authRoutes } from "./api/routes/auth.routes.js";
 import "./api/utils/database.js"; //! connection with mongodb
+import { adminRoutes } from "./api/routes/admin.routes.js";
 
 const app = express();
 app.use(cors());
@@ -15,6 +16,7 @@ app.use(bodyParser.json());
 app.use("/client", clientRoutes);
 app.use("/company", companyRoutes);
 app.use("/auth", authRoutes);
+app.use("admin", adminRoutes);
 
 //? Express Error Middleware
 // eslint-disable-next-line no-unused-vars
