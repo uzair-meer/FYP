@@ -1,4 +1,4 @@
-import Service from "../models/Services.model";
+import Service from "../models/Services.model.js";
 export const createService = async (req, res) => {
   try {
     const service = new Service(req.body);

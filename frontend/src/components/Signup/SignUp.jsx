@@ -3,38 +3,66 @@ import AuthService from "src/api/services/auth.service";
 const { register, login } = AuthService;
 function SignUp() {
   const [mode, setMode] = useState("user");
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    password: "",
-    phone: "",
-    companyName: "",
-    moving: false,
-    packing: false,
-    unpacking: false,
-  });
+  const [servicesData, setServicesData] = useState([]); // To store service data from the backend
+
+  useEffect(() => {
+    // Fetch service data from the backend when the component mounts
+    fetchServiceData();
+  }, []);
+
+  const fetchServiceData = async () => {
+    try {
+      // Replace with your actual API endpoint to fetch service data
+      const response = await fetch("/api/services"); // Adjust the URL as needed
+      if (!response.ok) {
+        throw new Error("Failed to fetch service data");
+      }
+
+      const data = await response.json();
+      setServicesData(data); // Store the fetched service data
+    } catch (error) {
+      console.error("Error fetching service data:", error);
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setFormData((prevData) => ({
-      ...prevData,
+    setFormData({
+      ...formData,
       [name]: type === "checkbox" ? checked : value,
-    }));
+    });
   };
 
   const toggleMode = (newMode) => {
     setMode(newMode);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Form Data:", formData);
-    register(formData);
+
+    // Create an array to store selected services based on checkboxes
+    const selectedServices = servicesData
+      .filter((service) => formData[service._id]) // Check if the checkbox is checked
+      .map((service) => service._id); // Get the service IDs
+
+    // Create a company object to send to your backend
+    const companyData = {
+      companyName: formData.companyName,
+      email: formData.email,
+      password: formData.password,
+      phone: formData.phone,
+      services: selectedServices, // Include the selected service IDs
+    };
+
+    // Send the companyData to your backend for registration
+    // ...
+
+    // Reset the form
     setFormData({
-      name: "",
+      companyName: "",
       email: "",
-      phone: "",
       password: "",
+      phone: "",
     });
   };
 
@@ -129,6 +157,22 @@ function SignUp() {
                 onChange={handleChange}
                 className="w-full p-2 border rounded"
               />
+              <div className="mb-4">
+                <label
+                  htmlFor="cnic"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Cnic:
+                </label>
+                <input
+                  type="password"
+                  id="cnic"
+                  name="cnic"
+                  value={formData.cnic}
+                  onChange={handleChange}
+                  className="w-full p-2 border rounded"
+                />
+              </div>
             </div>
             <button
               type="submit"
@@ -206,7 +250,7 @@ function SignUp() {
                 className="w-full p-2 border rounded"
               />
             </div>
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label className="block text-gray-700 text-sm font-bold mb-2">
                 Services:
               </label>
@@ -240,7 +284,7 @@ function SignUp() {
               <label htmlFor="unpacking" className="ml-2 text-gray-700 text-sm">
                 Unpacking
               </label>
-            </div>
+            </div> */}
             <button
               type="submit"
               className="bg-blue-500 text-white px-4 py-2 rounded-full focus:outline-none"

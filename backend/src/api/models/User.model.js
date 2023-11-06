@@ -25,6 +25,9 @@ const userSchema = new Schema(
       type: String,
       default: "USER",
     },
+    cnic: {
+      type: NaN,
+    },
   },
   { timestamps: true }
 );

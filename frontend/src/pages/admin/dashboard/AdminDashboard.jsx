@@ -2,7 +2,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { Fragment } from "react";
 import { HiEllipsisHorizontal } from "react-icons/hi2";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
 
 const clients = [
   {
@@ -45,7 +44,6 @@ function classNames(...classes) {
 }
 
 export const AdminDashboard = () => {
-  const { logout } = useAuth();
   return (
     <>
       {/* // dash stats */}
@@ -179,7 +177,6 @@ export const AdminDashboard = () => {
               </ul>
             </div>
           </div>
-          <button onClick={logout}>logout</button>
         </div>
       </main>
     </>

@@ -30,7 +30,10 @@ const AppRouter = () => {
       <Route path="signup" element={<SignUp />} />
       <Route path="signin" element={<SignIn />} />
 
-      <Route path="user" element={<User />}>
+      <Route
+        path="user"
+        element={<UserProtectedRoute user={user} component={<User />} />}
+      >
         <Route index element={<UserDashboard />} />
         <Route path="bookings" element={<UserHistory />} />
         <Route path="profile" element={<Profile />} />
@@ -44,7 +47,10 @@ const AppRouter = () => {
         <Route path="setprice" element={<SetPricesForm />} />
       </Route>
 
-      <Route path="admin" element={<AdminPanel />}>
+      <Route
+        path="admin"
+        element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
+      >
         <Route index element={<AdminDashboard />} />
         <Route path="companies" element={<Companies />} />
         <Route path="services" element={<Services />} />

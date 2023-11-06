@@ -1,16 +1,8 @@
 import { Popover } from "@headlessui/react";
-// import { useAuth } from "src/context/AuthContext.jsx";
-// import { useDataContext } from "src/context/DataContext";
+import { useAuth } from "src/context/AuthContext.jsx";
 
 export function MyPopover({ children }) {
-  // const { user, logout , cleanUpAuth } = useAuth();
-  // const { cleanUpData } = useDataContext();
-
-  // const handleLogout = () => {
-  //   cleanUpData();
-  //   cleanUpAuth();
-  //   logout();
-  // }
+  const { logout } = useAuth();
 
   return (
     <Popover className="relative">
@@ -32,12 +24,12 @@ export function MyPopover({ children }) {
           </div>
           <hr />
           <div className="flex flex-col items-start">
-            <button className="text-secondary w-full p-2 hover:bg-primary hover:text-white">
+            <button className="text-black w-full p-2 hover:bg-primary hover:text-white">
               My Account
             </button>
             <button
-            
-              className="text-secondary w-full p-2 hover:bg-primary hover:text-white rounded-b-[5px]"
+              onClick={logout}
+              className="text-black w-full p-2 hover:bg-primary hover:text-white rounded-b-[5px]"
             >
               Logout
             </button>

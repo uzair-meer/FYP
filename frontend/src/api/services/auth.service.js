@@ -6,20 +6,12 @@ const register = (formdata) => {
 };
 
 const login = (email, password) => {
-  return httpCommon
-    .post("/auth/login", {
+  return handleResponse(
+    httpCommon.post("/auth/login", {
       email,
       password,
     })
-    .then((response) => {
-      // Handle the response data here
-      return handleResponse(response);
-    })
-    .catch((error) => {
-      console.error("Axios Error:", error);
-      // Handle the error here (e.g., show an error message to the user)
-      throw error; // Rethrow the error to propagate it further if needed
-    });
+  );
 };
 
 const AuthService = {
