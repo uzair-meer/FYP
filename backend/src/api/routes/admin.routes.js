@@ -2,8 +2,7 @@ import express from "express";
 import {
   createService,
   getAllServices,
-  deleteService,
-} from "../controllers/admin.controller";
+} from "../controllers/admin.controller.js";
 
 const router = express.Router();
 
