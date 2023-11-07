@@ -15,7 +15,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (user?.role === "ADMIN") navigate("/admin");
-    else if (user?.role === "CLIENT") navigate("/portal");
+    else if (user?.role === "USER") navigate("/user");
   }, [user]);
 
   return (

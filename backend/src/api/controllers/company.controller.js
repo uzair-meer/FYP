@@ -6,6 +6,34 @@ import Review from "../models/Review.model.js";
 import User from "../models/User.model.js";
 import Services from "../models/Services.model.js";
 import Company from "../models/Company.model.js";
+import createError from "../utils/createError.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+export async function CreateCompany(req, res, next) {
+  const { name, email, password, phone, services } = req.body;
+
+  try {
+    const hash = bcrypt.hashSync(password, 5);
+    const newUser = new User({
+      name,
+      email,
+      password: hash,
+      phone,
+    });
+
+    const userResult = await newUser.save();
+    const company_id = userResult._doc._id;
+
+    const new_company = new Company({
+      owner: company_id,
+      services,
+    });
+    await new_company.save();
+    res.status(201).send({ message: "Company has been created." });
+  } catch (err) {
+    next(err);
+  }
+}
 
 export async function postEmployee(req, res, next) {
   const { name, email, password, phone, companyId, title } = req.body;

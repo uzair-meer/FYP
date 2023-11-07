@@ -1,7 +1,12 @@
 import React from "react";
+import Services from "src/pages/services/Services";
 
 function UserDashboard() {
-  return <div>UserDashboard</div>;
+  return (
+    <>
+      <Services />
+    </>
+  );
 }
 
 export default UserDashboard;

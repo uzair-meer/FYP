@@ -7,7 +7,6 @@ import {
 const router = express.Router();
 
 router.post("admin/create/service", createService);
-router.post("admin/get/services", getAllServices);
-router.post("admin/delete/service:id", getAllServices);
+router.get("get/services", getAllServices);
 
 export { router as adminRoutes };

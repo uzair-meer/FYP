@@ -13,6 +13,7 @@ function Navbar() {
     <nav className="flex justify-between items-center bg-primary w-full drop-shadow-md sticky overflow-none z-10 top-0 p-2">
       {/* Logo */}
       <img className="w-[3rem]" src={truck} />
+      <h3 className="text-textColor">HShift</h3>
       {/* Mobile Menu Toggle Button */}
       <button
         onClick={toggleNavbar}

@@ -21,7 +21,7 @@ app.use(bodyParser.json());
 app.use("/client", clientRoutes);
 app.use("/company", companyRoutes);
 app.use("/auth", authRoutes);
-app.use("admin", adminRoutes);
+app.use("/admin", adminRoutes);
 
 //? Express Error Middleware
 // eslint-disable-next-line no-unused-vars

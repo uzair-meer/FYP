@@ -11,10 +11,14 @@ const companySchema = new Schema({
   },
 
   services: {
-    //this is basically company_id
     type: [Schema.Types.ObjectId],
-    ref: "Service", // Reference to the User model
+    ref: "Service",
     required: true,
+  },
+
+  status: {
+    type: String,
+    default: "PENDING",
   },
 });
 
