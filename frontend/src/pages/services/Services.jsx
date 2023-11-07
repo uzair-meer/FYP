@@ -1,10 +1,7 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-
-import { Autocomplete } from "@react-google-maps/api";
 import { AiOutlineDelete } from "react-icons/ai";
-import ConfirmQuoteModal from "../components/ConfirmQuoteModal.jsx";
 import { useLocation } from "react-router";
+import ConfirmQuoteModal from "src/components/ConfirmQuoteModal";
 
 const data = {
   destination: "Johar Town, Lhr - People's Colony, Fsd",
@@ -63,7 +60,7 @@ function Services() {
   const location = useLocation();
   // const userName = location.state.name;
   return (
-     <>
+    <>
       <div className="flex">
         <form
           onSubmit={(e) => e.preventDefault()}
@@ -225,7 +222,8 @@ function Services() {
         }}
         showModal={showConfirmQuoteModal}
         setToggle={setShowConfirmQuoteModal}
-      /></>
+      />
+    </>
   );
 }
 

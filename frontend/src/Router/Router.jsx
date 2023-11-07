@@ -10,7 +10,6 @@ import UserHistory from "../pages/user/history/UserHistory";
 import SignUp from "../components/Signup/SignUp";
 import { AdminDashboard } from "../pages/admin/dashboard/AdminDashboard";
 import Companies from "../pages/admin/companies/Companies";
-import Services from "../pages/admin/services/Services";
 import Profile from "../pages/user/profile/Profile";
 import UserDashboard from "../pages/user/dashboard/UserDashboard";
 import AdminPanel from "../pages/admin";
@@ -21,14 +20,18 @@ import DriverHistory from "../pages/driver/history/DriverHistory";
 import { useAuth } from "../context/AuthContext";
 import UserProtectedRoute, { AdminProtectedRoute } from "./ProtectedRoutes";
 import SignIn from "../pages/signin/SignIn";
+import Services from "../pages/services/Services";
+
 const AppRouter = () => {
   const { user } = useAuth();
   return (
     <Routes>
-      {/* user routes */}
+      {/* public routes */}
       <Route path="/" element={<Home />} />
       <Route path="signup" element={<SignUp />} />
       <Route path="signin" element={<SignIn />} />
+
+      {/* // user routes */}
 
       <Route
         path="user"
