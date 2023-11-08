@@ -20,16 +20,19 @@ export function MenuLayout({ menuItems }) {
     <div className="flex">
       {/* side bar */}
       <div
-        className={`w-[10rem] bg-primary flex flex-col h-screen items-start fixed top-0 left-0 z-40 drop-shadow-md sm:drop-shadow-none  sm:static sm:translate-x-0 ${
+        className={`w-[12rem] bg-primary flex flex-col h-screen items-start fixed top-0 left-0 z-40 drop-shadow-md sm:drop-shadow-none  sm:static sm:translate-x-0 ${
           isDrawerOpen ? "" : " hidden sm:flex"
         }`}
       >
-        <div className="h-[12%] flex items-center justify-center">
-          <img
-            src={truck}
-            alt="logo"
-            className="w-[5rem] cursor-pointer my-2 p-2 ml-3 block"
-          />
+        <div className="h-[15%] flex items-center justify-center">
+          <div className="flex items-center mt-5 gap-1">
+            <img
+              src={truck}
+              alt="logo"
+              className="w-[5rem] cursor-pointer my-2 p-2 ml-3 block"
+            />
+            <p className="text-white font-bold ">HShift</p>
+          </div>
           <button
             className="absolute top-4 right-1 sm:hidden hover:bg-grey p-1 rounded-[5px]"
             onClick={() => setIsDrawerOpen(false)}
@@ -37,12 +40,12 @@ export function MenuLayout({ menuItems }) {
             <AiOutlineClose />
           </button>
         </div>
-        <div className="mt-5">
+        <div className="mt-12">
           <ul className="flex flex-col items-start justify-start gap-5 text-textColor">
             {menuItems.map((link) => (
               <Link to={link.route} key={link.name}>
                 <li
-                  className={`w-[9rem] p-2 pl-0 border-primary cursor-pointer flex items-center hover:bg-white hover:text-primary rounded-r-[10px]  transition-all ${
+                  className={`w-[9rem] p-2 pl-0 border-primary cursor-pointer flex items-center hover:bg-white hover:text-primary text-white rounded-r-[10px]  transition-all ${
                     route.split("/")[2] === link.route.split("/")[2] &&
                     "border-l-8 border-white bg-primary text-white"
                   }`}
@@ -56,7 +59,7 @@ export function MenuLayout({ menuItems }) {
         </div>
       </div>
       {/* Searchbar */}
-      <div className="w-[98%] h-screen flex flex-col justify-between  bg-primary">
+      <div className="w-[98%] h-screen flex flex-col justify-between  bg-white">
         <div className="header h-[12%] flex items-center justify-between p-4">
           <BiMenu
             className="text-2xl sm:hidden"
@@ -71,7 +74,7 @@ export function MenuLayout({ menuItems }) {
                   <Tooltip content="notifications">
                     <FaBell
                       id="fa-bell"
-                      className="text-[1.4rem] text-white  cursor-pointer mx-1"
+                      className="text-[1.4rem] text-primary  cursor-pointer mx-1"
                     />
                   </Tooltip>
                 </Link>
@@ -79,7 +82,7 @@ export function MenuLayout({ menuItems }) {
               <li>
                 <Link>
                   <Tooltip content="settings">
-                    <AiFillSetting className="text-[1.4rem] text-white mx-1 cursor-pointer" />
+                    <AiFillSetting className="text-[1.4rem] text-primary mx-1 cursor-pointer" />
                   </Tooltip>
                 </Link>
               </li>

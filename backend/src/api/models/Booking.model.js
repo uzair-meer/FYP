@@ -10,7 +10,7 @@ const bookingSchema = new Schema({
   },
   companyId: {
     type: Schema.Types.ObjectId,
-    ref: "Company",
+    ref: "User",
     required: true,
   },
   pickUpAddress: {

@@ -2,6 +2,7 @@ import { Link as ScrollLink } from "react-scroll";
 import truck from "src/assets/truck.png";
 import { useState } from "react";
 import { AiOutlineMenu } from "react-icons/ai";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,8 +13,10 @@ function Navbar() {
   return (
     <nav className="flex justify-between items-center bg-primary w-full drop-shadow-md sticky overflow-none z-10 top-0 p-2">
       {/* Logo */}
-      <img className="w-[3rem]" src={truck} />
-      <h3 className="text-textColor">HShift</h3>
+      <div className="flex items-center gap-2 ml-7">
+        <img className="w-[3rem]" src={truck} />
+        <span className="text-white text-[1.3rem] font-bold">HShift</span>
+      </div>
       {/* Mobile Menu Toggle Button */}
       <button
         onClick={toggleNavbar}
@@ -71,7 +74,7 @@ function Navbar() {
 
       {/* navlinks */}
       <div className="hidden md:flex mr-[2rem]">
-        <ul className="flex items-center text-white decoration-2">
+        <ul className="flex items-center text-white decoration-2 gap-4">
           <li className="mx-2 cursor-pointer text-link  hover:underline active:underline active:text-primary decoration-secondary">
             <ScrollLink activeClass=" underline" smooth spy to="home">
               Home
@@ -86,6 +89,9 @@ function Navbar() {
             <ScrollLink activeClass=" underline" smooth spy to="services">
               Services
             </ScrollLink>
+          </li>
+          <li className="rounded-full text-primary px-5 py-1 bg-white">
+            <Link to="/signin">Login</Link>
           </li>
         </ul>
       </div>

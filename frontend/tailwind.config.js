@@ -11,6 +11,7 @@ export default {
         primary: "#E4503A",
         secondary: "#C9CAC866",
         sky: "#557cf2",
+        redish: "#FEF8F8",
       },
     },
   },

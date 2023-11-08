@@ -5,8 +5,8 @@ const Schema = mongoose.Schema;
 const inventorySchema = new Schema({
   companyId: {
     type: Schema.Types.ObjectId,
-    // ref: 'User',
-    ref: "Company",
+    ref: "User",
+    // ref: "C",
     required: true,
   },
   inventory: [
