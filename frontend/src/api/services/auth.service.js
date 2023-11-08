@@ -1,8 +1,13 @@
 import httpCommon from "src/api/http-common.js";
 import { handleResponse } from "src/utils/helpers/actions.js";
 
-const register = (formdata) => {
-  return handleResponse(httpCommon.post("/auth/register", formdata));
+const registerUser = (formdata) => {
+  return handleResponse(httpCommon.post("/auth/register/user", formdata));
+};
+const registerCompany = (formdata) => {
+  console.log("compnay");
+  console.log(formdata);
+  return handleResponse(httpCommon.post("/auth/register/company", formdata));
 };
 
 const login = (email, password) => {
@@ -15,7 +20,8 @@ const login = (email, password) => {
 };
 
 const AuthService = {
-  register,
+  registerUser,
+  registerCompany,
   login,
 };
 

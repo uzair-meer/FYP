@@ -44,8 +44,7 @@ export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
               <table>
                 <thead>
                   <tr>
-                    {/* <td></td> */}
-                    <th>name</th>
+                    <th>Item</th>
                     <th>Qty</th>
                     <th>Price</th>
                   </tr>
@@ -54,7 +53,6 @@ export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
                   {items.map((item, index) => (
                     <tr key={index}>
                       <td>{item.name}</td>
-                      {/* <td>{item.variance}</td> */}
                       <td>{item.quantity}</td>
                       <td>{item.price}</td>
                     </tr>

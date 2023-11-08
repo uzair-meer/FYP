@@ -1,12 +1,6 @@
 import express from "express";
-import {
-  createService,
-  getAllServices,
-} from "../controllers/admin.controller.js";
+import { getAllCompanies } from "../controllers/admin.controller.js";
 
 const router = express.Router();
-
-router.post("admin/create/service", createService);
-router.get("get/services", getAllServices);
-
+router.get("/get/companies", getAllCompanies);
 export { router as adminRoutes };

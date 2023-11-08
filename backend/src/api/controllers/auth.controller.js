@@ -1,14 +1,16 @@
+import Company from "../models/Company.model.js";
 import User from "../models/User.model.js";
 import createError from "../utils/createError.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 
-export const register = async (req, res, next) => {
+export const registerUser = async (req, res, next) => {
   try {
     const hash = bcrypt.hashSync(req.body.password, 5);
     const newUser = new User({
       ...req.body,
       password: hash,
+      role: "user",
     });
 
     await newUser.save();
@@ -56,4 +58,23 @@ export const logout = async (req, res) => {
     })
     .status(200)
     .send("User has been logged out.");
+};
+
+export const registerCompany = async (req, res, next) => {
+  console.log(req.body);
+  //#FIXME role must be in [client, company, employee, admin]
+  try {
+    const hashedPassword = bcrypt.hashSync(req.body.password, 5);
+    const new_company = new User({
+      ...req.body,
+      role: "company",
+      status: "pending",
+      password: hashedPassword,
+    });
+
+    await new_company.save();
+    res.status(201).send({ message: "Compnay has been created." });
+  } catch (err) {
+    next(err);
+  }
 };

@@ -18,7 +18,10 @@ import DriverPanel from "../pages/driver";
 import DriverDashboard from "../pages/driver/dashboard/DriverDashboard";
 import DriverHistory from "../pages/driver/history/DriverHistory";
 import { useAuth } from "../context/AuthContext";
-import UserProtectedRoute, { AdminProtectedRoute } from "./ProtectedRoutes";
+import UserProtectedRoute, {
+  AdminProtectedRoute,
+  CompanyProtectedRoute,
+} from "./ProtectedRoutes";
 import SignIn from "../pages/signin/SignIn";
 import Services from "../pages/services/Services";
 
@@ -42,7 +45,10 @@ const AppRouter = () => {
         <Route path="profile" element={<Profile />} />
       </Route>
 
-      <Route path="company" element={<Company />}>
+      <Route
+        path="company"
+        element={<CompanyProtectedRoute user={user} component={<Company />} />}
+      >
         {/* Define your nested routes here */}
         <Route index element={<Dashboard />} />
         <Route path="bookings" element={<CompanyHistory />} />
