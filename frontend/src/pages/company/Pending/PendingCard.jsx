@@ -1,22 +1,32 @@
-const PendingCard = ({item}) => {
+import AssignEmployeeModal from "src/pages/company/components/AssignEmployeeModal.jsx";
+import {useState} from "react";
+
+const PendingCard = ({item,employees}) => {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+
+    console.log(employees);
+
     const url = "http://localhost:5000/company/booking-request";
     const handleAction = async (status) => {
-        try {
-            const response = await fetch(url, {
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                method: "POST",
-                body: JSON.stringify({
-                    bookingId: item._id,
-                    status
-                }),
-            });
-            const data = await response.json();
-            console.log(data);
-        } catch (error) {
-            console.log(error);
-        }
+        setIsModalOpen(true);
+
+        // try {
+        //     const response = await fetch(url, {
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //         },
+        //         method: "POST",
+        //         body: JSON.stringify({
+        //             bookingId: item._id,
+        //             status
+        //         }),
+        //     });
+        //     const data = await response.json();
+        //     console.log(data);
+        //     setIsModalOpen(true);
+        // } catch (error) {
+        //     console.log(error);
+        // }
     }
 
 
@@ -54,6 +64,7 @@ const PendingCard = ({item}) => {
                     </button>
                 </div>
             </div>
+            <AssignEmployeeModal employees={employees} showAddEmployeeModal={isModalOpen} setShowAddEmployeeModal={setIsModalOpen} bookingId={item._id}/>
         </div>
     );
 };

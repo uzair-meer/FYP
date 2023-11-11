@@ -6,6 +6,17 @@ const Pending = () => {
     const {user} = useAuth();
     let url = "http://localhost:5000/company/booking-requests?";
     const [pending, setPending] = useState([]);
+    const [employees,setEmployees] = useState([]);
+    const getFreeEmployees = async () => {
+        const resp = await fetch(`http://localhost:5000/company/get/free/employees?companyId=${user._id}`);
+        const data = await resp.json();
+        setEmployees(data.employees);
+    }
+
+    useEffect(() => {
+        getFreeEmployees();
+    }, []);
+
     let fetchPending = async () => {
         try {
             const response = await fetch(url + "companyId=" + user._id);
@@ -27,7 +38,7 @@ const Pending = () => {
             <div className="pending-cards flex flex-wrap gap-2 p-5">
                 {
                     pending.map((item) =>
-                        <PendingCard item={item}/>
+                        <PendingCard item={item} employees={employees}/>
                     )
                 }
             </div>
