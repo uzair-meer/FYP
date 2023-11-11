@@ -18,6 +18,10 @@ const employeeSchema = new Schema({
     type: String,
     required: true,
   },
+  status: {
+    type: String,
+    default: "free",
+  },
 });
 
 const Employee = mongoose.model("Employee", employeeSchema);

@@ -10,7 +10,7 @@ function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
     email: "",
     password: "",
     phone: "",
-    title: "electrician",
+    title: "",
   });
 
   const handleChange = (e) => {
@@ -24,20 +24,23 @@ function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // const employeeData = {
-    //   ...formData,
-    //   companyId, // Include the companyId in the data being sent
-    // };
+    const employeeData = {
+      ...formData,
+      companyId, // Include the companyId in the data being sent
+    };
 
     try {
       console.log(formData.title);
-      const response = await fetch("http://localhost:5000/company/employee", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
-      });
+      const response = await fetch(
+        "http://localhost:5000/company/add/employee",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(employeeData),
+        }
+      );
 
       const result = await response.json();
 
@@ -113,8 +116,9 @@ function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
                   <div>
                     <label className="inline-block my-2 font-bold">Role</label>
                     <select
-                      //   value={formData.role}
-                      //   onChange={handleChange}
+                      name="title"
+                      value={formData.title}
+                      onChange={handleChange}
                       className="block w-full bg-transparent p-2 border border-gray rounded-md"
                     >
                       <option value="electrician">Electrician</option>
