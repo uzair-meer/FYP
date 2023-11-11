@@ -5,21 +5,23 @@ import {
   getClientReviews,
   postProduct,
   putClientReviews,
-  putEmployee,
   getBookingRequests,
   postBookingRequest,
   getInprogressBooking,
   getLatestInventory,
-  addEmployee,
+  postEmployee,
   getCompanyEmployees,
+  getCompanyFreeEmployees,
+  assignEmployeesToBooking,
 } from "../controllers/company.controller.js";
 
 const router = express.Router();
 
-router.post(`/employee`, addEmployee);
+router.post(`/add/employee`, postEmployee);
 router.delete(`/employee`, deleteEmployee);
-router.put(`/employee`, putEmployee);
 router.get(`/get/employees`, getCompanyEmployees);
+router.get(`/get/free/employees`, getCompanyFreeEmployees);
+router.get(`assign/employees`, assignEmployeesToBooking);
 
 router.get(`/client-reviews`, getClientReviews);
 router.put(`/client-reviews`, putClientReviews);

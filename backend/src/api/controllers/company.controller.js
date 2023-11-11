@@ -5,73 +5,38 @@ import Inventory from "../models/Inventory.model.js";
 import Review from "../models/Review.model.js";
 import User from "../models/User.model.js";
 
-// export async function postEmployee(req, res, next) {
-//   const { name, email, password, phone, companyId, title } = req.body;
-
-//   try {
-//     //create user as an employee
-
-//     const user = new User({
-//       name,
-//       email,
-//       password,
-//       role: "employee",
-//       phone,
-//     });
-
-//     const userResult = await user.save();
-//     const userId = userResult._doc._id;
-
-//     const employee = new Employee({
-//       _id: userId,
-//       companyId,
-//       title,
-//     });
-
-//     const employeeResult = await employee.save();
-
-//     res.status(200).json({
-//       status: "ok",
-//       data: { user: userResult._doc, employee: employeeResult._doc },
-//     });
-//   } catch (error) {
-//     next(error);
-//   }
-// }
-export const addEmployee = async (req, res, next) => {
-  const { name, email, password, phone, role, title } = req.body;
-  const companyId = req.user?._id; // Assuming the company's ID is stored in req.user
-
+export async function postEmployee(req, res, next) {
+  const { name, email, password, phone, title, companyId } = req.body;
+  console.log(companyId);
   try {
-    // First, create the User document for the employee
-    const newEmployee = new User({
+    //create user as an employee
+    const user = new User({
       name,
       email,
-      password, // Ensure this password is hashed
+      password,
+      role: "employee",
       phone,
-      role: "employee", // or use the role from req.body if it's always 'employee'
     });
 
-    const savedEmployee = await newEmployee.save();
+    const userResult = await user.save();
+    const userId = userResult._doc._id;
 
-    // Then, create an Employee document linking the User to the company
-    const employeeLink = new Employee({
-      employeeId: savedEmployee._id,
-      companyId: new mongoose.Types.ObjectId(companyId), // Corrected usage of ObjectId
-      title, // Use the title from req.body
+    const employee = new Employee({
+      employeeId: userId,
+      companyId,
+      title,
     });
 
-    await employeeLink.save();
+    const employeeResult = await employee.save();
 
-    res.status(201).json({
-      message: "Employee added successfully",
-      employee: savedEmployee,
-      employeeLink,
+    res.status(200).json({
+      status: "ok",
+      data: { employee },
     });
   } catch (error) {
     next(error);
   }
-};
+}
 
 export async function deleteEmployee(req, res, next) {
   let { employeeId } = req.body;
@@ -613,34 +578,112 @@ export async function getLatestInventory(req, res, next) {
     next(error); // Pass errors to the error-handling middleware
   }
 }
+
 export const getCompanyEmployees = async (req, res, next) => {
-  const { companyId } = req.query;
-
-  // Check if companyId is provided and is a valid ObjectId
-  if (!companyId || !mongoose.Types.ObjectId.isValid(companyId)) {
-    return res.status(400).json({ message: "A valid company ID is required" });
-  }
-
+  const companyId = req.query.companyId;
   try {
-    const companyIdObj = new mongoose.Types.ObjectId(companyId);
-
-    // Find all employees associated with the company
-    const employees = await Employee.find({ companyId: companyIdObj }).populate(
-      "employeeId",
-      "name email phone role"
+    // Find all employee documents linked to this company
+    const employeeDocs = await Employee.find({ companyId }).populate(
+      "employeeId"
     );
 
-    if (employees.length === 0) {
+    if (employeeDocs.length === 0) {
       return res
         .status(404)
         .json({ message: "No employees found for this company" });
     }
 
+    // Format the response to include employee details
+    const employees = employeeDocs.map((doc) => {
+      const user = doc.employeeId;
+      return {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        title: doc.title,
+      };
+    });
+
     res.status(200).json({
       message: "Employees fetched successfully",
-      employees,
+      employees: employees,
     });
   } catch (error) {
     next(error);
   }
 };
+
+export const getCompanyFreeEmployees = async (req, res, next) => {
+  const companyId = req.query.companyId;
+  try {
+    // Find all employee documents linked to this company
+    const employeeDocs = await Employee.find({
+      companyId,
+      status: "free",
+    }).populate("employeeId");
+
+    if (employeeDocs.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No employees found for this company" });
+    }
+
+    // Format the response to include employee details
+    const employees = employeeDocs.map((doc) => {
+      const user = doc.employeeId;
+      return {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        title: doc.title,
+      };
+    });
+
+    res.status(200).json({
+      message: "Employees fetched successfully",
+      employees: employees,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export async function assignEmployeesToBooking(req, res, next) {
+  const { bookingId, employeeIds } = req.body;
+
+  try {
+    // Validate employee IDs and ensure they are 'free'
+    const employees = await Employee.find({
+      _id: { $in: employeeIds },
+      status: "free",
+    });
+
+    if (employees.length !== employeeIds.length) {
+      return res
+        .status(400)
+        .json({ message: "Some employees are not available" });
+    }
+
+    // Update employees status to 'reserved'
+    await Employee.updateMany(
+      { _id: { $in: employeeIds } },
+      { status: "reserved" }
+    );
+
+    // Update the booking with the selected employees
+    const updatedBooking = await Booking.findByIdAndUpdate(
+      bookingId,
+      { $push: { employees: { $each: employeeIds } } },
+      { new: true }
+    );
+
+    res.json({
+      message: "Employees assigned successfully",
+      booking: updatedBooking,
+    });
+  } catch (error) {
+    next(error);
+  }
+}
