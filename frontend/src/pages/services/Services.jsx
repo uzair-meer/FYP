@@ -1,42 +1,30 @@
 import React, { useState, useRef, useMemo } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaCirclePlus } from "react-icons/fa6";
-import { useLocation } from "react-router";
-import ConfirmQuoteModal from "src/components/ConfirmQuoteModal";
-import {
-  useLoadScript,
-  GoogleMap,
-  MarkerF,
-  Autocomplete,
-  DirectionsRenderer,
-} from "@react-google-maps/api";
+import { useServices } from "src/context/UserContext.jsx";
 
-const data = {
-  destination: "Johar Town, Lhr - People's Colony, Fsd",
-  services: ["Resdential Moving", "Packing"],
-  items: [
-    { name: "sofa", variance: "5 seater", price: 10, quantity: 5 },
-    { name: "bed", variance: "king size", price: 100, quantity: 2 },
-  ],
-};
+const stuff = [
+  { name: "Bed" },
+  { name: "Sofa" },
+  { name: "Fridge" },
+  { name: "Oven" },
+];
 
 function Services() {
-  const stuff = [
-    { name: "Bed", price: 20 },
-    { name: "Sofa", price: 10 },
-    { name: "Fridge", price: 5 },
-    { name: "Oven", price: 30 },
-  ];
+  const {
+    pickupLocation,
+    setPickupLocation,
+    destinationLocation,
+    setDestinationLocation,
+    selectedServices,
+    setSelectedServices,
+    items,
+    setItems,
+    // Add any additional state or methods you need from the context
+  } = useServices();
 
-  const [pickupLocation, setPickupLocation] = useState("");
-  const [destinationLocation, setDestinationLocation] = useState("");
-  const [selectedServices, setSelectedServices] = useState([]);
-  const [items, setItems] = useState([]);
   const [stuffItem, setStuffItem] = useState("");
   const [quantity, setQuantity] = useState("");
-  const [showConfirmQuoteModal, setShowConfirmQuoteModal] = useState(false);
-
-  const google = window.google;
 
   const handleServiceChange = (service) => {
     setSelectedServices((prevServices) =>
@@ -48,26 +36,27 @@ function Services() {
 
   const handleAddItem = () => {
     const stuffItemObj = stuff.find((item) => item.name === stuffItem);
-    setItems((prevItems) => [
-      ...prevItems,
-      { ...stuffItemObj, quantity: +quantity },
-    ]);
+    const itemQuantity = parseInt(quantity, 10);
 
-    // if (selectedItem && quantity) {
-
-    // }
+    if (stuffItemObj && itemQuantity > 0) {
+      setItems((prevItems) => [
+        ...prevItems,
+        { ...stuffItemObj, quantity: itemQuantity },
+      ]);
+      setStuffItem("");
+      setQuantity("");
+    } else {
+      // You can set an error message or alert the user here if needed
+      alert("Please enter a valid quantity for the item.");
+    }
   };
 
   const handleRemoveItem = (index) => {
-    const updatedItems = [...items];
-    updatedItems.splice(index, 1);
-    setItems(updatedItems);
+    setItems(items.filter((_, itemIndex) => itemIndex !== index));
   };
   const getQuote = () => {
-    setShowConfirmQuoteModal(true);
-    // navigate('get/quote', { state: { pickupLocation, destinationLocation } })
+    console.log("hi");
   };
-
   return (
     <>
       <div className="flex ">
@@ -183,17 +172,6 @@ function Services() {
             </button> */}
           </div>
 
-          <div className="mt-6">
-            <h2 className="my-2 font-medium">Details {"(Optional)"}</h2>
-            <form>
-              <textarea
-                className="border rounded-md p-2 "
-                placeholder="Extra details..."
-                rows={5}
-                cols={50}
-              />
-            </form>
-          </div>
           {/* <button
             className="bg-primary m-auto p-3 my-10 rounded-md text-white"
             onClick={getQuote}
@@ -268,15 +246,6 @@ function Services() {
           </button>
         </div>
       </div>
-      <ConfirmQuoteModal
-        data={{
-          destination: destinationLocation,
-          services: selectedServices,
-          items: items,
-        }}
-        showModal={showConfirmQuoteModal}
-        setToggle={setShowConfirmQuoteModal}
-      />
     </>
   );
 }

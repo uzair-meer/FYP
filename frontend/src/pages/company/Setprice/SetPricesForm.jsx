@@ -1,117 +1,137 @@
 import React, { useState } from "react";
+import { useAuth } from "src/context/AuthContext.jsx";
 
 const SetPricesForm = () => {
-  const [items, setItems] = useState([]);
-  const [item, setItem] = useState({
-    id: null,
+  const { user } = useAuth();
+  console.log(user?.name);
+  const [inventory, setInventory] = useState([]); // Array to hold multiple items
+  const [newItem, setNewItem] = useState({
     name: "",
     movingPrice: "",
-    shiftingPrice: "",
-    loadingPrice: "",
+    packingPrice: "",
+    unpackingPrice: "",
   });
 
-  const addItem = (e) => {
-    e.preventDefault(); // Prevent form submission
-    if (item.name.trim() !== "") {
-      setItems([...items, { ...item, id: Date.now() }]);
-      setItem({
-        ...item,
-        name: "",
-        movingPrice: 0,
-        shiftingPrice: 0,
-        loadingPrice: 0,
-      });
-    }
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    setNewItem({ ...newItem, [name]: value });
   };
 
-  const editItem = (itemId) => {
-    const selectedItem = items.find((item) => item.id === itemId);
-    setItem(selectedItem);
-  };
-
-  const updateItem = (e) => {
-    e.preventDefault(); // Prevent form submission
-    setItems((prevItems) =>
-      prevItems.map((prevItem) =>
-        prevItem.id === item.id ? { ...item } : prevItem
-      )
-    );
-    setItem({
-      id: null,
+  const handleAddItem = () => {
+    // Add the newItem to the inventory array and reset newItem for the next entry
+    setInventory([...inventory, newItem]);
+    setNewItem({
       name: "",
       movingPrice: "",
-      shiftingPrice: "",
-      loadingPrice: "",
+      packingPrice: "",
+      unpackingPrice: "",
     });
   };
 
-  const deleteItem = (itemId) => {
-    setItems((prevItems) => prevItems.filter((item) => item.id !== itemId));
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (inventory.length === 0) {
+      alert(
+        "Please add at least one newitem to the inventory before submitting."
+      );
+      return;
+    }
+
+    const url = "http://localhost:5000/company/product"; // Replace with the actual URL to your API
+
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          companyId, // Use the companyId from context
+          inventory, // Send the entire array of inventory items
+        }),
+      });
+
+      const result = await response.json();
+      if (response.ok) {
+        alert("Inventory items added successfully!");
+        setInventory([]); // Clear the inventory array after successful submission
+      } else {
+        alert(`Failed to add inventory items: ${result.message}`);
+      }
+    } catch (error) {
+      alert(`Network error: ${error.message}`);
+    }
   };
 
   return (
     <div>
-      <form onSubmit={item.id ? updateItem : addItem} className="p-10">
+      <h2>Set Inventory Prices</h2>
+      <form onSubmit={handleSubmit} className="p-10">
         <div className="flex gap-5">
           <div className="flex items-center">
             <label>Name:</label>
+
             <input
               type="text"
-              value={item.name}
-              onChange={(e) => setItem({ ...item, name: e.target.value })}
+              name="name"
+              value={newItem.name}
+              onChange={handleInputChange}
             />
           </div>
           <div className="flex items-center">
             <label>Moving Price:</label>
             <input
               type="number"
-              value={item.movingPrice}
-              onChange={(e) =>
-                setItem({ ...item, movingPrice: Number(e.target.value) })
-              }
+              name="movingPrice"
+              value={newItem.movingPrice}
+              onChange={handleInputChange}
             />
           </div>
           <div className="flex items-center">
-            <label>Shifting Price:</label>
+            <label>Packing Price:</label>
             <input
               type="number"
-              value={item.shiftingPrice}
-              onChange={(e) =>
-                setItem({ ...item, shiftingPrice: Number(e.target.value) })
-              }
+              name="packingPrice"
+              value={newItem.packingPrice}
+              onChange={handleInputChange}
             />
           </div>
           <div className="flex items-center">
-            <label>Loading Price:</label>
+            <label> Unpacking Price:</label>
             <input
               type="number"
+              name="unpackingPrice"
               className="border-2"
-              value={item.loadingPrice}
-              onChange={(e) =>
-                setItem({ ...item, loadingPrice: Number(e.target.value) })
-              }
+              value={newItem.unpackingPrice}
+              onChange={handleInputChange}
             />
           </div>
         </div>
-        <button type="submit">{item.id ? "Update Item" : "Add Item"}</button>
+        <button
+          type="button"
+          onClick={handleAddItem}
+          className="bg-primary p-1 rounded-sm"
+        >
+          Add to Inventory
+        </button>
+        <div>
+          <button
+            onClick={handleSubmit}
+            className="bg-[green] p-1 rounded-sm mt-1"
+          >
+            Submit Inventory
+          </button>
+        </div>
       </form>
-      <h2>Item List</h2>
-      {items.length > 0 ? (
-        <ul>
-          {items.map((item) => (
-            <li key={item.id}>
-              <span>{item.name}</span>
-              <span>Moving Price: ${item.movingPrice}</span>
-              <span>Shifting Price: ${item.shiftingPrice}</span>
-              <span>Loading Price: ${item.loadingPrice}</span>
-              <button onClick={() => editItem(item.id)}>Edit Price</button>
-              <button onClick={() => deleteItem(item.id)}>Delete Item</button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>No items in the list.</p>
-      )}
+      <h3>Current Inventory</h3>
+      <ul>
+        {inventory.map((newitem, index) => (
+          <li key={index}>
+            {newitem.name} - Moving: ${newitem.movingPrice}, Packing: $
+            {newitem.packingPrice}, Unpacking: ${newitem.unpackingPrice}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };

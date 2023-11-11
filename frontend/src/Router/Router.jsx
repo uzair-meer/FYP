@@ -24,6 +24,9 @@ import UserProtectedRoute, {
 } from "./ProtectedRoutes";
 import SignIn from "../pages/signin/SignIn";
 import Services from "../pages/services/Services";
+import FetchPricesAndBookForm from "../pages/services/BookingForm";
+import FetchEmployees from "../pages/company/components/FetchEmployees";
+// import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
   const { user } = useAuth();
@@ -33,6 +36,7 @@ const AppRouter = () => {
       <Route path="/" element={<Home />} />
       <Route path="signup" element={<SignUp />} />
       <Route path="signin" element={<SignIn />} />
+      <Route path="fetch" element={<FetchPricesAndBookForm />} />
 
       {/* // user routes */}
 
@@ -54,6 +58,7 @@ const AppRouter = () => {
         <Route path="bookings" element={<CompanyHistory />} />
         <Route path="employes" element={<Employes />} />
         <Route path="setprice" element={<SetPricesForm />} />
+        <Route path="get-employees" element={<FetchEmployees />} />
       </Route>
 
       <Route
