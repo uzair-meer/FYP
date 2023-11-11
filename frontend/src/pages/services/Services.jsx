@@ -2,6 +2,7 @@ import React, { useState, useRef, useMemo } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FaCirclePlus } from "react-icons/fa6";
 import { useServices } from "src/context/UserContext.jsx";
+import {useNavigate} from "react-router-dom";
 
 const stuff = [
   { name: "Bed" },
@@ -25,6 +26,7 @@ function Services() {
 
   const [stuffItem, setStuffItem] = useState("");
   const [quantity, setQuantity] = useState("");
+  const navigate = useNavigate();
 
   const handleServiceChange = (service) => {
     setSelectedServices((prevServices) =>
@@ -37,6 +39,7 @@ function Services() {
   const handleAddItem = () => {
     const stuffItemObj = stuff.find((item) => item.name === stuffItem);
     const itemQuantity = parseInt(quantity, 10);
+
 
     if (stuffItemObj && itemQuantity > 0) {
       setItems((prevItems) => [
@@ -55,7 +58,7 @@ function Services() {
     setItems(items.filter((_, itemIndex) => itemIndex !== index));
   };
   const getQuote = () => {
-    console.log("hi");
+    navigate("rates");
   };
   return (
     <>

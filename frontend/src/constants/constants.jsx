@@ -26,6 +26,23 @@ export const EMPLOYES_TABLE_COLUMNS = [
   },
 ];
 
+export const COMPANY_RATES_COLUMNS = [
+  {
+    Header: "Name",
+    accessor: "companyName",
+  },
+  {
+    Header: "Services",
+    accessor: "services",
+  },
+  {
+    Header: "Cost",
+    accessor: "price",
+  },
+];
+
+
+
 export const TOTAL_COMPANIES_COLS = [
   {
     Header: "Company Name",
@@ -287,6 +304,13 @@ export const COMPANY_PORTAL_ROUTES = [
   //     <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
   //   ),
   // },
+  {
+    name:"Pending",
+    route:"/company/pending",
+    icon: (
+        <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+    ),
+  },
   {
     name: "SetPrices",
     route: "/company/setprice",
