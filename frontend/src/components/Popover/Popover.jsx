@@ -2,7 +2,7 @@ import { Popover } from "@headlessui/react";
 import { useAuth } from "src/context/AuthContext.jsx";
 
 export function MyPopover({ children }) {
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   return (
     <Popover className="relative">
@@ -17,10 +17,7 @@ export function MyPopover({ children }) {
                 alt=""
               />
             </div>
-            <div className="flex flex-col">
-              <div>user</div>
-              <div>email</div>
-            </div>
+            <div className="flex flex-col">{user?.email}</div>
           </div>
           <hr />
           <div className="flex flex-col items-start">

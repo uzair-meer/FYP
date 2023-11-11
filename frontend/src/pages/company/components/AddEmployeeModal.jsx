@@ -1,13 +1,16 @@
 "use client";
 import { useState } from "react";
+import { useAuth } from "src/context/AuthContext";
 
 function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
+  const { user } = useAuth();
+  const companyId = user?._id;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
-    role: "electrician",
+    title: "electrician",
   });
 
   const handleChange = (e) => {
@@ -18,9 +21,37 @@ function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData); // You can handle form submission here.
+
+    // const employeeData = {
+    //   ...formData,
+    //   companyId, // Include the companyId in the data being sent
+    // };
+
+    try {
+      console.log(formData.title);
+      const response = await fetch("http://localhost:5000/company/employee", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const result = await response.json();
+
+      if (response.ok) {
+        console.log("Employee added:", result);
+        // Handle successful response
+      } else {
+        console.error("Failed to add employee:", result);
+        // Handle errors or unsuccessful response
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+      // Handle network errors
+    }
   };
 
   return (
@@ -94,7 +125,7 @@ function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
                   </div>
                   <button
                     type="submit"
-                    onClick={() => setShowAddEmployeeModal(false)}
+                    onClick={handleSubmit}
                     className="block border-0 w-full p-2 text-title-xsml bg-primary text-white mt-4 font-semibold rounded-md"
                   >
                     Add

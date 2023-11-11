@@ -5,38 +5,73 @@ import Inventory from "../models/Inventory.model.js";
 import Review from "../models/Review.model.js";
 import User from "../models/User.model.js";
 
-export async function postEmployee(req, res, next) {
-  const { name, email, password, phone, companyId, title } = req.body;
+// export async function postEmployee(req, res, next) {
+//   const { name, email, password, phone, companyId, title } = req.body;
+
+//   try {
+//     //create user as an employee
+
+//     const user = new User({
+//       name,
+//       email,
+//       password,
+//       role: "employee",
+//       phone,
+//     });
+
+//     const userResult = await user.save();
+//     const userId = userResult._doc._id;
+
+//     const employee = new Employee({
+//       _id: userId,
+//       companyId,
+//       title,
+//     });
+
+//     const employeeResult = await employee.save();
+
+//     res.status(200).json({
+//       status: "ok",
+//       data: { user: userResult._doc, employee: employeeResult._doc },
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// }
+export const addEmployee = async (req, res, next) => {
+  const { name, email, password, phone, role, title } = req.body;
+  const companyId = req.user?._id; // Assuming the company's ID is stored in req.user
 
   try {
-    //create user as an employee
-    const user = new User({
+    // First, create the User document for the employee
+    const newEmployee = new User({
       name,
       email,
-      password,
-      role: "employee",
+      password, // Ensure this password is hashed
       phone,
+      role: "employee", // or use the role from req.body if it's always 'employee'
     });
 
-    const userResult = await user.save();
-    const userId = userResult._doc._id;
+    const savedEmployee = await newEmployee.save();
 
-    const employee = new Employee({
-      _id: userId,
-      companyId,
-      title,
+    // Then, create an Employee document linking the User to the company
+    const employeeLink = new Employee({
+      employeeId: savedEmployee._id,
+      companyId: new mongoose.Types.ObjectId(companyId), // Corrected usage of ObjectId
+      title, // Use the title from req.body
     });
 
-    const employeeResult = await employee.save();
+    await employeeLink.save();
 
-    res.status(200).json({
-      status: "ok",
-      data: { user: userResult._doc, employee: employeeResult._doc },
+    res.status(201).json({
+      message: "Employee added successfully",
+      employee: savedEmployee,
+      employeeLink,
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
 export async function deleteEmployee(req, res, next) {
   let { employeeId } = req.body;
@@ -555,3 +590,57 @@ export async function getInprogressBooking(req, res, next) {
     next(error);
   }
 }
+
+export async function getLatestInventory(req, res, next) {
+  const companyId = new mongoose.Types.ObjectId(req.query.companyId);
+
+  try {
+    const latestInventory = await Inventory.findOne({ companyId })
+      .sort({ createdAt: -1 }) // Sort by createdAt in descending order
+      .exec(); // Execute the query
+
+    if (!latestInventory) {
+      return res
+        .status(404)
+        .json({ status: "error", message: "Inventory not found" });
+    }
+
+    res.status(200).json({
+      status: "ok",
+      data: latestInventory.inventory, // Just send the inventory array
+    });
+  } catch (error) {
+    next(error); // Pass errors to the error-handling middleware
+  }
+}
+export const getCompanyEmployees = async (req, res, next) => {
+  const { companyId } = req.query;
+
+  // Check if companyId is provided and is a valid ObjectId
+  if (!companyId || !mongoose.Types.ObjectId.isValid(companyId)) {
+    return res.status(400).json({ message: "A valid company ID is required" });
+  }
+
+  try {
+    const companyIdObj = new mongoose.Types.ObjectId(companyId);
+
+    // Find all employees associated with the company
+    const employees = await Employee.find({ companyId: companyIdObj }).populate(
+      "employeeId",
+      "name email phone role"
+    );
+
+    if (employees.length === 0) {
+      return res
+        .status(404)
+        .json({ message: "No employees found for this company" });
+    }
+
+    res.status(200).json({
+      message: "Employees fetched successfully",
+      employees,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

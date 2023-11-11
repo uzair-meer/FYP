@@ -6,7 +6,6 @@ const inventorySchema = new Schema({
   companyId: {
     type: Schema.Types.ObjectId,
     ref: "User",
-    // ref: "C",
     required: true,
   },
   inventory: [

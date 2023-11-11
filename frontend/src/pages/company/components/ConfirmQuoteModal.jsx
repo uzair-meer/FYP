@@ -3,11 +3,6 @@ import React, { useEffect, useState } from "react";
 export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
   const { destination, services, items } = data;
 
-  let price = 0;
-  items.forEach((item, index) => {
-    price += item.price * item.quantity;
-  });
-
   // const [itemsPrice, setItemsPrice] = useState(price)
 
   return (
@@ -19,8 +14,6 @@ export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
             <div className="rounded-lg shadow-lg flex flex-col bg-white outline-none focus:outline-none w-2/3 p-8">
               <div className="flex justify-between items-baseline">
                 <div>
-                  <h1 className="text-headings">Company name</h1>
-                  <p className="mt-2">Shahroz & co</p>
                   <h1 className="mt-4 text-headings">Destination</h1>
                   <p className="mt-2">{destination}</p>
                   <h1 className="mt-4 text-headings">Services</h1>
@@ -43,29 +36,12 @@ export default function ConfirmQuoteModal({ showModal, setToggle, data }) {
                 </div>
               </div>
               <hr className="my-6" />
-              <table>
-                <thead>
-                  <tr>
-                    <td></td>
-                    <th>Variance</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item, index) => (
-                    <tr key={index}>
-                      <td>{item.name}</td>
-                      <td>{item.variance}</td>
-                      <td>{item.quantity}</td>
-                      <td>{item.price}</td>
-                      <td>delete</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
+
               <div className="mt-16 flex w-full justify-end">
-                <button className="mr-3 rounded-2xl text-white bg-slate-300 px-4 py-1">
+                <button
+                  className="mr-3 rounded-2xl text-white bg-slate-300 px-4 py-1"
+                  onClick={() => setToggle(false)}
+                >
                   Cancel
                 </button>
                 <button className="rounded-2xl text-white bg-primary px-4 py-1">

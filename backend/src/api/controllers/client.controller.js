@@ -4,6 +4,7 @@ import Inventory from "../models/Inventory.model.js";
 import Review from "../models/Review.model.js";
 
 export async function postBooking(req, res, next) {
+  console.log(req.body);
   const {
     clientId,
     companyId,

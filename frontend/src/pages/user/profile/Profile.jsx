@@ -1,4 +1,7 @@
+import { useAuth } from "src/context/AuthContext";
+
 const Profile = () => {
+  const { user } = useAuth();
   return (
     <div className="overflow-hidden bg-white m-5 shadow sm:rounded-lg text-textColor">
       <div className="my-2 flex justify-between items-center">
@@ -8,12 +11,7 @@ const Profile = () => {
           className="h-24 w-24 rounded-full bg-primary cursor-pointer object-cover mx-4"
         />
         <div className="mr-10 flex items-center">
-          <p>john doe </p>
-          {/* <div
-            className={`w-2 h-2 ml-3 shadow-lg rounded-full ${
-              user.status === "ACTIVE" ? "bg-green-500" : "bg-red-500"
-            }`}
-          ></div> */}
+          <p>{user?.name}</p>
         </div>
       </div>
       <div className="px-4 py-6 sm:px-6">
@@ -29,14 +27,14 @@ const Profile = () => {
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-900">Full name</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              john doe
+              {user?.name}
             </dd>
           </div>
 
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-900">Email address</dt>
             <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-              johndoe@gmail.com
+              {user?.email}
             </dd>
           </div>
         </dl>
