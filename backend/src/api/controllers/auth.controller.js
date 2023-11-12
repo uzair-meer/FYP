@@ -1,4 +1,3 @@
-import Company from "../models/Company.model.js";
 import User from "../models/User.model.js";
 import createError from "../utils/createError.js";
 import bcrypt from "bcrypt";
@@ -10,7 +9,7 @@ export const registerUser = async (req, res, next) => {
     const newUser = new User({
       ...req.body,
       password: hash,
-      role: "user",
+      role: "client",
     });
 
     await newUser.save();

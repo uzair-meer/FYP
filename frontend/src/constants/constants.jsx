@@ -41,8 +41,6 @@ export const COMPANY_RATES_COLUMNS = [
   },
 ];
 
-
-
 export const TOTAL_COMPANIES_COLS = [
   {
     Header: "Company Name",
@@ -305,10 +303,10 @@ export const COMPANY_PORTAL_ROUTES = [
   //   ),
   // },
   {
-    name:"RequestedBookings",
-    route:"/company/requested",
+    name: "RequestedBookings",
+    route: "/company/requested",
     icon: (
-        <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+      <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
     ),
   },
   {
