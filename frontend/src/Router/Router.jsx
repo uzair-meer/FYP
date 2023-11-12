@@ -27,7 +27,7 @@ import Services from "../pages/services/Services";
 import FetchPricesAndBookForm from "../pages/services/BookingForm";
 import FetchEmployees from "../pages/company/components/FetchEmployees";
 import CompanyRates from "src/pages/user/CompanyRates/CompanyRates.jsx";
-import Pending from "src/pages/company/Pending/Pending.jsx";
+import RequestedBookings from "../pages/company/Pending/RequestedBookings";
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -60,7 +60,7 @@ const AppRouter = () => {
                 <Route index element={<Dashboard/>}/>
                 <Route path="bookings" element={<CompanyHistory/>}/>
                 <Route path="employes" element={<Employes/>}/>
-                <Route path="pending" element={<Pending/>}/>
+                <Route path="requested" element={<RequestedBookings/>}/>
                 <Route path="setprice" element={<SetPricesForm/>}/>
                 <Route path="get-employees" element={<FetchEmployees/>}/>
             </Route>

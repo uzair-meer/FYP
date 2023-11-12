@@ -5,6 +5,7 @@ import Inventory from "../models/Inventory.model.js";
 import Review from "../models/Review.model.js";
 import User from "../models/User.model.js";
 
+//Add Employee
 export async function postEmployee(req, res, next) {
   const { name, email, password, phone, title, companyId } = req.body;
   console.log(companyId);
@@ -22,7 +23,7 @@ export async function postEmployee(req, res, next) {
     const userId = userResult._doc._id;
 
     const employee = new Employee({
-      employeeId: userId,
+      _id: userId,
       companyId,
       title,
     });
@@ -31,7 +32,7 @@ export async function postEmployee(req, res, next) {
 
     res.status(200).json({
       status: "ok",
-      data: { employee },
+      data: { ...userResult._doc, ...employeeResult._doc },
     });
   } catch (error) {
     next(error);
@@ -617,43 +618,62 @@ export const getCompanyEmployees = async (req, res, next) => {
 export const getCompanyFreeEmployees = async (req, res, next) => {
   const companyId = req.query.companyId;
   try {
-    // Find all employee documents linked to this company
-    const employeeDocs = await Employee.find({
-      companyId,
-      status: "free",
-    }).populate("employeeId");
+    const results = await Employee.find({ companyId, status: "free" }).populate(
+      {
+        path: "_id",
+        select: "name", // Only fetch the name from the User collection
+        model: User,
+      }
+    );
 
-    if (employeeDocs.length === 0) {
+    if (results.length === 0) {
       return res
         .status(404)
         .json({ message: "No employees found for this company" });
     }
 
-    // Format the response to include employee details
-    const employees = employeeDocs.map((doc) => {
-      const user = doc.employeeId;
-      return {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        title: doc.title,
-      };
-    });
+    const transformedResults = results.map((result) => ({
+      _id: result._id._id,
+      name: result._id.name,
+      title: result.title,
+    }));
 
-    res.status(200).json({
-      message: "Employees fetched successfully",
-      employees: employees,
-    });
+    res.status(200).json(transformedResults);
   } catch (error) {
     next(error);
   }
 };
 
 export async function assignEmployeesToBooking(req, res, next) {
-  const { bookingId, employeeIds } = req.body;
+  //request status can be approved or declined
+  const { bookingId, requestStatus } = req.body;
+
+  //should be proper validation here
+  // if (requestStatus !== "declined" || requestStatus !== "approved") {
+  //   //! FIXME throw error here
+  //   res.status(500).json({message: "enter complete and accurate fields"})
+  //   return
+  // }
 
   try {
+
+    if (requestStatus === "declined") {
+      const result = await Booking.findByIdAndUpdate(
+        bookingId,
+        {
+          $set: { status: "declined" },
+        },
+        { new: true }
+      );
+
+      return res
+        .status(200)
+        .json({ message: "request declined successfully", result });
+      // return;
+    }
+
+
+    const { employeeIds } = req.body;
     // Validate employee IDs and ensure they are 'free'
     const employees = await Employee.find({
       _id: { $in: employeeIds },
@@ -667,21 +687,24 @@ export async function assignEmployeesToBooking(req, res, next) {
     }
 
     // Update employees status to 'reserved'
-    await Employee.updateMany(
+    const employeeResults = await Employee.updateMany(
       { _id: { $in: employeeIds } },
       { status: "reserved" }
     );
 
     // Update the booking with the selected employees
-    const updatedBooking = await Booking.findByIdAndUpdate(
+    const bookingResults = await Booking.findByIdAndUpdate(
       bookingId,
-      { $push: { employees: { $each: employeeIds } } },
+      {
+        $push: { employees: { $each: employeeIds } },
+        $set: { status: "approved" },
+      },
       { new: true }
     );
 
     res.json({
       message: "Employees assigned successfully",
-      booking: updatedBooking,
+      data: { employeeResults, bookingResults },
     });
   } catch (error) {
     next(error);

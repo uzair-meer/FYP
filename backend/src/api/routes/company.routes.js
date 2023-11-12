@@ -21,7 +21,7 @@ router.post(`/add/employee`, postEmployee);
 router.delete(`/employee`, deleteEmployee);
 router.get(`/get/employees`, getCompanyEmployees);
 router.get(`/get/free/employees`, getCompanyFreeEmployees);
-router.get(`assign/employees`, assignEmployeesToBooking);
+router.post(`/assign/employees`, assignEmployeesToBooking); //FIXME: its name should handle client requests
 
 router.get(`/client-reviews`, getClientReviews);
 router.put(`/client-reviews`, putClientReviews);

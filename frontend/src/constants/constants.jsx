@@ -305,8 +305,8 @@ export const COMPANY_PORTAL_ROUTES = [
   //   ),
   // },
   {
-    name:"Pending",
-    route:"/company/pending",
+    name:"RequestedBookings",
+    route:"/company/requested",
     icon: (
         <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
     ),

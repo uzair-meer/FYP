@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 const Schema = mongoose.Schema;
 
 const employeeSchema = new Schema({
-  employeeId: {
-    //this is basically employeeId
+  _id: {
+    //this is employeeId which must be equal to user._id
     type: Schema.Types.ObjectId,
     ref: "User",
     required: true,

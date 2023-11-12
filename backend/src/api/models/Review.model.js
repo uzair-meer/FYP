@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
 
 const Schema = mongoose.Schema;
-const hello = "hello";
 const reviewSchema = new Schema({
   _id: {
     //because one booking can have only 1 review so it must be unique
