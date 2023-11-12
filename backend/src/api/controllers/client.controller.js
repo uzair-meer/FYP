@@ -278,3 +278,139 @@ export async function getAllBookings(req, res, next) {
     next(error);
   }
 }
+
+export async function getCurrentBooking(req, res, next) {
+  const clientId = new mongoose.Types.ObjectId(req.query.clientId);
+
+  try {
+    const result = await Booking.aggregate([
+      {
+        $match: { clientId: clientId },
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "companyId",
+          foreignField: "_id",
+          as: "company",
+        },
+      },
+      {
+        $lookup: {
+          from: "inventories",
+          localField: "inventoryId",
+          foreignField: "_id",
+          as: "inventory",
+        },
+      },
+      {
+        $unwind: "$company",
+      },
+      {
+        $unwind: "$inventory",
+      },
+      {
+        $lookup: {
+          from: "users",
+          localField: "employees",
+          foreignField: "_id",
+          as: "employeesData",
+        },
+      },
+      {
+        $lookup: {
+          from: "employees", // Assuming 'employees' is the collection name
+          localField: "employees",
+          foreignField: "_id",
+          as: "employeeTitles",
+        },
+      },
+      {
+        $project: {
+          companyId: "$company._id",
+          companyName: "$company.name",
+          pickupAddress: "$pickUpAddress",
+          destinationAddress: "$destinationAddress",
+          status: 1,
+          services: 1,
+          cart: {
+            $map: {
+              input: "$cart",
+              as: "cartItem",
+              in: {
+                name: "$$cartItem.name",
+                quantity: "$$cartItem.quantity",
+                movingPrice: {
+                  $arrayElemAt: [
+                    "$inventory.inventory.movingPrice",
+                    {
+                      $indexOfArray: [
+                        "$inventory.inventory.name",
+                        "$$cartItem.name",
+                      ],
+                    },
+                  ],
+                },
+                packingPrice: {
+                  $arrayElemAt: [
+                    "$inventory.inventory.packingPrice",
+                    {
+                      $indexOfArray: [
+                        "$inventory.inventory.name",
+                        "$$cartItem.name",
+                      ],
+                    },
+                  ],
+                },
+                unpackingPrice: {
+                  $arrayElemAt: [
+                    "$inventory.inventory.unpackingPrice",
+                    {
+                      $indexOfArray: [
+                        "$inventory.inventory.name",
+                        "$$cartItem.name",
+                      ],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          inventoryId: "$inventory._id",
+          employees: {
+            $map: {
+              input: "$employeesData",
+              as: "employee",
+              in: {
+                name: "$$employee.name",
+                phone: "$$employee.phone",
+                title: {
+                  $arrayElemAt: [
+                    "$employeeTitles.title",
+                    {
+                      $indexOfArray: ["$employeeTitles._id", "$$employee._id"],
+                    },
+                  ],
+                },
+              },
+            },
+          },
+          createdAt: 1,
+        },
+      },
+      {
+        $sort: { createdAt: -1 },
+      },
+      {
+        $limit: 1,
+      },
+    ]);
+
+    res.status(200).json({
+      status: "ok",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+}

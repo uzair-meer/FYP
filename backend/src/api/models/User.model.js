@@ -24,9 +24,6 @@ const userSchema = new Schema(
     role: {
       type: String,
     },
-    status: {
-      type: String,
-    },
     cnic: {
       type: String,
     },

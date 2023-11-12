@@ -5,6 +5,7 @@ import {
   postBooking,
   postReview,
   getAllBookings,
+  getCurrentBooking,
 } from "../controllers/client.controller.js";
 
 const router = express.Router();
@@ -13,6 +14,8 @@ router.get(`/select-company`, getCompanyWithPrices);
 router.post(`/review`, postReview);
 router.get(`/review`, getReview);
 router.get(`/bookings`, getAllBookings);
+router.get(`/current-booking`, getCurrentBooking);
+
 
 export { router as clientRoutes };
 
