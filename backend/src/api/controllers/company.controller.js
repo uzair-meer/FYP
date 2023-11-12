@@ -429,14 +429,14 @@ export async function getBookingRequests(req, res, next) {
 }
 
 export async function postBookingRequest(req, res, next) {
-  const { bookingId, status } = req.body;
+  const { bookingId, status, employees } = req.body;
 
   //FIXME: validation of bookingId and status must be accepted or decline => if declined do something like sending user a message or email of reason of declined
   //TODO: we also have to add employees ids to employee array
   try {
     const result = await Booking.findByIdAndUpdate(
       bookingId,
-      { status },
+      { status, employees },
       { returnOriginal: false } //? to get the updated result
     );
 
@@ -617,6 +617,7 @@ export const getCompanyEmployees = async (req, res, next) => {
 
 export const getCompanyFreeEmployees = async (req, res, next) => {
   const companyId = req.query.companyId;
+  console.log(companyId);
   try {
     const results = await Employee.find({ companyId, status: "free" }).populate(
       {
@@ -632,6 +633,7 @@ export const getCompanyFreeEmployees = async (req, res, next) => {
         .json({ message: "No employees found for this company" });
     }
 
+<<<<<<< Updated upstream
     const transformedResults = results.map((result) => ({
       _id: result._id._id,
       name: result._id.name,
@@ -639,6 +641,25 @@ export const getCompanyFreeEmployees = async (req, res, next) => {
     }));
 
     res.status(200).json(transformedResults);
+=======
+    // Format the response to include employee details
+    const employees = employeeDocs.map((doc) => {
+      const user = doc.employeeId;
+      console.log("into free", user?.Id);
+      return {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        title: doc.title,
+      };
+    });
+
+    res.status(200).json({
+      status: "ok",
+      data: employees,
+    });
+>>>>>>> Stashed changes
   } catch (error) {
     next(error);
   }

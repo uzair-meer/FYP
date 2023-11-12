@@ -17,7 +17,7 @@ const SignIn = () => {
 
   useEffect(() => {
     if (user?.role === "admin") navigate("/admin");
-    else if (user?.role === "user") navigate("/user");
+    else if (user?.role === "client") navigate("/user");
     else if (user?.role === "company") {
       if (user?.status !== "accepted") {
         alert("your request is not approved by admin yet");

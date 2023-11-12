@@ -1,6 +1,6 @@
 import { Navigate } from "react-router-dom";
 export default function UserProtectedRoute({ user, component }) {
-  if (user?.role !== "user") {
+  if (user?.role !== "client") {
     return <Navigate to="/signin" replace />;
   }
   return component;
