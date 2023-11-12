@@ -18,7 +18,7 @@ const FetchEmployees = () => {
 
       try {
         const response = await fetch(
-          `http://localhost:5000/company/get/employees?companyId=${companyId}`,
+          `http://localhost:5000/company/get/free/employees?companyId=${companyId}`,
           {
             method: "GET",
             headers: {
