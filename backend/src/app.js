@@ -1,3 +1,14 @@
+
+import bodyParser from "body-parser";
+import cors from "cors";
+import "dotenv/config";
+import express from "express";
+import { clientRoutes } from "./api/routes/client.routes.js";
+import { companyRoutes } from "./api/routes/company.routes.js";
+import { authRoutes } from "./api/routes/auth.routes.js";
+import "./api/utils/database.js"; //! connection with mongodb
+import { adminRoutes } from "./api/routes/admin.routes.js";
+import { driverRoutes } from "./api/routes/driver.routes.js";
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import 'dotenv/config'
@@ -32,10 +43,13 @@ app.use(
 app.use(bodyParser.json())
 
 // * Routes
-app.use('/client', clientRoutes)
-app.use('/company', companyRoutes)
-app.use('/auth', authRoutes)
-app.use('/admin', adminRoutes)
+
+app.use("/client", clientRoutes);
+app.use("/company", companyRoutes);
+app.use("/auth", authRoutes);
+app.use("/admin", adminRoutes);
+app.use("/driver", driverRoutes);
+
 
 //? Express Error Middleware
 // eslint-disable-next-line no-unused-vars

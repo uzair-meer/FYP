@@ -21,14 +21,15 @@ import { useAuth } from "../context/AuthContext";
 import UserProtectedRoute, {
   AdminProtectedRoute,
   CompanyProtectedRoute,
+  DriverProtectedRoute,
 } from "./ProtectedRoutes";
 import SignIn from "../pages/signin/SignIn";
 import Services from "../pages/services/Services";
-import FetchPricesAndBookForm from "../pages/services/BookingForm";
 import FetchEmployees from "../pages/company/components/FetchEmployees";
 import CompanyRates from "src/pages/user/CompanyRates/CompanyRates.jsx";
 import RequestedBookings from "../pages/company/Pending/RequestedBookings";
 import CurrentBooking from "../pages/user/currentBooking/CurrentBooking";
+import DriverCurrentBooking from "../pages/driver/currentBooking/DriverCurrentBooking";
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -75,9 +76,15 @@ const AppRouter = () => {
         <Route path="services" element={<Services />} />
       </Route>
 
-      <Route path="driver" element={<DriverPanel />}>
+      <Route
+        path="driver"
+        element={
+          <DriverProtectedRoute user={user} component={<DriverPanel />} />
+        }
+      >
         <Route index element={<DriverDashboard />} />
         <Route path="bookings" element={<DriverHistory />} />
+        <Route path="current-booking" element={<DriverCurrentBooking />} />
       </Route>
     </Routes>
   );

@@ -1,3 +1,5 @@
+
+
 import { useEffect } from 'react'
 import io from 'socket.io-client'
 
@@ -21,6 +23,7 @@ export default function DriverDashboard() {
 			(err) => console.error(err),
 			{ enableHighAccuracy: true }
 		)
+
 
 		const intervalId = setInterval(() => {
 			navigator.geolocation.getCurrentPosition(
