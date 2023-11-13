@@ -1,23 +1,24 @@
-import express from "express";
+import express from 'express'
 import {
-  getCompanyWithPrices,
-  getReview,
-  postBooking,
-  postReview,
-  getAllBookings,
-  getCurrentBooking,
-} from "../controllers/client.controller.js";
+	getAllBookings,
+	getCompanyWithPrices,
+	getCurrentBooking,
+	getInprogressBookings,
+	getReview,
+	postBooking,
+	postReview,
+} from '../controllers/client.controller.js'
 
-const router = express.Router();
-router.post(`/booking`, postBooking);
-router.get(`/select-company`, getCompanyWithPrices);
-router.post(`/review`, postReview);
-router.get(`/review`, getReview);
-router.get(`/bookings`, getAllBookings);
-router.get(`/current-booking`, getCurrentBooking);
+const router = express.Router()
+router.post(`/booking`, postBooking)
+router.get(`/select-company`, getCompanyWithPrices)
+router.post(`/review`, postReview)
+router.get(`/review`, getReview)
+router.get(`/bookings`, getAllBookings)
+router.get(`/current-booking`, getCurrentBooking)
+router.get(`/inprogress-bookings`, getInprogressBookings)
 
-
-export { router as clientRoutes };
+export { router as clientRoutes }
 
 //FIXME: add this middle ware in before getCompanyWithPrices
 // Middleware to check if either products or services are missing
