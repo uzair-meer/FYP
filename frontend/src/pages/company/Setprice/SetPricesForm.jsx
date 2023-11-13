@@ -3,7 +3,8 @@ import { useAuth } from "src/context/AuthContext.jsx";
 
 const SetPricesForm = () => {
   const { user } = useAuth();
-  console.log(user?.name);
+
+  const companyId = user?._id;
   const [inventory, setInventory] = useState([]); // Array to hold multiple items
   const [newItem, setNewItem] = useState({
     name: "",
@@ -11,7 +12,7 @@ const SetPricesForm = () => {
     packingPrice: "",
     unpackingPrice: "",
   });
-
+  console.log();
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setNewItem({ ...newItem, [name]: value });

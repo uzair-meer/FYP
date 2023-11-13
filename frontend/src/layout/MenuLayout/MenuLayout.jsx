@@ -59,7 +59,7 @@ export function MenuLayout({ menuItems }) {
         </div>
       </div>
       {/* Searchbar */}
-      <div className="w-[98%] h-screen flex flex-col justify-between  bg-white">
+      <div className="w-[98%] h-screen flex flex-col justify-between  bg-primary">
         <div className="header h-[12%] flex items-center justify-between p-4">
           <BiMenu
             className="text-2xl sm:hidden"
@@ -69,23 +69,6 @@ export function MenuLayout({ menuItems }) {
           {/* LINKS */}
           <div className="basis-[95%]">
             <ul className="w-full flex items-center justify-end gap-2 sm:gap-5">
-              <li>
-                <Link>
-                  <Tooltip content="notifications">
-                    <FaBell
-                      id="fa-bell"
-                      className="text-[1.4rem] text-primary  cursor-pointer mx-1"
-                    />
-                  </Tooltip>
-                </Link>
-              </li>
-              <li>
-                <Link>
-                  <Tooltip content="settings">
-                    <AiFillSetting className="text-[1.4rem] text-primary mx-1 cursor-pointer" />
-                  </Tooltip>
-                </Link>
-              </li>
               <li>
                 <Link>
                   <MyPopover>

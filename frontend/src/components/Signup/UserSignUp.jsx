@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import AuthService from "src/api/services/auth.service";
 
 const { registerUser } = AuthService;
@@ -11,6 +12,7 @@ const UserForm = () => {
     phone: "",
     cnic: "",
   });
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,6 +27,14 @@ const UserForm = () => {
     // You can now access the form data in the `formData` object
     console.log(formData);
     registerUser(formData);
+    setFormData({
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+      cnic: "",
+    });
+    navigate("/signin");
   };
 
   return (

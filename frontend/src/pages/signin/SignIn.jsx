@@ -19,10 +19,6 @@ const SignIn = () => {
     if (user?.role === "admin") navigate("/admin");
     else if (user?.role === "client") navigate("/user");
     else if (user?.role === "company") {
-      if (user?.status !== "accepted") {
-        alert("your request is not approved by admin yet");
-        return;
-      }
       navigate("/company");
     }
   }, [user]);

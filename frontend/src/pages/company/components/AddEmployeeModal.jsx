@@ -45,8 +45,15 @@ function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
       const result = await response.json();
 
       if (response.ok) {
-        console.log("Employee added:", result);
+        alert("Employee added:", result);
         // Handle successful response
+        setFormData({
+          name: "",
+          email: "",
+          password: "",
+          phone: "",
+          title: "",
+        });
       } else {
         console.error("Failed to add employee:", result);
         // Handle errors or unsuccessful response
@@ -121,6 +128,7 @@ function AddEmployeeModal({ showAddEmployeeModal, setShowAddEmployeeModal }) {
                       onChange={handleChange}
                       className="block w-full bg-transparent p-2 border border-gray rounded-md"
                     >
+                      <option value="select">Select role</option>
                       <option value="electrician">Electrician</option>
                       <option value="driver">Driver</option>
                       <option value="plumber">Plumber</option>

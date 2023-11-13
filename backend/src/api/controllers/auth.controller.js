@@ -62,12 +62,14 @@ export const logout = async (req, res) => {
 export const registerCompany = async (req, res, next) => {
   console.log(req.body);
   //#FIXME role must be in [client, company, employee, admin]
+
+  // #fix me date needs to eb sent t ot coapny colelction
   try {
     const hashedPassword = bcrypt.hashSync(req.body.password, 5);
     const new_company = new User({
       ...req.body,
       role: "company",
-      status: "pending",
+      status: "approved",
       password: hashedPassword,
     });
 
