@@ -15,7 +15,7 @@ export default function RequestedBookings() {
       const resp = await fetch(
         `http://localhost:5000/company/get/free/employees?companyId=${user._id}`
       );
-      const data = await resp.json();
+      const { data } = await resp.json();
       setEmployees(data);
     };
     getFreeEmployees();
@@ -41,9 +41,15 @@ export default function RequestedBookings() {
   return (
     <div>
       <div className="pending-cards flex flex-wrap gap-2 p-5">
-        {requestedBookings.map((booking) => (
-          <RequestedBookingCard key={booking._id} booking={booking} employees={employees} setRequestedBookings={setRequestedBookings} />
-        ))}
+        {requestedBookings &&
+          requestedBookings.map((booking) => (
+            <RequestedBookingCard
+              key={booking._id}
+              booking={booking}
+              employees={employees}
+              setRequestedBookings={setRequestedBookings}
+            />
+          ))}
       </div>
     </div>
   );

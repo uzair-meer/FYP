@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router";
 import AuthService from "src/api/services/auth.service";
 
 const { registerCompany } = AuthService;
@@ -10,7 +11,7 @@ function CompanyForm() {
     password: "",
     phone: "",
   });
-
+  const navigate = useNavigate();
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCompanyFormData({
@@ -24,6 +25,14 @@ function CompanyForm() {
     // You can now access the form data in the `companyFormData` object
     console.log(companyFormData);
     registerCompany(companyFormData);
+
+    setCompanyFormData({
+      name: "",
+      email: "",
+      password: "",
+      phone: "",
+    });
+    navigate("/signin");
   };
   return (
     <div>

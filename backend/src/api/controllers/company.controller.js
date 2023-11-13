@@ -617,7 +617,6 @@ export const getCompanyEmployees = async (req, res, next) => {
 
 export const getCompanyFreeEmployees = async (req, res, next) => {
   const companyId = req.query.companyId;
-  console.log(companyId);
   try {
     const results = await Employee.find({ companyId, status: "free" }).populate(
       {
@@ -626,11 +625,11 @@ export const getCompanyFreeEmployees = async (req, res, next) => {
         model: User,
       }
     );
-
     if (results.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No employees found for this company" });
+      return res.status(200).json({
+        message: "No employees found for this company",
+        data: results,
+      });
     }
 
     const transformedResults = results.map((result) => ({
@@ -639,7 +638,7 @@ export const getCompanyFreeEmployees = async (req, res, next) => {
       title: result.title,
     }));
 
-    res.status(200).json(transformedResults);
+    res.status(200).json({ status: "ok", data: transformedResults });
   } catch (error) {
     next(error);
   }

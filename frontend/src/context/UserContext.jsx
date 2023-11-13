@@ -11,6 +11,17 @@ export const ServicesProvider = ({ children }) => {
   const [selectedServices, setSelectedServices] = useState([]);
   const [items, setItems] = useState([]);
 
+  const [bookingData, setBookingData] = useState({
+    destinationAddress: "",
+    services: [],
+    status: "",
+    employees: [],
+  });
+
+  const updateBookingData = (newData) => {
+    setBookingData(newData);
+  };
+
   const value = {
     pickupLocation,
     setPickupLocation,
@@ -20,6 +31,8 @@ export const ServicesProvider = ({ children }) => {
     setSelectedServices,
     items,
     setItems,
+    bookingData,
+    updateBookingData,
   };
 
   return (

@@ -8,7 +8,7 @@ AssignEmployeeModal.propTypes = {
   setShowAddEmployeeModal: PropTypes.func, // Adjust as needed
   bookingId: PropTypes.string,
   employees: PropTypes.array,
-  setRequestedBookings: PropTypes.func
+  setRequestedBookings: PropTypes.func,
 };
 
 function AssignEmployeeModal({
@@ -16,7 +16,7 @@ function AssignEmployeeModal({
   setShowAddEmployeeModal,
   bookingId,
   employees,
-  setRequestedBookings
+  setRequestedBookings,
 }) {
   //   const { user } = useAuth();
   const [selectedEmployees, setSelectedEmployees] = useState([]);
@@ -28,6 +28,7 @@ function AssignEmployeeModal({
 
   const submitHandler = async (e) => {
     e.preventDefault();
+    //FIXME: must check if selectedEmployees are not empty
     try {
       const response = await fetch(
         "http://localhost:5000/company/assign/employees",

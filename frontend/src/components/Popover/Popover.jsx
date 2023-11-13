@@ -1,4 +1,5 @@
 import { Popover } from "@headlessui/react";
+import { Link } from "react-router-dom";
 import { useAuth } from "src/context/AuthContext.jsx";
 
 export function MyPopover({ children }) {
@@ -22,8 +23,15 @@ export function MyPopover({ children }) {
           <hr />
           <div className="flex flex-col items-start">
             <button className="text-black w-full p-2 hover:bg-primary hover:text-white">
-              My Account
+              <Link
+                to={
+                  user?.role === "client" ? "/user/profile" : "/company/profile"
+                }
+              >
+                My Account
+              </Link>
             </button>
+
             <button
               onClick={logout}
               className="text-black w-full p-2 hover:bg-primary hover:text-white rounded-b-[5px]"

@@ -7,6 +7,7 @@ import { MdPriceChange } from "react-icons/md";
 import { BiSolidUserCircle } from "react-icons/bi";
 import { BsBookmark } from "react-icons/bs";
 import { BsGear } from "react-icons/bs";
+import { TbBrandBooking } from "react-icons/tb";
 export const EMPLOYES_TABLE_COLUMNS = [
   {
     Header: "Name",
@@ -270,6 +271,11 @@ export const CLIENT_PORTAL_ROUTES = [
     name: "Profile",
     route: "/user/profile",
     icon: <BiSolidUserCircle className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  },
+  {
+    name: "CurrentBooking",
+    route: "/user/current-booking",
+    icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
   },
 ];
 

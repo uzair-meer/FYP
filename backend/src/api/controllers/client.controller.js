@@ -281,6 +281,7 @@ export async function getAllBookings(req, res, next) {
 
 export async function getCurrentBooking(req, res, next) {
   const clientId = new mongoose.Types.ObjectId(req.query.clientId);
+  console.log(clientId);
 
   try {
     const result = await Booking.aggregate([
