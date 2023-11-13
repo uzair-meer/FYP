@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "src/context/AuthContext";
 
-function DriverHistory() {
+function DriverCurrentBooking() {
   const { user } = useAuth();
   const [bookings, setBookings] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,7 +12,7 @@ function DriverHistory() {
       setIsLoading(true);
       setError(null);
       const driverId = user?._id; // Replace with the actual driver's ID
-      let url = "http://localhost:5000/driver/bookings?";
+      let url = "http://localhost:5000/driver/booking?";
       console.log(driverId);
 
       try {
@@ -40,7 +40,7 @@ function DriverHistory() {
   if (error) return <p>Error: {error}</p>;
   return (
     <div>
-      <h2>My Bookings</h2>
+      <h2>Current Booking</h2>
       {bookings.map((booking) => (
         <div key={booking._id} className="booking-card bg-primary p-1">
           <p>{booking.status}</p>
@@ -69,4 +69,4 @@ function DriverHistory() {
   );
 }
 
-export default DriverHistory;
+export default DriverCurrentBooking;

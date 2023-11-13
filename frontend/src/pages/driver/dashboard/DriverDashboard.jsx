@@ -1,7 +1,5 @@
-import React from "react";
-
 function DriverDashboard() {
-  return <div>Driver Dashboard</div>;
+  return <div>dashbord</div>;
 }
 
 export default DriverDashboard;

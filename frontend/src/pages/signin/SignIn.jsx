@@ -14,12 +14,14 @@ const SignIn = () => {
     e.preventDefault();
     login(e.target.email.value, e.target.password.value);
   };
-
   useEffect(() => {
     if (user?.role === "admin") navigate("/admin");
     else if (user?.role === "client") navigate("/user");
     else if (user?.role === "company") {
       navigate("/company");
+    } else if (user?.role === "employee") {
+      console.log(user);
+      navigate("/driver");
     }
   }, [user]);
 

@@ -4,19 +4,22 @@ import Employee from "../models/Employee.model.js";
 import Inventory from "../models/Inventory.model.js";
 import Review from "../models/Review.model.js";
 import User from "../models/User.model.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 //Add Employee
 export async function postEmployee(req, res, next) {
   const { name, email, password, phone, title, companyId } = req.body;
   console.log(companyId);
+
   try {
+    const hash = bcrypt.hashSync(req.body.password, 5);
+
     //create user as an employee
     const user = new User({
-      name,
-      email,
-      password,
+      ...req.body,
+      password: hash,
       role: "employee",
-      phone,
     });
 
     const userResult = await user.save();

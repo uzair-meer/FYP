@@ -18,3 +18,9 @@ export function CompanyProtectedRoute({ user, component }) {
   }
   return component;
 }
+export function DriverProtectedRoute({ user, component }) {
+  if (user?.role !== "employee") {
+    return <Navigate to="/signin" replace />;
+  }
+  return component;
+}
