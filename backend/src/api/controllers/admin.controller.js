@@ -1,23 +1,77 @@
-import User from "../models/User.model.js";
+import Company from '../models/Company.model.js'
+import User from '../models/User.model.js'
 
-export const getAllCompanies = async (req, res, next) => {
-  try {
-    // Query the database to find all companies with status "pending"
-    const pendingCompanies = await User.find({
-      role: "company",
-      status: "pending",
-    });
+export async function getCompanyRequests(req, res, next) {
+	try {
+		const result = await Company.aggregate([
+			{ $match: { status: 'requested' } },
+			{
+				$lookup: {
+					from: 'users',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'userData',
+				},
+			},
+			{
+				$project: {
+					status: 1, // Include Company fields
+					createdAt: 1,
+					name: { $arrayElemAt: ['$userData.name', 0] }, // Project User fields to top level
+					email: { $arrayElemAt: ['$userData.email', 0] },
+					phone: { $arrayElemAt: ['$userData.phone', 0] },
+					cnic: { $arrayElemAt: ['$userData.cnic', 0] },
+				},
+			},
+		])
 
-    // Render the admin dashboard with the list of pending companies
-    res.status(200).json({
-      status: "ok",
-      data: pendingCompanies,
-    });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Internal Server Error");
-  }
-};
+		res.status(200).json({
+			status: 'ok',
+			data: result, //_doc contains that data freshly entered in db
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function putCompanyRequest(req, res, next) {
+	//FIXME: must check status only be approved or declined | validation
+	const { companyId, status } = req.body
+
+	try {
+		const result = await Company.findOneAndUpdate(
+			{ _id: companyId },
+			{ $set: { status } },
+			{ new: true }
+		)
+
+		res.status(200).json({
+			status: 'ok',
+			data: result, //_doc contains that data freshly entered in db
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+// export const getAllCompanies = async (req, res, next) => {
+//   try {
+//     // Query the database to find all companies with status "pending"
+//     const pendingCompanies = await User.find({
+//       role: "company",
+//       status: "pending",
+//     });
+
+//     // Render the admin dashboard with the list of pending companies
+//     res.status(200).json({
+//       status: "ok",
+//       data: pendingCompanies,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//     res.status(500).send("Internal Server Error");
+//   }
+// };
 
 // export const createService = async (req, res) => {
 //   try {

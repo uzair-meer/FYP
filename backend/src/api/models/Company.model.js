@@ -9,13 +9,16 @@ const companySchema = new Schema({
 		ref: 'User', // Reference to the User model
 		required: true,
 	},
+	status: {
+		// can be approved or declined or banned
+		type: String,
+		default: 'requested'
+	},
 	title: {
 		type: String,
-		required: true,
 	},
 	about: {
 		type: String,
-		required: true,
 	},
 	createdAt: {
 		type: Date,

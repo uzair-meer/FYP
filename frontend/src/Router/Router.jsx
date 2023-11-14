@@ -32,6 +32,8 @@ import RequestedBookings from "../pages/company/Pending/RequestedBookings";
 import InprogressBookings from "../pages/user/inprogressBookings/InprogressBookings";
 import DriverCurrentBooking from "../pages/driver/currentBooking/DriverCurrentBooking";
 import BookingDetail from "../pages/user/inprogressBookings/BookingDetail";
+import CompaniesRequestCard from "../pages/admin/companies-requests/CompaniesRequestCard";
+import CompaniesRequests from "../pages/admin/companies-requests/CompaniesRequests";
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -76,8 +78,10 @@ const AppRouter = () => {
         path="admin"
         element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
       >
+        
         <Route index element={<AdminDashboard />} />
         <Route path="companies" element={<Companies />} />
+        <Route path="companies-requests" element={<CompaniesRequests />} />
         <Route path="services" element={<Services />} />
       </Route>
 
