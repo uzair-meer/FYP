@@ -28,8 +28,10 @@ import Services from "../pages/services/Services";
 import FetchEmployees from "../pages/company/components/FetchEmployees";
 import CompanyRates from "src/pages/user/CompanyRates/CompanyRates.jsx";
 import RequestedBookings from "../pages/company/Pending/RequestedBookings";
-import CurrentBooking from "../pages/user/currentBooking/CurrentBooking";
+// import CurrentBooking from "../pages/user/currentBooking/CurrentBooking";
+import InprogressBookings from "../pages/user/inprogressBookings/InprogressBookings";
 import DriverCurrentBooking from "../pages/driver/currentBooking/DriverCurrentBooking";
+import BookingDetail from "../pages/user/inprogressBookings/BookingDetail";
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -51,7 +53,10 @@ const AppRouter = () => {
         <Route path="bookings" element={<UserHistory />} />
         <Route path="profile" element={<Profile />} />
         <Route path="rates" element={<CompanyRates />} />
-        <Route path="current-booking" element={<CurrentBooking />} />
+        {/* <Route path="current-booking" element={<CurrentBooking />} /> */}
+        <Route path="inprogress-bookings" element={<InprogressBookings />} />
+        {/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
+        <Route path="inprogress-bookings/details" element={<BookingDetail />} />
       </Route>
 
       <Route
