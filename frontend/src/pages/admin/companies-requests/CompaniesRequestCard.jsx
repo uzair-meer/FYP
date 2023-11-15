@@ -58,8 +58,8 @@ export default function CompaniesRequestCard({
 					<p className="">{company.phone}</p>
 				</div>
 				<div className="flex w-full justify-between">
-					<p className="font-bold">Cnic</p>
-					<p className="">{company.cnic}</p>
+					<p className="font-bold">NTN number</p>
+					<p className="">{company.ntn}</p>
 				</div>
 				<div className="flex w-full justify-between">
 					<p className="font-bold">Current status</p>

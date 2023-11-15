@@ -17,10 +17,10 @@ export async function getCompanyRequests(req, res, next) {
 				$project: {
 					status: 1, // Include Company fields
 					createdAt: 1,
+					ntn: 1,
 					name: { $arrayElemAt: ['$userData.name', 0] }, // Project User fields to top level
 					email: { $arrayElemAt: ['$userData.email', 0] },
 					phone: { $arrayElemAt: ['$userData.phone', 0] },
-					cnic: { $arrayElemAt: ['$userData.cnic', 0] },
 				},
 			},
 		])

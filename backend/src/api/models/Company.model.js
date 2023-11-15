@@ -12,7 +12,11 @@ const companySchema = new Schema({
 	status: {
 		// can be approved or declined or banned
 		type: String,
-		default: 'requested'
+		default: 'requested',
+	},
+	ntn: {
+		type: String,
+		require: true,
 	},
 	title: {
 		type: String,

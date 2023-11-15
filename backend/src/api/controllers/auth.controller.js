@@ -9,7 +9,9 @@ export const registerUser = async (req, res, next) => {
 	try {
 		//FIXME: use hash passwords
 		// const hash = bcrypt.hashSync(req.body.password, 5);
-		const { name, email, password, phone, cnic, role } = req.body
+		const { name, email, password, phone, role } = req.body
+
+		let cnic = role !== "company" ? req.body.cnic : undefined
 
 		const user = new User({
 			name,
@@ -27,6 +29,7 @@ export const registerUser = async (req, res, next) => {
 		if (role === 'company') {
 			const company = new Company({
 				_id,
+				ntn: req.body.ntn
 			}) // we can get addionatl info from front end and add it here status will be requested by default
 			await company.save()
 		}
