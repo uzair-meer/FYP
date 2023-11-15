@@ -57,7 +57,7 @@ const RateCard = ({ company }) => {
   };
 
   return (
-    <div>
+    <div key={companyId}>
       <div className="flex flex-col justify-center items-center bg-secondary w-[20rem] p-5 rounded-[5px]">
         <h2 className="font-bold my-2">{companyName}</h2>
         <div className="flex flex-col w-full items-center">

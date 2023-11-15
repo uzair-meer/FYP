@@ -11,7 +11,7 @@ const CompanyRates = () => {
 
     const fetchPrices = async (itemsArray) => {
         const itemsQuery = itemsArray.map(item => item.name.toLowerCase()).join(",");
-        console.log(itemsQuery);
+        // console.log(itemsQuery);
         setIsLoading(true);
         try {
             const response = await fetch(
@@ -23,6 +23,7 @@ const CompanyRates = () => {
                 throw new Error("Something went wrong");
             }
             const {data} = await response.json();
+            // console.log(data)
             setCompanyPrices(data);
         } finally {
             setIsLoading(false);
@@ -40,7 +41,7 @@ const CompanyRates = () => {
         <div className="flex flex-wrap gap-5 p-5">
             {
                 companyPrices.map(company =>
-                    <RateCard company={company}/>
+                    <RateCard key={company.companyId} company={company}/>
                 )
             }
         </div>
