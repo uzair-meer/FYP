@@ -13,6 +13,7 @@ import {
   getCompanyEmployees,
   getCompanyFreeEmployees,
   assignEmployeesToBooking,
+  getCompletedBookings,
 } from "../controllers/company.controller.js";
 
 const router = express.Router();
@@ -33,5 +34,7 @@ router.get(`/inventory`, getLatestInventory);
 router.get(`/booking-requests`, getBookingRequests);
 router.post(`/booking-request`, postBookingRequest);
 router.get(`/current-bookings`, getInprogressBooking);
+router.get(`/completed-bookings`, getCompletedBookings);
+
 
 export { router as companyRoutes };

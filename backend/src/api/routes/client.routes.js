@@ -2,6 +2,7 @@ import express from 'express'
 import {
 	getAllBookings,
 	getCompanyWithPrices,
+	getCompletedBookings,
 	getCurrentBooking,
 	getInprogressBookings,
 	getReview,
@@ -17,6 +18,7 @@ router.get(`/review`, getReview)
 router.get(`/bookings`, getAllBookings)
 router.get(`/current-booking`, getCurrentBooking)
 router.get(`/inprogress-bookings`, getInprogressBookings)
+router.get(`/completed-bookings`, getCompletedBookings)
 
 export { router as clientRoutes }
 
