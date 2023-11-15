@@ -1,6 +1,14 @@
-import express from "express";
-import { getAllCompanies } from "../controllers/admin.controller.js";
+import express from 'express'
 
-const router = express.Router();
-router.get("/get/companies", getAllCompanies);
-export { router as adminRoutes };
+import {
+	getCompanyRequests,
+	putCompanyRequest,
+} from '../controllers/admin.controller.js'
+
+const router = express.Router()
+
+// router.get("/get/companies", getAllCompanies);
+router.get('/companies-requests', getCompanyRequests)
+router.put('/companies-requests', putCompanyRequest)
+
+export { router as adminRoutes }

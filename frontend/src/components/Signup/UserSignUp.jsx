@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router";
 import AuthService from "src/api/services/auth.service";
 
@@ -11,6 +11,7 @@ const UserForm = () => {
     password: "",
     phone: "",
     cnic: "",
+    role: "client"
   });
   const navigate = useNavigate();
 
@@ -33,6 +34,7 @@ const UserForm = () => {
       password: "",
       phone: "",
       cnic: "",
+      role: "client"
     });
     navigate("/signin");
   };
