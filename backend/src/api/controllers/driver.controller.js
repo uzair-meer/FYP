@@ -25,7 +25,7 @@ export async function getEmployeeBookings(req, res, next) {
   }
 }
 export async function getLatestEmployeeBooking(req, res, next) {
-  const employeeId = req.query.driverId; // Or use authentication to get this ID
+  const employeeId = req.query.employeeId; // Or use authentication to get this ID
 
   try {
     // Ensure employeeId is valid

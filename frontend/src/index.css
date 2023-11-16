@@ -1,3 +1,26 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+	font-family: 'Montserrat', sans-serif;
+}
+
+input,
+select {
+	background-color: #fcfcfc;
+}
+
+input {
+	padding: 0.25rem;
+	padding-left: 0.5rem;
+	padding-right: 0.5rem;
+}
+
+select {
+  height: 2.1rem;
+}
+
+.equal-cols th, .equal-cols td {
+	width: calc(100% / var(--num-cols));
+}
