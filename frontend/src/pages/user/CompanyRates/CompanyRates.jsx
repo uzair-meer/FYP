@@ -1,51 +1,84 @@
-import Table from "src/components/Table/Table.jsx";
-import {COMPANY_RATES_COLUMNS} from "src/constants/constants.jsx";
-import {useServices} from "src/context/UserContext.jsx";
-import {useEffect, useState} from "react";
-import RateCard from "src/pages/user/CompanyRates/RateCard.jsx";
+import { useEffect, useState } from 'react'
+import Table from 'src/components/Table/Table.jsx'
+import { COMPANY_RATES_COLUMNS } from 'src/constants/constants.jsx'
+import { useServices } from 'src/context/UserContext.jsx'
+import ConfirmBooking from '../components/ConfirmBooking'
 
-const CompanyRates = () => {
-    const {items, setCompanies} = useServices();
-    const [companyPrices, setCompanyPrices] = useState([]);
-    const [isLoading, setIsLoading] = useState(false);
+export default function CompanyRates() {
+	const { items, setCompanies, selectedServices } = useServices()
+	const [companiesData, setCompaniesData] = useState([])
+	const [isLoading, setIsLoading] = useState(false)
 
-    const fetchPrices = async (itemsArray) => {
-        const itemsQuery = itemsArray.map(item => item.name.toLowerCase()).join(",");
-        // console.log(itemsQuery);
-        setIsLoading(true);
-        try {
-            const response = await fetch(
-                `http://localhost:5000/client/select-company?inventoryItems=${encodeURIComponent(
-                    itemsQuery
-                )}`
-            );
-            if (!response.ok) {
-                throw new Error("Something went wrong");
-            }
-            const {data} = await response.json();
-            // console.log(data)
-            setCompanyPrices(data);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+	useEffect(() => {
+		const fetchPrices = async () => {
+			const itemsQuery = items.map((item) => item.name.toLowerCase()).join(',')
 
-    useEffect(() => {
-        if (items.length) {
-            fetchPrices(items);
-        }
-    }, [items]);
+			setIsLoading(true)
+			try {
+				const response = await fetch(
+					`http://localhost:5000/client/select-company?inventoryItems=${encodeURIComponent(
+						itemsQuery
+					)}`
+				)
 
+				if (!response.ok) {
+					throw new Error('Something went wrong')
+				}
+				const { data } = await response.json()
 
-    return (
-        <div className="flex flex-wrap gap-5 p-5">
-            {
-                companyPrices.map(company =>
-                    <RateCard key={company.companyId} company={company}/>
-                )
-            }
-        </div>
-    );
-};
+				const transformedData = data.map((company, index) => {
+					let grandTotal = 0
 
-export default CompanyRates;
+					company.inventory.forEach((item) => {
+						const matchingItem = items.find(
+							(i) => i.name.toLowerCase() === item.name
+						)
+
+						let subTotal = 0
+						if (matchingItem) {
+							subTotal = selectedServices.includes('Packing')
+								? subTotal + matchingItem.quantity * item.packingPrice
+								: subTotal
+							subTotal = selectedServices.includes('Unpacking')
+								? subTotal + matchingItem.quantity * item.unpackingPrice
+								: subTotal
+							subTotal = selectedServices.includes('Shifting')
+								? subTotal + matchingItem.quantity * item.movingPrice
+								: subTotal
+
+							grandTotal += subTotal
+						}
+					})
+
+					return {
+						sr: index + 1,
+						companyName: company.companyName,
+						services: selectedServices.join(', '),
+						grandTotal: grandTotal,
+						data: company,
+					}
+				})
+
+				setCompaniesData(transformedData)
+			} finally {
+				setIsLoading(false)
+			}
+		}
+
+		if (items.length > 0) {
+			fetchPrices(items)
+		}
+	}, [items, selectedServices])
+
+	return (
+		<div className="mx-4">
+			<Table
+				columns={['Sr. ', 'Company name', 'Services', 'Cost (in Rs)']}
+				components={[{ Component: ConfirmBooking, props: {} }]}
+				enableRowToggle={true}
+				data={companiesData}
+				idKey={"companyId"}
+			/>
+		</div>
+	)
+}
