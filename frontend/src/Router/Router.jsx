@@ -60,7 +60,7 @@ const AppRouter = () => {
 				<Route path="inprogress-bookings" element={<InprogressBookings />} />
 				{/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
 				<Route path="inprogress-bookings/details" element={<BookingDetail />} />
-				<Route path="completed-bookings" element={<CompletedBookings />} />
+				<Route path="bookings/completed" element={<CompletedBookings/>} />
 			</Route>
 
 			<Route
