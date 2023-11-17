@@ -2,7 +2,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import SetPricesForm from 'src/pages/company/Setprice/SetPricesForm'
 import { Dashboard } from 'src/pages/company/dashbord/Dashboard'
-import Employes from 'src/pages/company/employes/Employes'
+// import Employes from 'src/pages/company/employes/Employes'
 import CompanyHistory from 'src/pages/company/history/CompanyHistory'
 import Home from 'src/pages/home'
 import CompanyRates from 'src/pages/user/CompanyRates/CompanyRates.jsx'
@@ -13,7 +13,6 @@ import Companies from '../pages/admin/companies/Companies'
 import { AdminDashboard } from '../pages/admin/dashboard/AdminDashboard'
 import Company from '../pages/company'
 import RequestedBookings from '../pages/company/Pending/RequestedBookings'
-import FetchEmployees from '../pages/company/components/FetchEmployees'
 import DriverPanel from '../pages/driver'
 import DriverDashboard from '../pages/driver/dashboard/DriverDashboard'
 import DriverHistory from '../pages/driver/history/DriverHistory'
@@ -35,6 +34,7 @@ import BookingDetail from '../pages/user/inprogressBookings/BookingDetail'
 import InprogressBookings from '../pages/user/inprogressBookings/InprogressBookings'
 import CompletedBookings from '../pages/user/completedBookings/CompletedBookings'
 import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
+import Employees from '../pages/company/employees/Employees'
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -70,10 +70,10 @@ const AppRouter = () => {
 				{/* Define your nested routes here */}
 				<Route index element={<Dashboard />} />
 				<Route path="bookings" element={<CompanyHistory />} />
-				<Route path="employes" element={<Employes />} />
+				{/* <Route path="employes" element={<Employes />} /> */}
+				<Route path="employees" element={<Employees/>} />
 				<Route path="requested" element={<RequestedBookings />} />
 				<Route path="setprice" element={<SetPricesForm />} />
-				<Route path="get-employees" element={<FetchEmployees />} />
 				<Route path="completed-bookings" element={<CompanyCompletedBookings />} />
 			</Route>
 

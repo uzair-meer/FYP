@@ -24,6 +24,10 @@ const companySchema = new Schema({
 	about: {
 		type: String,
 	},
+	isDeleted: {
+		type: Boolean,
+		default: false,
+	},
 	createdAt: {
 		type: Date,
 		default: Date.now,

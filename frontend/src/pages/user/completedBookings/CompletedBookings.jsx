@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Table from 'src/components/Table/Table.jsx'
-import ConfirmBooking from '../components/ConfirmBooking'
 import { useAuth } from 'src/context/AuthContext.jsx'
 import AddReviewClient from '../components/AddReviewClient'
 

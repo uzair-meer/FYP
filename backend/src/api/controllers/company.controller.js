@@ -9,7 +9,7 @@ import User from '../models/User.model.js'
 
 //Add Employee
 export async function postEmployee(req, res, next) {
-	const { name, email, password, phone, title, companyId } = req.body
+	const { name, email, password, phone, cnic, title, companyId } = req.body
 	console.log(companyId)
 
 	try {
@@ -43,17 +43,27 @@ export async function postEmployee(req, res, next) {
 }
 
 export async function deleteEmployee(req, res, next) {
-	let { employeeId } = req.body
+	const { employeeId } = req.body
 
-	employeeId = new mongoose.Types.ObjectId(employeeId)
+	const employeeIdObj = new mongoose.Types.ObjectId(employeeId)
 
 	try {
-		const employeeResult = await Employee.findByIdAndRemove(employeeId)
-		const userResult = await User.findByIdAndRemove(employeeId)
+		const employeeResult = await Employee.findByIdAndUpdate(
+			employeeIdObj,
+			{
+				isDeleted: true,
+			},
+			{ new: true }
+		)
+		const userResult = await User.findByIdAndUpdate(
+			employeeIdObj,
+			{ isDeleted: true },
+			{ new: true }
+		)
 
 		res.status(200).json({
 			status: 'ok',
-			data: { user: userResult, employee: employeeResult },
+			data: { _id: userResult._doc._id },
 		})
 	} catch (error) {
 		next(error)
@@ -61,22 +71,72 @@ export async function deleteEmployee(req, res, next) {
 }
 
 export async function putEmployee(req, res, next) {
-	const { employeeId, name, title } = req.body
+	const { employeeId, name, email, password, phone, cnic, title } = req.body
 
 	const employeeIdObj = new mongoose.Types.ObjectId(employeeId)
 
 	try {
-		const employeeResult = await Employee.findByIdAndUpdate(employeeIdObj, {
-			title,
-		})
-		const userResult = await User.findByIdAndUpdate(employeeIdObj, { name })
-
-		console.log(employeeResult)
-		console.log(userResult)
+		const employeeResult = await Employee.findByIdAndUpdate(
+			employeeIdObj,
+			{
+				title,
+			},
+			{ new: true }
+		)
+		const userResult = await User.findByIdAndUpdate(
+			employeeIdObj,
+			{ name, email, password, phone, cnic },
+			{ new: true }
+		)
 
 		res.status(200).json({
 			status: 'ok',
-			data: { user: userResult, employee: employeeResult },
+			data: { ...userResult._doc, ...employeeResult._doc },
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export const getCompanyEmployees = async (req, res, next) => {
+	const companyId = req.query.companyId
+	try {
+		const employee = await Employee.aggregate([
+			{ $match: { companyId: new mongoose.Types.ObjectId(companyId), isDeleted: false } },
+			{
+				$lookup: {
+					from: 'users',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'userInfo',
+				},
+			},
+			{ $unwind: '$userInfo' },
+			{
+				$project: {
+					_id: 1,
+					name: '$userInfo.name',
+					email: '$userInfo.email',
+					phone: '$userInfo.phone',
+					cnic: '$userInfo.cnic',
+					title: 1,
+					status: 1,
+					companyId: 1,
+				},
+			},
+		])
+
+		if (employee.length === 0) {
+			return res.status(200).json({
+				status: 'noData',
+				data: [],
+				message: 'No employees found for this company',
+			})
+		}
+
+		res.status(200).json({
+			status: 'ok',
+			data: employee,
 		})
 	} catch (error) {
 		next(error)
@@ -588,45 +648,11 @@ export async function getLatestInventory(req, res, next) {
 	}
 }
 
-export const getCompanyEmployees = async (req, res, next) => {
-	const companyId = req.query.companyId
-	try {
-		// Find all employee documents linked to this company
-		const employeeDocs = await Employee.find({ companyId }).populate(
-			'employeeId'
-		)
-
-		if (employeeDocs.length === 0) {
-			return res
-				.status(404)
-				.json({ message: 'No employees found for this company' })
-		}
-
-		// Format the response to include employee details
-		const employees = employeeDocs.map((doc) => {
-			const user = doc.employeeId
-			return {
-				id: user._id,
-				name: user.name,
-				email: user.email,
-				phone: user.phone,
-				title: doc.title,
-			}
-		})
-
-		res.status(200).json({
-			message: 'Employees fetched successfully',
-			employees: employees,
-		})
-	} catch (error) {
-		next(error)
-	}
-}
 
 export const getCompanyFreeEmployees = async (req, res, next) => {
 	const companyId = req.query.companyId
 	try {
-		const results = await Employee.find({ companyId, status: 'free' }).populate(
+		const results = await Employee.find({ companyId, status: 'free', isDeleted: false }).populate(
 			{
 				path: '_id',
 				select: 'name', // Only fetch the name from the User collection

@@ -14,12 +14,14 @@ import {
   getCompanyFreeEmployees,
   assignEmployeesToBooking,
   getCompletedBookings,
+  putEmployee,
 } from "../controllers/company.controller.js";
 
 const router = express.Router();
 
 router.post(`/add/employee`, postEmployee);
-router.delete(`/employee`, deleteEmployee);
+router.put(`/put/employee`, putEmployee)
+router.delete(`/delete/employee`, deleteEmployee);
 router.get(`/get/employees`, getCompanyEmployees);
 router.get(`/get/free/employees`, getCompanyFreeEmployees);
 

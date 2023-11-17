@@ -19,6 +19,7 @@ input {
 
 select {
   height: 2.1rem;
+	padding: .5rem;
 }
 
 .equal-cols th, .equal-cols td {

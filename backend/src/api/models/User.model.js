@@ -27,6 +27,10 @@ const userSchema = new Schema(
     cnic: {
       type: String,
     },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
   },
   { timestamps: true }
 );
