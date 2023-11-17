@@ -2,6 +2,7 @@
 import { useState } from "react";
 // import { useAuth } from "src/context/AuthContext";
 import PropTypes from "prop-types";
+import { IoClose } from "react-icons/io5";
 
 AssignEmployeeModal.propTypes = {
   showAddEmployeeModal: PropTypes.bool, // Adjust according to the actual data shape
@@ -63,8 +64,12 @@ function AssignEmployeeModal({
     <>
       {showAddEmployeeModal ? (
         <>
-          <div className="justify-center items-center flex fixed inset-0 z-50 outline-none focus:outline-none ">
+          <div
+            className="justify-center  items-center flex fixed inset-0 z-50 outline-none focus:outline-none "
+            onClick={() => setShowAddEmployeeModal(false)}
+          >
             {/*content*/}
+
             <div className="   rounded-lg shadow-lg flex flex-col bg-white outline-none focus:outline-none w-1/3 py-8">
               <form
                 onSubmit={submitHandler}
@@ -93,12 +98,22 @@ function AssignEmployeeModal({
                     </div>
                   ))}
 
-                <button
-                  className="bg-primary text-white rounded-[5px] px-5 py-2"
-                  type="submit"
-                >
-                  Submit
-                </button>
+                {employees.length !== 0 ? (
+                  <button
+                    className="bg-primary text-white rounded-[5px] px-5 py-2"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                ) : (
+                  <button
+                    className="bg-primary text-white rounded-[5px] px-5 py-2"
+                    type="submit"
+                    disabled
+                  >
+                    Submit
+                  </button>
+                )}
               </form>
             </div>
           </div>

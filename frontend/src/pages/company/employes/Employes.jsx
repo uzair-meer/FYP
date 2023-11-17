@@ -70,7 +70,7 @@ const Employes = () => {
                 Phone Number
               </th>
               <th className="min-w-[3rem] py-4 px-4 font-medium text-primary ">
-                Rule
+                Role
               </th>
               <th className="min-w-[3rem] py-4 px-4 font-medium text-primary ">
                 Email
