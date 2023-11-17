@@ -22,16 +22,17 @@ export default function Table({
 	noDataMessage = 'No Data',
 	enableRowToggle = false,
 	components,
-	idKey = undefined
+	idKey = undefined,
 }) {
 	const [allData, setAllData] = useState(data)
-
 
 	useEffect(() => {
 		if (enableRowToggle) {
 			const transformed = data.map((item) => ({ ...item, isOpen: false }))
 			setAllData(transformed)
 		}
+
+		setAllData(data)
 	}, [enableRowToggle, data])
 
 	return (
@@ -46,7 +47,7 @@ export default function Table({
 				</div>
 			) : (
 				<div className="mt-8 ">
-					<div className="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+					<div className="-px-4 -my-2 overflow-x-auto sm:-px-6 lg:-px-8">
 						<div className="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
 							<table
 								className="min-w-full divide-y divide-gray-300 table-fixed equal-cols"
@@ -64,7 +65,7 @@ export default function Table({
 											</th>
 										))}
 
-										{enableRowToggle || isActions (
+										{(enableRowToggle || isActions) && (
 											<th
 												key={'action'}
 												scope="col"
@@ -83,6 +84,7 @@ export default function Table({
 											enableRowToggle={enableRowToggle}
 											idKey={idKey}
 											key={`tr-body-${index}-${Date.now()}`}
+											isActions={isActions}
 										/>
 									))}
 								</tbody>
@@ -100,12 +102,18 @@ TableRow.propTypes = {
 	data: PropTypes.object,
 	enableRowToggle: PropTypes.bool,
 	components: PropTypes.array,
-	isAction: PropTypes.bool
+	isActions: PropTypes.bool,
 }
 
 //TODO: id should be added at the time of transforming data into arrays id should be something on whose base action will happen
 
-function TableRow({ enableRowToggle, data, components, idKey, isAction = false }) {
+function TableRow({
+	enableRowToggle,
+	data,
+	components,
+	idKey,
+	isActions = false,
+}) {
 	const [toggleRow, setToggleRow] = useState(false)
 
 	// console.log(data)
@@ -132,9 +140,22 @@ function TableRow({ enableRowToggle, data, components, idKey, isAction = false }
 						{value}
 					</td>
 				))}
-
 				{/* //edit or delete components should be mapped here but with some kind of check */}
-				{enableRowToggle && !isAction && (
+
+				{isActions && !toggleRow && (
+					<td className="py-4 flex justify-start self-center min-w-full">
+						{components.map(({ Component, props }, index) => (
+							<Component
+								id={id}
+								data={detailedData}
+								key={`comp-${index}}`}
+								{...props}
+							/>
+						))}
+					</td>
+				)}
+
+				{enableRowToggle && !isActions && (
 					<td className="text-center">
 						<button
 							className="px-3 py-2 text-white font-semibold rounded-full bg-primary"
@@ -145,8 +166,6 @@ function TableRow({ enableRowToggle, data, components, idKey, isAction = false }
 						</button>
 					</td>
 				)}
-
-
 			</tr>
 			{/* collapsable */}
 			{enableRowToggle && toggleRow && (
