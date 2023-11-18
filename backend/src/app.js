@@ -8,6 +8,7 @@ import { authRoutes } from "./api/routes/auth.routes.js";
 import "./api/utils/database.js"; //! connection with mongodb
 import { adminRoutes } from "./api/routes/admin.routes.js";
 import { driverRoutes } from "./api/routes/driver.routes.js";
+import { reviewRoutes } from "./api/routes/review.routes.js";
 
 import http from "http";
 import { Server as SocketIO } from "socket.io";
@@ -41,6 +42,7 @@ app.use("/company", companyRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
 app.use("/driver", driverRoutes);
+app.use("/review", reviewRoutes);
 
 //? Express Error Middleware
 // eslint-disable-next-line no-unused-vars

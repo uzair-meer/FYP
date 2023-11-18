@@ -29,12 +29,13 @@ import UserProtectedRoute, {
 } from './ProtectedRoutes'
 // import CurrentBooking from "../pages/user/currentBooking/CurrentBooking";
 import CompaniesRequests from '../pages/admin/companiesRequests/CompaniesRequests'
+import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
+import Employees from '../pages/company/employees/Employees'
+import SentimentReport from '../pages/company/sentimentReport/SentimentReport'
 import DriverCurrentBooking from '../pages/driver/currentBooking/DriverCurrentBooking'
+import ClientCompletedBookings from '../pages/user/completedBookings/ClientCompletedBookings'
 import BookingDetail from '../pages/user/inprogressBookings/BookingDetail'
 import InprogressBookings from '../pages/user/inprogressBookings/InprogressBookings'
-import Employees from '../pages/company/employees/Employees'
-import ClientCompletedBookings from '../pages/user/completedBookings/ClientCompletedBookings'
-import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -60,7 +61,10 @@ const AppRouter = () => {
 				<Route path="inprogress-bookings" element={<InprogressBookings />} />
 				{/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
 				<Route path="inprogress-bookings/details" element={<BookingDetail />} />
-				<Route path="bookings/completed" element={<ClientCompletedBookings/>} />
+				<Route
+					path="bookings/completed"
+					element={<ClientCompletedBookings />}
+				/>
 			</Route>
 
 			<Route
@@ -71,10 +75,14 @@ const AppRouter = () => {
 				<Route index element={<Dashboard />} />
 				<Route path="bookings" element={<CompanyHistory />} />
 				{/* <Route path="employes" element={<Employes />} /> */}
-				<Route path="employees" element={<Employees/>} />
-				<Route path="bookings/requested" element={<RequestedBookings/>} />
+				<Route path="employees" element={<Employees />} />
+				<Route path="bookings/requested" element={<RequestedBookings />} />
 				<Route path="setprice" element={<SetPricesForm />} />
-				<Route path="bookings/completed" element={<CompanyCompletedBookings/>} />
+				<Route
+					path="bookings/completed"
+					element={<CompanyCompletedBookings />}
+				/>
+				<Route path="reviews/sentiment/report" element={<SentimentReport />} />
 			</Route>
 
 			<Route

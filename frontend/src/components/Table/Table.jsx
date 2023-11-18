@@ -12,6 +12,7 @@ Table.propTypes = {
 	enableRowToggle: PropTypes.bool,
 	components: PropTypes.array,
 	idKey: PropTypes.string,
+	isSentiment: PropTypes.bool,
 }
 
 export default function Table({
@@ -23,6 +24,7 @@ export default function Table({
 	enableRowToggle = false,
 	components,
 	idKey = undefined,
+	isSentiment = false,
 }) {
 	const [allData, setAllData] = useState(data)
 
@@ -85,6 +87,7 @@ export default function Table({
 											idKey={idKey}
 											key={`tr-body-${index}-${Date.now()}`}
 											isActions={isActions}
+											isSentiment={isSentiment}
 										/>
 									))}
 								</tbody>
@@ -103,6 +106,7 @@ TableRow.propTypes = {
 	enableRowToggle: PropTypes.bool,
 	components: PropTypes.array,
 	isActions: PropTypes.bool,
+	isSentiment: PropTypes.bool,
 }
 
 //TODO: id should be added at the time of transforming data into arrays id should be something on whose base action will happen
@@ -113,6 +117,7 @@ function TableRow({
 	components,
 	idKey,
 	isActions = false,
+	isSentiment = false,
 }) {
 	const [toggleRow, setToggleRow] = useState(false)
 
@@ -132,11 +137,25 @@ function TableRow({
 		}
 	}
 
+	let className = ''
+	if (isSentiment) {
+		className =
+			data.sentimentScore <= -2
+				? 'bg-red-400'
+				: data.sentimentScore < -1
+				? 'bg-red-300'
+				: data.sentimentScore <= 1
+				? 'bg-yellow-100'
+				: data.sentimentScore < 2
+				? 'bg-green-200'
+				: 'bg-green-300'
+	}
+
 	return (
 		<>
-			<tr key={`tr-body-${Date.now()}`}>
+			<tr className={className} key={`tr-body-${Date.now()}`}>
 				{singleValues.map((value, index) => (
-					<td className="py-4" key={`td-body-${index}-${Date.now()}`}>
+					<td className="py-4 px-2" key={`td-body-${index}-${Date.now()}`}>
 						{value}
 					</td>
 				))}
