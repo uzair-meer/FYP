@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react'
-import { useAuth } from 'src/context/AuthContext.jsx'
 import CompaniesRequestCard from './CompaniesRequestCard'
 
 export default function CompaniesRequests() {
-	// const { user } = useAuth(); //FIXME: will only be used for protected routes in backend other wise no use here for now
-
 	const [companiesRequests, setCompaniesRequests] = useState([])
 
 	useEffect(() => {
@@ -25,17 +22,23 @@ export default function CompaniesRequests() {
 	}, [])
 
 	return (
-		<div>
-			<div className="pending-cards flex flex-wrap gap-2 p-5">
-				{companiesRequests &&
-					companiesRequests.map((company) => (
+		<div className="w-full px-5 py-8 flex flex-col gap-3">
+			{companiesRequests.length === 0 ? (
+				<h1 className="font-semibold text-2xl text-center">
+					There are no requests to check. :)
+				</h1>
+			) : (
+				<>
+					<h1 className="font-bold text-2xl">Requests</h1>
+					{companiesRequests?.map((company) => (
 						<CompaniesRequestCard
 							key={company._id}
 							company={company}
 							setCompaniesRequests={setCompaniesRequests}
 						/>
 					))}
-			</div>
+				</>
+			)}
 		</div>
 	)
 }
