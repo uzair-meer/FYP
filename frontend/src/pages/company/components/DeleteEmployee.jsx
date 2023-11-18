@@ -21,7 +21,7 @@ export default function DeleteEmployee({ setEmployees, data }) {
 					headers: {
 						'Content-Type': 'application/json',
 					},
-					body: JSON.stringify({employeeId: data._id}),
+					body: JSON.stringify({ employeeId: data._id }),
 				}
 			)
 
