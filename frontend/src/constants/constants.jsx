@@ -272,21 +272,21 @@ export const CLIENT_PORTAL_ROUTES = [
     route: "/user/profile",
     icon: <BiSolidUserCircle className="text-[1.4rem]  mx-2 cursor-pointer" />,
   },
-  {
-    name: "CurrentBooking",
-    route: "/user/current-booking",
-    icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
-  },
+  // {
+  //   name: "CurrentBooking",
+  //   route: "/user/current-booking",
+  //   icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  // },
   {
     name: "InprogressBookings",
     route: "/user/inprogress-bookings",
     icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
   },
-  {
-    name: "BookingDetail",
-    route: "/user/inprogress-bookings/detail",
-    icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
-  },
+  // {
+  //   name: "BookingDetail",
+  //   route: "/user/inprogress-bookings/detail",
+  //   icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  // },
 ];
 
 export const COMPANY_PORTAL_ROUTES = [
@@ -371,11 +371,11 @@ export const Driver_Routes = [
       <BsFillCalendarCheckFill className="text-[1.4rem] text-white hover:text-primary  mx-2 cursor-pointer" />
     ),
   },
-  {
-    name: "CurrentBooking",
-    route: "/driver/current-booking",
-    icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
-  },
+  // {
+  //   name: "CurrentBooking",
+  //   route: "/driver/current-booking",
+  //   icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  // },
 ];
 
 export const Driver_History_Cols = [
