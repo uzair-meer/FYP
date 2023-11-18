@@ -102,7 +102,12 @@ export const getCompanyEmployees = async (req, res, next) => {
 	const companyId = req.query.companyId
 	try {
 		const employee = await Employee.aggregate([
-			{ $match: { companyId: new mongoose.Types.ObjectId(companyId), isDeleted: false } },
+			{
+				$match: {
+					companyId: new mongoose.Types.ObjectId(companyId),
+					isDeleted: false,
+				},
+			},
 			{
 				$lookup: {
 					from: 'users',
@@ -648,17 +653,18 @@ export async function getLatestInventory(req, res, next) {
 	}
 }
 
-
 export const getCompanyFreeEmployees = async (req, res, next) => {
 	const companyId = req.query.companyId
 	try {
-		const results = await Employee.find({ companyId, status: 'free', isDeleted: false }).populate(
-			{
-				path: '_id',
-				select: 'name', // Only fetch the name from the User collection
-				model: User,
-			}
-		)
+		const results = await Employee.find({
+			companyId,
+			status: 'free',
+			isDeleted: false,
+		}).populate({
+			path: '_id',
+			select: 'name', // Only fetch the name from the User collection
+			model: User,
+		})
 		if (results.length === 0) {
 			return res.status(200).json({
 				message: 'No employees found for this company',
@@ -678,53 +684,17 @@ export const getCompanyFreeEmployees = async (req, res, next) => {
 	}
 }
 
-export async function assignEmployeesToBooking(req, res, next) {
+export async function putApproveBookingReq(req, res, next) {
 	//request status can be approved or declined
-	const { bookingId, requestStatus } = req.body
-
-	//should be proper validation here
-	// if (requestStatus !== "declined" || requestStatus !== "approved") {
-	//   //! FIXME throw error here
-	//   res.status(500).json({message: "enter complete and accurate fields"})
-	//   return
-	// }
+	const { bookingId, employeeIds } = req.body
 
 	try {
-		if (requestStatus === 'declined') {
-			const result = await Booking.findByIdAndUpdate(
-				bookingId,
-				{
-					$set: { status: 'declined' },
-				},
-				{ new: true }
-			)
-
-			return res
-				.status(200)
-				.json({ message: 'request declined successfully', result })
-			// return;
-		}
-
-		const { employeeIds } = req.body
-		// Validate employee IDs and ensure they are 'free'
-		const employees = await Employee.find({
-			_id: { $in: employeeIds },
-			status: 'free',
-		})
-
-		if (employees.length !== employeeIds.length) {
-			return res
-				.status(400)
-				.json({ message: 'Some employees are not available' })
-		}
-
-		// Update employees status to 'reserved'
 		const employeeResults = await Employee.updateMany(
 			{ _id: { $in: employeeIds } },
-			{ status: 'reserved' }
+			{ status: 'reserved' },
+			{ new: true }
 		)
 
-		// Update the booking with the selected employees
 		const bookingResults = await Booking.findByIdAndUpdate(
 			bookingId,
 			{
@@ -735,9 +705,27 @@ export async function assignEmployeesToBooking(req, res, next) {
 		)
 
 		res.json({
-			message: 'Employees assigned successfully',
-			data: { employeeResults, bookingResults },
+			status: 'ok',
+			data: { employee: employeeResults._doc, booking: bookingResults._doc },
 		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function putDeclineBookingReq(req, res, next) {
+	const { bookingId } = req.body
+
+	try {
+		const result = await Booking.findByIdAndUpdate(
+			bookingId,
+			{
+				$set: { status: 'declined' },
+			},
+			{ new: true }
+		)
+
+		res.status(200).json({ status: 'ok', data: result._doc })
 	} catch (error) {
 		next(error)
 	}
@@ -769,6 +757,20 @@ export async function getCompletedBookings(req, res, next) {
 					localField: 'inventoryId',
 					foreignField: '_id',
 					as: 'inventory',
+				},
+			},
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'clientId',
+					foreignField: '_id',
+					as: 'client',
+				},
+			},
+			{
+				$unwind: {
+					path: '$client',
+					preserveNullAndEmptyArrays: true, // Use this if a booking may not have a client
 				},
 			},
 			{
@@ -813,6 +815,10 @@ export async function getCompletedBookings(req, res, next) {
 					companyName: '$company.name',
 					pickupAddress: '$pickUpAddress',
 					destinationAddress: '$destinationAddress',
+					clientName: '$client.name',
+					clientPhone: '$client.phone',
+					clientEmail: '$client.email',
+					clientCnic: '$client.cnic',
 					status: 1,
 					services: 1,
 					cart: {

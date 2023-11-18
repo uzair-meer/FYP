@@ -1,42 +1,43 @@
-import express from "express";
+import express from 'express'
 import {
-  deleteEmployee,
-  getAllClientBookings,
-  getClientReviews,
-  postProduct,
-  putClientReviews,
-  getBookingRequests,
-  postBookingRequest,
-  getInprogressBooking,
-  getLatestInventory,
-  postEmployee,
-  getCompanyEmployees,
-  getCompanyFreeEmployees,
-  assignEmployeesToBooking,
-  getCompletedBookings,
-  putEmployee,
-} from "../controllers/company.controller.js";
+	deleteEmployee,
+	getAllClientBookings,
+	getBookingRequests,
+	getClientReviews,
+	getCompanyEmployees,
+	getCompanyFreeEmployees,
+	getCompletedBookings,
+	getInprogressBooking,
+	getLatestInventory,
+	postBookingRequest,
+	postEmployee,
+	postProduct,
+	putApproveBookingReq,
+	putClientReviews,
+	putDeclineBookingReq,
+	putEmployee,
+} from '../controllers/company.controller.js'
 
-const router = express.Router();
+const router = express.Router()
 
-router.post(`/add/employee`, postEmployee);
+router.post(`/add/employee`, postEmployee)
 router.put(`/put/employee`, putEmployee)
-router.delete(`/delete/employee`, deleteEmployee);
-router.get(`/get/employees`, getCompanyEmployees);
-router.get(`/get/free/employees`, getCompanyFreeEmployees);
+router.delete(`/delete/employee`, deleteEmployee)
+router.get(`/get/employees`, getCompanyEmployees)
+router.get(`/get/free/employees`, getCompanyFreeEmployees)
 
-router.post(`/assign/employees`, assignEmployeesToBooking); //FIXME: its name should handle client requests
+router.put(`/booking/request/approved`, putApproveBookingReq)
+router.put(`/booking/request/declined`, putDeclineBookingReq)
 
-router.get(`/client-reviews`, getClientReviews);
-router.put(`/client-reviews`, putClientReviews);
-router.get(`/client-bookings`, getAllClientBookings);
-router.post(`/product`, postProduct);
-router.get(`/inventory`, getLatestInventory);
+router.get(`/client-reviews`, getClientReviews)
+router.put(`/client-reviews`, putClientReviews)
+router.get(`/client-bookings`, getAllClientBookings)
+router.post(`/product`, postProduct)
+router.get(`/inventory`, getLatestInventory)
 
-router.get(`/booking-requests`, getBookingRequests);
-router.post(`/booking-request`, postBookingRequest);
-router.get(`/current-bookings`, getInprogressBooking);
-router.get(`/completed-bookings`, getCompletedBookings);
+router.get(`/booking-requests`, getBookingRequests)
+router.post(`/booking-request`, postBookingRequest)
+router.get(`/current-bookings`, getInprogressBooking)
+router.get(`/completed-bookings`, getCompletedBookings)
 
-
-export { router as companyRoutes };
+export { router as companyRoutes }

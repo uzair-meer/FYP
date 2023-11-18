@@ -1,20 +1,32 @@
 import { useEffect, useState } from 'react'
-import Table from 'src/components/Table/Table.jsx'
 import { useAuth } from 'src/context/AuthContext.jsx'
-import AddReviewClient from '../components/AddReviewClient'
+import Table from '../../../components/Table/Table'
+import RequestedBookingDetail from '../components/RequestedBookingDetail'
 
-
-export default function CompletedBookings() {
-	const [bookings, setBookings] = useState([])
-	const [isLoading, setIsLoading] = useState(false)
-
+export default function RequestedBookings() {
 	const { user } = useAuth()
+	const [bookings, setBookings] = useState([])
+	const [employees, setEmployees] = useState([])
 
+	// fetch free employees
+	useEffect(() => {
+		const getFreeEmployees = async () => {
+			const resp = await fetch(
+				`http://localhost:5000/company/get/free/employees?companyId=${user._id}`
+			)
+			const { data } = await resp.json()
+			setEmployees(data)
+		}
+		getFreeEmployees()
+	}, [user._id])
+
+	//fetch all requested bookings
 	useEffect(() => {
 		const fetchPrices = async () => {
-			setIsLoading(true)
 			try {
-				const response = await fetch(`http://localhost:5000/client/completed-bookings?clientId=${user._id}`)
+				const response = await fetch(
+					`http://localhost:5000/company/booking-requests?companyId=${user._id}`
+				)
 
 				if (!response.ok) {
 					throw new Error('Something went wrong')
@@ -42,7 +54,7 @@ export default function CompletedBookings() {
 
 					return {
 						sr: index + 1,
-						companyName: booking.companyName,
+						clientName: booking.clientName,
 						services: booking.services.join(', '),
 						grandTotal: grandTotal,
 						data: booking,
@@ -50,22 +62,31 @@ export default function CompletedBookings() {
 				})
 
 				setBookings(transformedData)
-			} finally {
-				setIsLoading(false)
+			} catch (e) {
+				//FIXME: handle error
+				console.log(e)
 			}
 		}
 
 		fetchPrices()
-	}, [user._id])
+	}, [user])
 
 	return (
 		<div className="mx-4">
 			<Table
-				columns={['Sr. ', 'Company name', 'Services', 'Cost (in Rs)']}
-				components={[{ Component: AddReviewClient, props: {setBookings: setBookings} }]}
-				enableRowToggle={true}
+				columns={['Sr. ', 'Client name', 'Services', 'Cost (in Rs)']}
+				components={[
+					{
+						Component: RequestedBookingDetail,
+						props: {
+							setBookings: setBookings,
+							employees: employees,
+							setEmployees: setEmployees,
+						},
+					},
+				]}
 				data={bookings}
-				idKey={'_id'} //booking._id //FIXME: didnt need that in our case test it without this
+				enableRowToggle={true}
 			/>
 		</div>
 	)
