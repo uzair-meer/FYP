@@ -25,3 +25,13 @@ select {
 .equal-cols th, .equal-cols td {
 	width: calc(100% / var(--num-cols));
 }
+
+.flex-item {
+	flex-grow: 1;
+	/* You might also want to add some margin/padding as per your design */
+}
+
+.color-1 { background-color: red; }
+.color-2 { background-color: blue; }
+.color-3 { background-color: green; }
+.color-4 { background-color: yellow; }

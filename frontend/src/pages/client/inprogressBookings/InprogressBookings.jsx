@@ -94,7 +94,7 @@ export default function InprogressBookings() {
                     <td className="py-4 px-6">
                       {
                         <Link
-                          to="/user/inprogress-bookings/details"
+                          to="/client/inprogress-bookings/details"
                           state={booking}
                         >
                           View Details

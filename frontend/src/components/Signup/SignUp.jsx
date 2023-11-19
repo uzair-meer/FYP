@@ -3,7 +3,7 @@ import signup from "../../assets/signup.jpg";
 import UserForm from "./UserSignUp";
 import CompanyForm from "./CompanyForm";
 function SignUp() {
-  const [mode, setMode] = useState("user");
+  const [mode, setMode] = useState("client");
 
   const toggleMode = (newMode) => {
     setMode(newMode);
@@ -17,11 +17,11 @@ function SignUp() {
           <div className="flex justify-center mb-4 space-x-4">
             <button
               className={`${
-                mode === "user"
+                mode === "client"
                   ? "bg-primary text-white"
                   : "bg-redish text-primary"
               } px-4 py-2 rounded-full focus:outline-none`}
-              onClick={() => toggleMode("user")}
+              onClick={() => toggleMode("client")}
             >
               Client
             </button>
@@ -36,7 +36,7 @@ function SignUp() {
               Company
             </button>
           </div>
-          {mode === "user" ? (
+          {mode === "client" ? (
             <div>
               <UserForm />
             </div>

@@ -1,5 +1,7 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from 'src/context/AuthContext.jsx'
 import Button from '../Button/Button'
 
 AddReview.propTypes = {
@@ -16,6 +18,8 @@ export default function AddReview({ data, setBookings, role }) {
 		isComment: false,
 		isReply: false,
 	})
+	const { user } = useAuth()
+	const navigate = useNavigate()
 
 	useEffect(() => {
 		setReviewFormData({
@@ -155,6 +159,14 @@ export default function AddReview({ data, setBookings, role }) {
 							</Button>
 						</>
 					)}
+					<Button
+						onClick={() =>
+							navigate(`/${user.role}/booking/detail`, { state: data })
+						}
+						className="mt-5 mx-3 w-40"
+					>
+						Complete Detail
+					</Button>
 				</>
 			)}
 

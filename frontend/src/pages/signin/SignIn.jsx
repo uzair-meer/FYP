@@ -16,14 +16,14 @@ const SignIn = () => {
   };
   useEffect(() => {
     if (user?.role === "admin") navigate("/admin");
-    else if (user?.role === "client") navigate("/user");
+    else if (user?.role === "client") navigate("/client");
     else if (user?.role === "company") {
       navigate("/company");
     } else if (user?.role === "employee") {
       // console.log(user);
       navigate("/driver");
     }
-  }, [user]);
+  }, [user, navigate]);
 
   return (
     <div className="flex">
@@ -77,7 +77,7 @@ const SignIn = () => {
                       />
                     </div>
                     <p className="mt-3">
-                      Don't have an account?{" "}
+                      Don{"'"}t have an account?{" "}
                       <Link to="/signup">
                         <span className="text-primary">SignUp</span>
                       </Link>

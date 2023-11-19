@@ -50,19 +50,24 @@ export default function ConfirmBooking({ data, id }) {
 					body: JSON.stringify(booking),
 				})
 
-				const { status, data } = await response.json()
-
-				console.log(data)
-
-				if (status === 'ok') {
+				const result = await response.json()
+				
+				if (result.status === 'ok') {
+					// FIXME: also show some kind of success to user at this point
+					result.data.cart.forEach(cartItem => {
+						const inventoryItem = data.inventory.find(item => item.name === cartItem.name);
+						if (inventoryItem) {
+							Object.assign(cartItem, inventoryItem);
+						}
+					});
 					//clear context of cart
 					setPickupLocation('')
 					setDestinationLocation('')
 					setSelectedServices([])
 					setItems([])
-					// FIXME: also show some kind of success to user at this point
+					console.log(result.data, 'updated data')
 
-					navigate('/user')
+					navigate('/client/booking/detail', {state: result.data})
 				}
 			} catch (e) {
 				console.log(e)
