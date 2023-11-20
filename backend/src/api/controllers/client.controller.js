@@ -7,7 +7,6 @@ export async function postBooking(req, res, next) {
 	console.log(req.body)
 	const {
 		clientId,
-		companyId,
 		pickUpAddress,
 		destinationAddress,
 		services,
@@ -15,6 +14,7 @@ export async function postBooking(req, res, next) {
 	} = req.body
 
 	try {
+		const companyId = new mongoose.Types.ObjectId(req.body.companyId)
 		//get latest inventoryId from inventroy
 		const inventoryId = await Inventory.findOne({ companyId })
 			.select('_id')

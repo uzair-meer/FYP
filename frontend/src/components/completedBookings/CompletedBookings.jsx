@@ -24,6 +24,8 @@ export default function CompletedBookings({ fetchUrl, role }) {
 				}
 				const { data } = await response.json()
 
+				console.log(data)
+
 				const transformedData = data.map((booking, index) => {
 					let grandTotal = 0
 
@@ -71,8 +73,18 @@ export default function CompletedBookings({ fetchUrl, role }) {
 		fetchPrices()
 	}, [fetchUrl, role])
 
+	if (!bookings.length) {
+		return (
+			<div className="px-4 mt-8">
+				<h1 className="text-center font-bold text-2xl">
+					No completed Bookings. :{')'}
+				</h1>
+			</div>
+		)
+	}
+
 	return (
-		<div className="mx-4">
+		<div className="px-4">
 			<Table
 				columns={[
 					'Sr. ',

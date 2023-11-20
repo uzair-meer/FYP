@@ -71,6 +71,16 @@ export default function RequestedBookings() {
 		fetchPrices()
 	}, [user])
 
+	if (!bookings.length) {
+		return (
+			<div className="px-4 mt-8">
+				<h1 className="text-center font-bold text-2xl">
+					No Requested Bookings. :{')'}
+				</h1>
+			</div>
+		)
+	}
+
 	return (
 		<div className="mx-4">
 			<Table

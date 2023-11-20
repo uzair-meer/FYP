@@ -9,6 +9,8 @@ import EditItem from '../components/EditItem'
 
 // const ITEMS = ['sofa', 'bed', 'oven', 'fridge']
 
+//!FIXME: the services we are handling must be saved in database in inventory for more security and must be send on every update or post inventory request to match with current inventory in update case to check that prices are accordingly to services offered
+
 export default function SetPrices() {
 	const { user } = useAuth()
 	const [selectedServices, setSelectedServices] = useState({

@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
 import Table from 'src/components/Table/Table.jsx'
+import { useAuth } from 'src/context/AuthContext.jsx'
 
 export default function SentimentReport() {
 	const [bookings, setBookings] = useState([])
+	const { user } = useAuth()
 
 	const [sentimentCounts, setSentimentCounts] = useState({
 		veryNegative: 0,
@@ -17,7 +19,7 @@ export default function SentimentReport() {
 		const fetchPrices = async () => {
 			try {
 				const response = await fetch(
-					`http://localhost:5000/review/sentiment/report?companyId=65537811e78f41840123fac6`
+					`http://localhost:5000/review/sentiment/report?companyId=${user._id}`
 				)
 
 				if (!response.ok) {
@@ -31,7 +33,7 @@ export default function SentimentReport() {
 					neutral: 0,
 					positive: 0,
 					veryPositive: 0,
-					total: bookings.length,
+					total: 0,
 				}
 
 				const transformedData = data.map((booking, index) => {
@@ -67,6 +69,7 @@ export default function SentimentReport() {
 				})
 
 				setBookings(transformedData)
+				sentimentFrequency.total = transformedData.length
 				setSentimentCounts(sentimentFrequency)
 			} catch (e) {
 				//FIXME: handle error
@@ -75,7 +78,7 @@ export default function SentimentReport() {
 		}
 
 		fetchPrices()
-	}, [])
+	}, [user])
 
 	return (
 		<div className="mx-4">

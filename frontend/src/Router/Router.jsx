@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 import { Dashboard } from 'src/pages/company/dashbord/Dashboard'
 // import Employes from 'src/pages/company/employes/Employes'
 import CompanyRates from 'src/pages/client/CompanyRates/CompanyRates.jsx'
-import CompanyHistory from 'src/pages/company/history/CompanyHistory'
+// import CompanyHistory from 'src/pages/company/history/CompanyHistory'
 import Home from 'src/pages/home'
 import SignUp from '../components/Signup/SignUp'
 import { useAuth } from '../context/AuthContext'
@@ -35,8 +35,8 @@ import SentimentReport from '../pages/company/sentimentReport/SentimentReport'
 import ClientCompletedBookings from '../pages/client/completedBookings/ClientCompletedBookings'
 
 import ClientBookingDetail from '../pages/client/detailBooking/ClientBookingDetail'
-import BookingDetail from '../pages/client/inprogressBookings/BookingDetail'
-import InprogressBookings from '../pages/client/inprogressBookings/InprogressBookings'
+// import BookingDetail from '../pages/client/inprogressBookings/BookingDetail'
+// import InprogressBookings from '../pages/client/inprogressBookings/InprogressBookings'
 import EmployeeDashboard from '../pages/employee/dashboard/EmployeeDashboard'
 import SetPrices from '../pages/company/setprice/SetPrices'
 
@@ -62,9 +62,9 @@ const AppRouter = () => {
 				<Route path="profile" element={<Profile />} />
 				<Route path="rates" element={<CompanyRates />} />
 				{/* <Route path="current-booking" element={<CurrentBooking />} /> */}
-				<Route path="inprogress-bookings" element={<InprogressBookings />} />
+				{/* <Route path="inprogress-bookings" element={<InprogressBookings />} /> */}
 				{/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
-				<Route path="inprogress-bookings/details" element={<BookingDetail />} />
+				{/* <Route path="inprogress-bookings/details" element={<BookingDetail />} /> */}
 				<Route
 					path="bookings/completed"
 					element={<ClientCompletedBookings />}
@@ -78,13 +78,14 @@ const AppRouter = () => {
 			>
 				{/* Define your nested routes here */}
 				<Route index element={<Dashboard />} />
-				<Route path="bookings" element={<CompanyHistory />} />
+				{/* <Route path="bookings" element={<CompanyHistory />} /> */}
 				{/* <Route path="employes" element={<Employes />} /> */}
 				<Route path="employees" element={<Employees />} />
 				<Route path="bookings/requested" element={<RequestedBookings />} />
 				<Route path="prices" element={<SetPrices />} />
 				<Route
 					path="bookings/completed"
+					exact
 					element={<CompanyCompletedBookings />}
 				/>
 				<Route path="reviews/sentiment/report" element={<SentimentReport />} />
@@ -95,9 +96,9 @@ const AppRouter = () => {
 				element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
 			>
 				<Route index element={<AdminDashboard />} />
-				<Route path="companies" element={<Companies />} />
+				{/* <Route path="companies" element={<Companies />} /> */}
 				<Route path="companies/requests" element={<CompaniesRequests />} />
-				<Route path="services" element={<Services />} />
+				{/* <Route path="services" element={<Services />} /> */}
 			</Route>
 
 			<Route

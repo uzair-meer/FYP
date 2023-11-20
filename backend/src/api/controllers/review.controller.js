@@ -22,14 +22,6 @@ export const getSentimentReport = async (req, res, next) => {
 			},
 			{
 				$lookup: {
-					from: 'inventories',
-					localField: 'inventoryId',
-					foreignField: '_id',
-					as: 'inventory',
-				},
-			},
-			{
-				$lookup: {
 					from: 'users',
 					localField: 'clientId',
 					foreignField: '_id',
@@ -44,25 +36,6 @@ export const getSentimentReport = async (req, res, next) => {
 			},
 			{
 				$unwind: '$company',
-			},
-			{
-				$unwind: '$inventory',
-			},
-			{
-				$lookup: {
-					from: 'users',
-					localField: 'employees',
-					foreignField: '_id',
-					as: 'employeesData',
-				},
-			},
-			{
-				$lookup: {
-					from: 'employees',
-					localField: 'employees',
-					foreignField: '_id',
-					as: 'employeeTitles',
-				},
 			},
 			{
 				$lookup: {
@@ -87,76 +60,10 @@ export const getSentimentReport = async (req, res, next) => {
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
-					pickupAddress: '$pickUpAddress',
-					destinationAddress: '$destinationAddress',
 					clientName: '$client.name',
 					clientPhone: '$client.phone',
 					clientEmail: '$client.email',
-					clientCnic: '$client.cnic',
 					status: 1,
-					services: 1,
-					cart: {
-						$map: {
-							input: '$cart',
-							as: 'cartItem',
-							in: {
-								name: '$$cartItem.name',
-								quantity: '$$cartItem.quantity',
-								movingPrice: {
-									$arrayElemAt: [
-										'$inventory.inventory.movingPrice',
-										{
-											$indexOfArray: [
-												'$inventory.inventory.name',
-												'$$cartItem.name',
-											],
-										},
-									],
-								},
-								packingPrice: {
-									$arrayElemAt: [
-										'$inventory.inventory.packingPrice',
-										{
-											$indexOfArray: [
-												'$inventory.inventory.name',
-												'$$cartItem.name',
-											],
-										},
-									],
-								},
-								unpackingPrice: {
-									$arrayElemAt: [
-										'$inventory.inventory.unpackingPrice',
-										{
-											$indexOfArray: [
-												'$inventory.inventory.name',
-												'$$cartItem.name',
-											],
-										},
-									],
-								},
-							},
-						},
-					},
-					inventoryId: '$inventory._id',
-					employees: {
-						$map: {
-							input: '$employeesData',
-							as: 'employee',
-							in: {
-								name: '$$employee.name',
-								phone: '$$employee.phone',
-								title: {
-									$arrayElemAt: [
-										'$employeeTitles.title',
-										{
-											$indexOfArray: ['$employeeTitles._id', '$$employee._id'],
-										},
-									],
-								},
-							},
-						},
-					},
 					createdAt: 1,
 					review: '$review',
 				},
