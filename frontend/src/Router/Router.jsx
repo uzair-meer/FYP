@@ -26,6 +26,7 @@ import UserProtectedRoute, {
   AdminProtectedRoute,
   CompanyProtectedRoute,
   DriverProtectedRoute,
+<<<<<<< HEAD
 } from "./ProtectedRoutes";
 // import CurrentBooking from "../pages/user/currentBooking/CurrentBooking";
 import CompaniesRequests from "../pages/admin/companiesRequests/CompaniesRequests";
@@ -35,6 +36,23 @@ import InprogressBookings from "../pages/user/inprogressBookings/InprogressBooki
 import Employees from "../pages/company/employees/Employees";
 import ClientCompletedBookings from "../pages/user/completedBookings/ClientCompletedBookings";
 import CompanyCompletedBookings from "../pages/company/completedBookings/CompanyCompletedBookings";
+=======
+} from './ProtectedRoutes'
+// import CurrentBooking from "../pages/client/currentBooking/CurrentBooking";
+import CompaniesRequests from '../pages/admin/companiesRequests/CompaniesRequests'
+import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
+import Employees from '../pages/company/employees/Employees'
+import SentimentReport from '../pages/company/sentimentReport/SentimentReport'
+// import DriverCurrentBooking from '../pages/employee//currentBooking/DriverCurrentBooking'
+import ClientCompletedBookings from '../pages/client/completedBookings/ClientCompletedBookings'
+
+import ClientBookingDetail from '../pages/client/detailBooking/ClientBookingDetail'
+// import BookingDetail from '../pages/client/inprogressBookings/BookingDetail'
+// import InprogressBookings from '../pages/client/inprogressBookings/InprogressBookings'
+import EmployeeDashboard from '../pages/employee/dashboard/EmployeeDashboard'
+import SetPrices from '../pages/company/setprice/SetPrices'
+
+>>>>>>> d64b5ae (fixxing merges)
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -46,10 +64,17 @@ const AppRouter = () => {
       <Route path="signup" element={<SignUp />} />
       <Route path="signin" element={<SignIn />} />
 
+<<<<<<< HEAD
       {/* // user routes */}
 
       <Route
         path="user"
+=======
+      {/* // client routes */}
+
+      <Route
+        path="client"
+>>>>>>> d64b5ae (fixxing merges)
         element={<UserProtectedRoute user={user} component={<User />} />}
       >
         <Route index element={<UserDashboard />} />
@@ -57,13 +82,23 @@ const AppRouter = () => {
         <Route path="profile" element={<Profile />} />
         <Route path="rates" element={<CompanyRates />} />
         {/* <Route path="current-booking" element={<CurrentBooking />} /> */}
+<<<<<<< HEAD
         <Route path="inprogress-bookings" element={<InprogressBookings />} />
         {/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
         <Route path="inprogress-bookings/details" element={<BookingDetail />} />
+=======
+        {/* <Route path="inprogress-bookings" element={<InprogressBookings />} /> */}
+        {/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
+        {/* <Route path="inprogress-bookings/details" element={<BookingDetail />} /> */}
+>>>>>>> d64b5ae (fixxing merges)
         <Route
           path="bookings/completed"
           element={<ClientCompletedBookings />}
         />
+<<<<<<< HEAD
+=======
+<Route path="booking/detail" element={<ClientBookingDetail />} />
+>>>>>>> d64b5ae (fixxing merges)
       </Route>
 
       <Route
@@ -72,6 +107,7 @@ const AppRouter = () => {
       >
         {/* Define your nested routes here */}
         <Route index element={<Dashboard />} />
+<<<<<<< HEAD
         <Route path="bookings" element={<CompanyHistory />} />
         {/* <Route path="employes" element={<Employes />} /> */}
         <Route path="employees" element={<Employees />} />
@@ -81,6 +117,19 @@ const AppRouter = () => {
           path="bookings/completed"
           element={<CompanyCompletedBookings />}
         />
+=======
+        {/* <Route path="bookings" element={<CompanyHistory />} /> */}
+        {/* <Route path="employes" element={<Employes />} /> */}
+        <Route path="employees" element={<Employees />} />
+        <Route path="bookings/requested" element={<RequestedBookings />} />
+        <Route path="prices" element={<SetPrices />} />
+        <Route
+          path="bookings/completed"
+exact
+          element={<CompanyCompletedBookings />}
+        />
+<Route path="reviews/sentiment/report" element={<SentimentReport />} />
+>>>>>>> d64b5ae (fixxing merges)
       </Route>
 
       <Route
@@ -88,6 +137,7 @@ const AppRouter = () => {
         element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
       >
         <Route index element={<AdminDashboard />} />
+<<<<<<< HEAD
         <Route path="companies" element={<Companies />} />
         <Route path="companies/requests" element={<CompaniesRequests />} />
         <Route path="services" element={<Services />} />
@@ -101,5 +151,26 @@ const AppRouter = () => {
     </Routes>
   );
 };
+=======
+        {/* <Route path="companies" element={<Companies />} /> */}
+        <Route path="companies/requests" element={<CompaniesRequests />} />
+        {/* <Route path="services" element={<Services />} /> */}
+      </Route>
+
+      <Route
+				path="employee"
+				element={
+					<DriverProtectedRoute user={user} component={<EmployeePanel />} />
+				}
+			>
+        <Route index element={<EmployeeDashboard />} />
+				{/* <Route index element={<DriverDashboard />} />
+        {/* <Route path="bookings" element={<DriverHistory />} />
+        <Route path="current-booking" element={<DriverCurrentBooking />} /> */}
+      </Route>
+    </Routes>
+  )
+}
+>>>>>>> d64b5ae (fixxing merges)
 
 export default AppRouter;
