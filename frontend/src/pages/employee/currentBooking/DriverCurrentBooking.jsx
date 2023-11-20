@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useAuth } from "src/context/AuthContext";
+import React, { useEffect, useState } from 'react'
+import { useAuth } from 'src/context/AuthContext'
 
 function DriverCurrentBooking() {
   const { user } = useAuth();
@@ -144,4 +144,4 @@ function DriverCurrentBooking() {
   );
 }
 
-export default DriverCurrentBooking;
+export default DriverCurrentBooking
