@@ -3,8 +3,8 @@
 import MenuLayout from "src/layout/MenuLayout/MenuLayout";
 import { Driver_Routes } from "src/constants/constants";
 
-function DriverPanel() {
+function EmployeePanel() {
   return <MenuLayout menuItems={Driver_Routes} />;
 }
 
-export default DriverPanel;
+export default EmployeePanel;

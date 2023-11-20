@@ -7,7 +7,7 @@ import { companyRoutes } from "./api/routes/company.routes.js";
 import { authRoutes } from "./api/routes/auth.routes.js";
 import "./api/utils/database.js"; //! connection with mongodb
 import { adminRoutes } from "./api/routes/admin.routes.js";
-import { driverRoutes } from "./api/routes/driver.routes.js";
+import { employeeRoutes } from "./api/routes/employee.routes.js";
 import { reviewRoutes } from "./api/routes/review.routes.js";
 
 import http from "http";
@@ -41,7 +41,7 @@ app.use("/client", clientRoutes);
 app.use("/company", companyRoutes);
 app.use("/auth", authRoutes);
 app.use("/admin", adminRoutes);
-app.use("/driver", driverRoutes);
+app.use("/employee", employeeRoutes);
 app.use("/review", reviewRoutes);
 
 //? Express Error Middleware

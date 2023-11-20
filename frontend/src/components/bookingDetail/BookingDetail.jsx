@@ -6,9 +6,15 @@ import ProgressBar from '../progressbar/ProgressBar'
 
 BookingDetail.propTypes = {
 	data: PropTypes.object,
+	statusChangeHandler: PropTypes.func,
+	isSupervisor: PropTypes.bool,
 }
 
-export default function BookingDetail({ data }) {
+export default function BookingDetail({
+	data,
+	statusChangeHandler = () => {},
+	isSupervisor = true,
+}) {
 	const { user } = useAuth()
 	const bottomRef = useRef(null)
 
@@ -37,16 +43,32 @@ export default function BookingDetail({ data }) {
 
 	if (role === 'employee') {
 		name = data.clientName
-		phone = data.ClientPhone
+		phone = data.clientPhone
 	}
 
 	return (
 		<div className="p-6 w-full">
 			<div className="flex justify-between items-center">
 				<h1 className="font-bold text-3xl">Booking Details</h1>
-				<h2 className="font-semibold text-xl px-6 py-4 rounded-full bg-[#FFEFEE]">
-					Status: {data.status}
-				</h2>
+				{isSupervisor ? (
+					<select
+						className="bg-green-300 text-black text-lg driver-status px-6 h-12 rounded-full"
+						name="status"
+						id="status"
+						value={data.status}
+						onChange={statusChangeHandler}
+					>
+						<option value="">Change status</option>
+						<option value="arrived">arrived</option>
+						<option value="packing">packing</option>
+						<option value="unpacking">unpacking</option>
+						<option value="completed">completed</option>
+					</select>
+				) : (
+					<h2 className="font-semibold text-xl px-6 py-4 rounded-full bg-[#FFEFEE]">
+						Status: {data.status}
+					</h2>
+				)}
 			</div>
 			<div className="w-full p-6 my-10 bg-[#FFEFEE] rounded-lg">
 				<div className="flex justify-between items-center">

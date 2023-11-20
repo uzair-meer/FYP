@@ -11,11 +11,11 @@ import {
 	getLatestInventory,
 	postBookingRequest,
 	postEmployee,
-	postProduct,
 	putApproveBookingReq,
 	putClientReviews,
 	putDeclineBookingReq,
 	putEmployee,
+	updateInventory,
 } from '../controllers/company.controller.js'
 
 const router = express.Router()
@@ -32,7 +32,7 @@ router.put(`/booking/request/declined`, putDeclineBookingReq)
 router.get(`/client-reviews`, getClientReviews)
 router.put(`/client-reviews`, putClientReviews)
 router.get(`/client-bookings`, getAllClientBookings)
-router.post(`/product`, postProduct)
+router.post(`/inventory/update`, updateInventory)
 router.get(`/inventory`, getLatestInventory)
 
 router.get(`/booking-requests`, getBookingRequests)

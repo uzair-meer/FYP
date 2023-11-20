@@ -1,11 +1,10 @@
 import { Route, Routes } from 'react-router-dom'
 
-import SetPricesForm from 'src/pages/company/Setprice/SetPricesForm'
 import { Dashboard } from 'src/pages/company/dashbord/Dashboard'
 // import Employes from 'src/pages/company/employes/Employes'
+import CompanyRates from 'src/pages/client/CompanyRates/CompanyRates.jsx'
 import CompanyHistory from 'src/pages/company/history/CompanyHistory'
 import Home from 'src/pages/home'
-import CompanyRates from 'src/pages/client/CompanyRates/CompanyRates.jsx'
 import SignUp from '../components/Signup/SignUp'
 import { useAuth } from '../context/AuthContext'
 import AdminPanel from '../pages/admin'
@@ -13,15 +12,15 @@ import Companies from '../pages/admin/companies/Companies'
 import { AdminDashboard } from '../pages/admin/dashboard/AdminDashboard'
 import Company from '../pages/company'
 import RequestedBookings from '../pages/company/requestedBookings/RequestedBookings'
-import DriverPanel from '../pages/driver'
-import DriverDashboard from '../pages/driver/dashboard/DriverDashboard'
-import DriverHistory from '../pages/driver/history/DriverHistory'
-import Services from '../pages/services/Services'
-import SignIn from '../pages/signin/SignIn'
+import EmployeePanel from '../pages/employee/'
+// import DriverDashboard from '../pages/driver/dashboard/DriverDashboard'
+// import DriverHistory from '../pages/driver/history/DriverHistory'
 import User from '../pages/client'
 import UserDashboard from '../pages/client/dashboard/UserDashboard'
 import UserHistory from '../pages/client/history/UserHistory'
 import Profile from '../pages/client/profile/Profile'
+import Services from '../pages/services/Services'
+import SignIn from '../pages/signin/SignIn'
 import UserProtectedRoute, {
 	AdminProtectedRoute,
 	CompanyProtectedRoute,
@@ -32,12 +31,15 @@ import CompaniesRequests from '../pages/admin/companiesRequests/CompaniesRequest
 import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
 import Employees from '../pages/company/employees/Employees'
 import SentimentReport from '../pages/company/sentimentReport/SentimentReport'
-import DriverCurrentBooking from '../pages/driver/currentBooking/DriverCurrentBooking'
+// import DriverCurrentBooking from '../pages/employee//currentBooking/DriverCurrentBooking'
 import ClientCompletedBookings from '../pages/client/completedBookings/ClientCompletedBookings'
 
+import ClientBookingDetail from '../pages/client/detailBooking/ClientBookingDetail'
 import BookingDetail from '../pages/client/inprogressBookings/BookingDetail'
 import InprogressBookings from '../pages/client/inprogressBookings/InprogressBookings'
-import ClientBookingDetail from '../pages/client/detailBooking/ClientBookingDetail'
+import EmployeeDashboard from '../pages/employee/dashboard/EmployeeDashboard'
+import SetPrices from '../pages/company/setprice/SetPrices'
+
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
@@ -67,7 +69,7 @@ const AppRouter = () => {
 					path="bookings/completed"
 					element={<ClientCompletedBookings />}
 				/>
-				<Route path="booking/detail" element={<ClientBookingDetail/>} />
+				<Route path="booking/detail" element={<ClientBookingDetail />} />
 			</Route>
 
 			<Route
@@ -80,7 +82,7 @@ const AppRouter = () => {
 				{/* <Route path="employes" element={<Employes />} /> */}
 				<Route path="employees" element={<Employees />} />
 				<Route path="bookings/requested" element={<RequestedBookings />} />
-				<Route path="setprice" element={<SetPricesForm />} />
+				<Route path="prices" element={<SetPrices />} />
 				<Route
 					path="bookings/completed"
 					element={<CompanyCompletedBookings />}
@@ -99,14 +101,15 @@ const AppRouter = () => {
 			</Route>
 
 			<Route
-				path="driver"
+				path="employee"
 				element={
-					<DriverProtectedRoute user={user} component={<DriverPanel />} />
+					<DriverProtectedRoute user={user} component={<EmployeePanel />} />
 				}
 			>
-				<Route index element={<DriverDashboard />} />
-				<Route path="bookings" element={<DriverHistory />} />
-				<Route path="current-booking" element={<DriverCurrentBooking />} />
+				<Route index element={<EmployeeDashboard />} />
+				{/* <Route index element={<DriverDashboard />} />
+				{/* <Route path="bookings" element={<DriverHistory />} />
+				<Route path="current-booking" element={<DriverCurrentBooking />} /> */}
 			</Route>
 		</Routes>
 	)

@@ -26,12 +26,7 @@ select {
 	width: calc(100% / var(--num-cols));
 }
 
-.flex-item {
-	flex-grow: 1;
-	/* You might also want to add some margin/padding as per your design */
+.driver-status option:not(:checked) {
+  background-color: #ffff;
+	/* font-size: 1.5rem; */
 }
-
-.color-1 { background-color: red; }
-.color-2 { background-color: blue; }
-.color-3 { background-color: green; }
-.color-4 { background-color: yellow; }

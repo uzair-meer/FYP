@@ -21,7 +21,7 @@ const SignIn = () => {
       navigate("/company");
     } else if (user?.role === "employee") {
       // console.log(user);
-      navigate("/driver");
+      navigate("/employee");
     }
   }, [user, navigate]);
 
