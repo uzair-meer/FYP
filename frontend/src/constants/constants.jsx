@@ -1,10 +1,10 @@
-import { RiDashboardFill } from 'react-icons/ri'
+import { RiDashboardFill } from "react-icons/ri";
 
-import { BiSolidUserCircle } from 'react-icons/bi'
-import { BsBookmark, BsFillCalendarCheckFill, BsGear } from 'react-icons/bs'
-import { FaUsers } from 'react-icons/fa'
-import { MdPriceChange, MdReviews } from 'react-icons/md'
-import { TbBrandBooking } from 'react-icons/tb'
+import { BiSolidUserCircle } from "react-icons/bi";
+import { BsBookmark, BsFillCalendarCheckFill, BsGear } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa";
+import { MdPriceChange, MdReviews } from "react-icons/md";
+import { TbBrandBooking } from "react-icons/tb";
 
 export const CLIENT_PORTAL_ROUTES = [
   {
