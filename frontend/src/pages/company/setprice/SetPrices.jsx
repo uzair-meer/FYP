@@ -3,8 +3,10 @@ import { useEffect, useState } from 'react'
 import { FaCirclePlus } from 'react-icons/fa6'
 import { useAuth } from 'src/context/AuthContext.jsx'
 import Table from '../../../components/Table/Table'
+import DeleteItem from '../components/DeleteItem'
+import { createTableData, generateColumnNames } from '../helper/item-table'
 
-const ITEMS = ['sofa', 'bed', 'oven', 'fridge']
+// const ITEMS = ['sofa', 'bed', 'oven', 'fridge']
 
 export default function SetPrices() {
 	const { user } = useAuth()
@@ -19,26 +21,132 @@ export default function SetPrices() {
 		data: [],
 	})
 
-	const [itemPrices, setItemPrices] = useState([])
+	const [itemPrices, setItemPrices] = useState({
+		name: '',
+		packingPrice: '',
+		unpackingPrice: '',
+		movingPrice: '',
+	})
 
-	const [inventory, setInventory] = useState({})
+	const [inventory, setInventory] = useState([])
 
 	//fetch all company items
 	const servicesChangeHandler = (event) => {
 		const { name, checked } = event.target
 		//FIXME: show warning on every change of service that you have to enter all products with new service again -> dont show if user is entering first time
+		alert(
+			'you have to update all prices for products once offered services changed'
+		)
 		setSelectedServices((prev) => ({ ...prev, [name]: checked }))
+		//also reset all prices
+		setItemPrices({
+			name: '',
+			packingPrice: '',
+			unpackingPrice: '',
+			movingPrice: '',
+		})
 	}
 
 	const changeInputHandler = (e) => {
 		const { name, value } = e.target
-		setItemPrices({ ...itemPrices, [name]: value })
+		// Check if the input is one of the price fields
+		if (
+			name === 'packingPrice' ||
+			name === 'unpackingPrice' ||
+			name === 'movingPrice'
+		) {
+			// Ensure the value is a number and greater than 0
+			if (!isNaN(value) && Number(value) > 0) {
+				setItemPrices({ ...itemPrices, [name]: value })
+			}
+		} else {
+			// For other inputs like the select element, just check if it's not empty
+			if (value.trim() !== '') {
+				setItemPrices({ ...itemPrices, [name]: value.toLowerCase() })
+			}
+		}
 	}
 
 	const addItemSubmitHandler = (event) => {
 		event.preventDefault()
 
-		console.log(itemPrices)
+		// Check if all prices are greater than 0
+		if (
+			itemPrices.packingPrice >= 0 &&
+			itemPrices.unpackingPrice >= 0 &&
+			itemPrices.movingPrice >= 0
+		) {
+			let url
+			if (
+				!!inventory[0]?.packingPrice === selectedServices.packing &&
+				!!inventory[0]?.unpackingPrice === selectedServices.unpacking &&
+				!!inventory[0]?.movingPrice === selectedServices.moving
+			) {
+				//? services match just update the inventory
+				url = 'http://localhost:5000/company/inventory/update'
+			} else {
+				//? services dont match create new inventory
+				url = 'http://localhost:5000/company/inventory/post'
+			}
+
+			const newInventoryObj = itemPrices
+			//check if any price is empty string then convert it to 0
+			for (const key in itemPrices) {
+				//item name
+				if (key !== 'name' && itemPrices[key] === '') {
+					newInventoryObj[key] = 0
+				}
+			}
+			const updateInventoryReq = async () => {
+				try {
+					const response = await fetch(url, {
+						headers: {
+							'Content-Type': 'application/json',
+						},
+						method: 'POST',
+						body: JSON.stringify({
+							companyId: user._id,
+							inventory: [newInventoryObj],
+						}),
+					})
+
+					const result = await response.json()
+
+					if (result.status === 'ok') {
+						setSelectedServices({
+							moving: !!result?.data[0]?.movingPrice,
+							packing: !!result?.data[0]?.packingPrice,
+							unpacking: !!result?.data[0]?.unpackingPrice,
+						})
+
+						const tableDataObjList = createTableData(result.data)
+						const newColNames = generateColumnNames(result.data)
+
+						setInventory(result.data)
+						setTableData({ columns: newColNames, data: tableDataObjList })
+
+						//clear inputs
+						setItemPrices({
+							name: '',
+							packingPrice: '',
+							unpackingPrice: '',
+							movingPrice: '',
+						})
+						//FIXME: fix alert
+					} else {
+						//
+						throw new Error('some thing wend wrong with api')
+					}
+				} catch (error) {
+					//FIXME: handle error
+					console.log(error)
+				}
+			}
+
+			updateInventoryReq()
+		} else {
+			alert('All prices must be greater than 0.')
+		}
 	}
 
 	useEffect(() => {
@@ -54,46 +162,20 @@ export default function SetPrices() {
 					throw new Error('something wrong')
 				}
 
-				setInventory(data)
-				if (!data.length) {
-					return
-				}
-
 				setSelectedServices({
-					moving: !!data[0].movingPrice,
-					packing: !!data[0].packingPrice,
-					unpacking: !!data[0].unpackingPrice,
+					moving: !!data[0]?.movingPrice,
+					packing: !!data[0]?.packingPrice,
+					unpacking: !!data[0]?.unpackingPrice,
 				})
 
-				const tableDataObjList = data.map((item, index) => {
-					const { _id, name, packingPrice, unpackingPrice, movingPrice } = item
-					let obj = { sr: index + 1, name }
-					if (packingPrice && packingPrice > 0) {
-						obj = { ...obj, packingPrice }
-					}
-					if (unpackingPrice && unpackingPrice > 0) {
-						obj = { ...obj, unpackingPrice }
-					}
-					if (movingPrice && movingPrice > 0) {
-						obj = { ...obj, movingPrice }
-					}
-					obj = { ...obj, data: item }
-					return obj
-				})
+				const tableDataObjList = createTableData(data)
+				const newColNames = generateColumnNames(data)
 
-				let newColNames = ['Sr.', 'Item name']
-				if (data[0].packingPrice && data[0].packingPrice > 0) {
-					newColNames = [...newColNames, 'Packing Price']
-				}
-				if (data[0].unpackingPrice && data[0].unpackingPrice > 0) {
-					newColNames = [...newColNames, 'Unpacking Price']
-				}
-				if (data[0].movingPrice && data[0].movingPrice > 0) {
-					newColNames = [...newColNames, 'Moving Price']
-				}
+				const dataWithoutId = data.map(({ _id, ...rest }) => ({ ...rest }))
+
+				setInventory(dataWithoutId)
+
 				setTableData({ columns: newColNames, data: tableDataObjList })
-
-				setInventory(data)
 			} catch (error) {
 				//FIXME: handle error
 				console.log(error)
@@ -101,14 +183,6 @@ export default function SetPrices() {
 		}
 
 		fetchRequest()
-
-		// const response = await fetch(url, {
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// 	method: method,
-		// 	body: JSON.stringify(body),
-		// })
 	}, [user._id])
 
 	return (
@@ -162,9 +236,11 @@ export default function SetPrices() {
 								</label>
 								<select
 									className="font-medium border-2 h-10"
-									name="item"
-									id="item"
+									name="name"
+									id="name"
 									onChange={changeInputHandler}
+									value={itemPrices.name}
+									required
 								>
 									<option value="">Select Item</option>
 									<option value="sofa">Sofa</option>
@@ -181,10 +257,13 @@ export default function SetPrices() {
 										</label>
 										<input
 											className="border-2"
-											type="text"
+											type="number"
 											name="packingPrice"
 											id="packingPrice"
+											value={itemPrices.packingPrice}
 											onChange={changeInputHandler}
+											required
+											min={1}
 										/>
 									</div>
 								)}
@@ -195,10 +274,13 @@ export default function SetPrices() {
 										</label>
 										<input
 											className="border-2"
-											type="text"
+											type="number"
 											name="unpackingPrice"
+											value={itemPrices.unpackingPrice}
 											id="unpackingPrice"
 											onChange={changeInputHandler}
+											required
+											min={1}
 										/>
 									</div>
 								)}
@@ -209,18 +291,19 @@ export default function SetPrices() {
 										</label>
 										<input
 											className="border-2"
-											type="text"
+											type="number"
 											name="movingPrice"
+											value={itemPrices.movingPrice}
 											id="movingPrice"
 											onChange={changeInputHandler}
+											required
+											min={1}
 										/>
 									</div>
 								)}
 
 								<Button className="bg-white mt-5" type="submit">
-									<FaCirclePlus
-										className="text-[2.5rem] text-primary"
-									/>
+									<FaCirclePlus className="text-[2.5rem] text-primary" />
 								</Button>
 							</div>
 						</>
@@ -230,7 +313,21 @@ export default function SetPrices() {
 
 			{/* All Items */}
 			<h2 className=" mt-20 mb-4 font-semibold text-2xl">Current Items</h2>
-			<Table columns={tableData.columns} data={tableData.data} />
+			<Table
+				columns={tableData.columns}
+				data={tableData.data}
+				components={[
+					{
+						Component: DeleteItem,
+						props: {
+							setTableData: setTableData,
+							setInventory: setInventory,
+							inventory: inventory,
+						},
+					},
+				]}
+				isActions={true}
+			/>
 		</div>
 	)
 }

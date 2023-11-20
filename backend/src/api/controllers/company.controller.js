@@ -329,13 +329,41 @@ export async function getAllClientBookings(req, res, next) {
 	}
 }
 
+export async function postInventory(req, res, next) {
+	let { inventory } = req.body
+	const companyId = new mongoose.Types.ObjectId(req.body.companyId)
+
+	try {
+		// delete all previous record
+		await Inventory.updateMany(
+			{ companyId: companyId },
+			{ $set: { isDeleted: true } }
+		)
+
+		//! Case 1: we have to create a new inventory
+		const newInventory = new Inventory({ companyId, inventory })
+		await newInventory.save()
+
+		return res.status(201).json({
+			status: 'ok',
+			data: inventory,
+			message: 'Case 1: first time creation',
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
 export async function updateInventory(req, res, next) {
 	let { inventory } = req.body
 	const companyId = new mongoose.Types.ObjectId(req.body.companyId)
 
 	try {
 		// Check if inventory exists for the given companyId
-		const existingInventory = await Inventory.findOne({ companyId }).sort({
+		const existingInventory = await Inventory.findOne({
+			companyId,
+			isDeleted: false,
+		}).sort({
 			createdAt: -1,
 		})
 		let result
@@ -344,7 +372,6 @@ export async function updateInventory(req, res, next) {
 			//! Case 1: we have to create a new inventory
 			const newInventory = new Inventory({ companyId, inventory })
 			result = await newInventory.save()
-
 
 			return res.status(201).json({
 				status: 'ok',
@@ -429,6 +456,11 @@ export async function updateInventory(req, res, next) {
 						),
 				]
 
+				await Inventory.updateMany(
+					{ companyId: companyId },
+					{ $set: { isDeleted: true } }
+				)
+
 				const inventoryDBInstance = new Inventory({
 					companyId,
 					inventory: mergedArray,
@@ -445,6 +477,51 @@ export async function updateInventory(req, res, next) {
 		}
 	} catch (error) {
 		next(error)
+	}
+}
+
+export async function deleteInventory(req, res, next) {
+	const companyId = new mongoose.Types.ObjectId(req.body.companyId)
+	try {
+		// delete all previous record
+		await Inventory.updateMany(
+			{ companyId: companyId },
+			{ $set: { isDeleted: true } }
+		)
+
+		return res.status(200).json({
+			status: 'ok',
+			data: [],
+			message: 'items deleted',
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function getLatestInventory(req, res, next) {
+	const companyId = new mongoose.Types.ObjectId(req.query.companyId)
+
+	try {
+		const latestInventory = await Inventory.findOne({
+			companyId,
+			isDeleted: false,
+		}).sort({
+			createdAt: -1,
+		}) // Sort by createdAt in descending order
+
+		if (!latestInventory) {
+			return res
+				.status(200)
+				.json({ status: 'ok', data: [], message: 'Inventory not found' })
+		}
+
+		res.status(200).json({
+			status: 'ok',
+			data: latestInventory.inventory, // Just send the inventory array
+		})
+	} catch (error) {
+		next(error) // Pass errors to the error-handling middleware
 	}
 }
 
@@ -679,29 +756,6 @@ export async function getInprogressBooking(req, res, next) {
 		})
 	} catch (error) {
 		next(error)
-	}
-}
-
-export async function getLatestInventory(req, res, next) {
-	const companyId = new mongoose.Types.ObjectId(req.query.companyId)
-
-	try {
-		const latestInventory = await Inventory.findOne({ companyId }).sort({
-			createdAt: -1,
-		}) // Sort by createdAt in descending order
-
-		if (!latestInventory) {
-			return res
-				.status(404)
-				.json({ status: 'error', message: 'Inventory not found' })
-		}
-
-		res.status(200).json({
-			status: 'ok',
-			data: latestInventory.inventory, // Just send the inventory array
-		})
-	} catch (error) {
-		next(error) // Pass errors to the error-handling middleware
 	}
 }
 

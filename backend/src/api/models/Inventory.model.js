@@ -32,6 +32,11 @@ const inventorySchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+
 });
 
 const Inventory = mongoose.model("Inventory", inventorySchema);

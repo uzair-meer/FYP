@@ -1,6 +1,7 @@
 import express from 'express'
 import {
 	deleteEmployee,
+	deleteInventory,
 	getAllClientBookings,
 	getBookingRequests,
 	getClientReviews,
@@ -11,6 +12,7 @@ import {
 	getLatestInventory,
 	postBookingRequest,
 	postEmployee,
+	postInventory,
 	putApproveBookingReq,
 	putClientReviews,
 	putDeclineBookingReq,
@@ -33,6 +35,8 @@ router.get(`/client-reviews`, getClientReviews)
 router.put(`/client-reviews`, putClientReviews)
 router.get(`/client-bookings`, getAllClientBookings)
 router.post(`/inventory/update`, updateInventory)
+router.post(`/inventory/post`, postInventory)
+router.delete(`/inventory/delete`, deleteInventory)
 router.get(`/inventory`, getLatestInventory)
 
 router.get(`/booking-requests`, getBookingRequests)
