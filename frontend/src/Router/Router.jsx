@@ -22,9 +22,9 @@ import Profile from '../pages/client/profile/Profile'
 import Services from '../pages/services/Services'
 import SignIn from '../pages/signin/SignIn'
 import UserProtectedRoute, {
-	AdminProtectedRoute,
-	CompanyProtectedRoute,
-	DriverProtectedRoute,
+  AdminProtectedRoute,
+  CompanyProtectedRoute,
+  DriverProtectedRoute,
 } from './ProtectedRoutes'
 // import CurrentBooking from "../pages/client/currentBooking/CurrentBooking";
 import CompaniesRequests from '../pages/admin/companiesRequests/CompaniesRequests'
@@ -51,69 +51,69 @@ const AppRouter = () => {
       <Route path="signup" element={<SignUp />} />
       <Route path="signin" element={<SignIn />} />
 
-			{/* // client routes */}
+      {/* // client routes */}
 
-			<Route
-				path="client"
-				element={<UserProtectedRoute user={user} component={<User />} />}
-			>
-				<Route index element={<UserDashboard />} />
-				<Route path="bookings" element={<UserHistory />} />
-				<Route path="profile" element={<Profile />} />
-				<Route path="rates" element={<CompanyRates />} />
-				{/* <Route path="current-booking" element={<CurrentBooking />} /> */}
-				{/* <Route path="inprogress-bookings" element={<InprogressBookings />} /> */}
-				{/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
-				{/* <Route path="inprogress-bookings/details" element={<BookingDetail />} /> */}
-				<Route
-					path="bookings/completed"
-					element={<ClientCompletedBookings />}
-				/>
-				<Route path="booking/detail" element={<ClientBookingDetail />} />
-			</Route>
+      <Route
+        path="client"
+        element={<UserProtectedRoute user={user} component={<User />} />}
+      >
+        <Route index element={<UserDashboard />} />
+        <Route path="bookings" element={<UserHistory />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="rates" element={<CompanyRates />} />
+        {/* <Route path="current-booking" element={<CurrentBooking />} /> */}
+        {/* <Route path="inprogress-bookings" element={<InprogressBookings />} /> */}
+        {/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
+        {/* <Route path="inprogress-bookings/details" element={<BookingDetail />} /> */}
+        <Route
+          path="bookings/completed"
+          element={<ClientCompletedBookings />}
+        />
+<Route path="booking/detail" element={<ClientBookingDetail />} />
+      </Route>
 
-			<Route
-				path="company"
-				element={<CompanyProtectedRoute user={user} component={<Company />} />}
-			>
-				{/* Define your nested routes here */}
-				<Route index element={<Dashboard />} />
-				{/* <Route path="bookings" element={<CompanyHistory />} /> */}
-				{/* <Route path="employes" element={<Employes />} /> */}
-				<Route path="employees" element={<Employees />} />
-				<Route path="bookings/requested" element={<RequestedBookings />} />
-				<Route path="prices" element={<SetPrices />} />
-				<Route
-					path="bookings/completed"
-					exact
-					element={<CompanyCompletedBookings />}
-				/>
-				<Route path="reviews/sentiment/report" element={<SentimentReport />} />
-			</Route>
+      <Route
+        path="company"
+        element={<CompanyProtectedRoute user={user} component={<Company />} />}
+      >
+        {/* Define your nested routes here */}
+        <Route index element={<Dashboard />} />
+        {/* <Route path="bookings" element={<CompanyHistory />} /> */}
+        {/* <Route path="employes" element={<Employes />} /> */}
+        <Route path="employees" element={<Employees />} />
+        <Route path="bookings/requested" element={<RequestedBookings />} />
+        <Route path="prices" element={<SetPrices />} />
+        <Route
+          path="bookings/completed"
+exact
+          element={<CompanyCompletedBookings />}
+        />
+<Route path="reviews/sentiment/report" element={<SentimentReport />} />
+      </Route>
 
-			<Route
-				path="admin"
-				element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
-			>
-				<Route index element={<AdminDashboard />} />
-				{/* <Route path="companies" element={<Companies />} /> */}
-				<Route path="companies/requests" element={<CompaniesRequests />} />
-				{/* <Route path="services" element={<Services />} /> */}
-			</Route>
+      <Route
+        path="admin"
+        element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
+      >
+        <Route index element={<AdminDashboard />} />
+        {/* <Route path="companies" element={<Companies />} /> */}
+        <Route path="companies/requests" element={<CompaniesRequests />} />
+        {/* <Route path="services" element={<Services />} /> */}
+      </Route>
 
-			<Route
+      <Route
 				path="employee"
 				element={
 					<DriverProtectedRoute user={user} component={<EmployeePanel />} />
 				}
 			>
-				<Route index element={<EmployeeDashboard />} />
+        <Route index element={<EmployeeDashboard />} />
 				{/* <Route index element={<DriverDashboard />} />
-				{/* <Route path="bookings" element={<DriverHistory />} />
-				<Route path="current-booking" element={<DriverCurrentBooking />} /> */}
-			</Route>
-		</Routes>
-	)
+        {/* <Route path="bookings" element={<DriverHistory />} />
+        <Route path="current-booking" element={<DriverCurrentBooking />} /> */}
+      </Route>
+    </Routes>
+  )
 }
 
 export default AppRouter;
