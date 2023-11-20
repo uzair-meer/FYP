@@ -5,6 +5,7 @@ import { useAuth } from 'src/context/AuthContext.jsx'
 import Table from '../../../components/Table/Table'
 import DeleteItem from '../components/DeleteItem'
 import { createTableData, generateColumnNames } from '../helper/item-table'
+import EditItem from '../components/EditItem'
 
 // const ITEMS = ['sofa', 'bed', 'oven', 'fridge']
 
@@ -57,12 +58,12 @@ export default function SetPrices() {
 		) {
 			// Ensure the value is a number and greater than 0
 			if (!isNaN(value) && Number(value) > 0) {
-				setItemPrices({ ...itemPrices, [name]: value })
+				setItemPrices((prev) => ({ ...prev, [name]: value }))
 			}
 		} else {
 			// For other inputs like the select element, just check if it's not empty
 			if (value.trim() !== '') {
-				setItemPrices({ ...itemPrices, [name]: value.toLowerCase() })
+				setItemPrices((prev) => ({ ...prev, [name]: value.toLowerCase() }))
 			}
 		}
 	}
@@ -231,7 +232,7 @@ export default function SetPrices() {
 						<>
 							<h3 className="mt-8 mb-3 font-semibold text-xl">Set Price</h3>
 							<div className="flex flex-col w-[15.5rem]">
-								<label className="font-medium" htmlFor="item">
+								<label className="font-medium" htmlFor="name">
 									Item
 								</label>
 								<select
@@ -317,6 +318,14 @@ export default function SetPrices() {
 				columns={tableData.columns}
 				data={tableData.data}
 				components={[
+					{
+						Component: EditItem,
+						props: {
+							setTableData: setTableData,
+							setInventory: setInventory,
+							inventory: inventory,
+						},
+					},
 					{
 						Component: DeleteItem,
 						props: {

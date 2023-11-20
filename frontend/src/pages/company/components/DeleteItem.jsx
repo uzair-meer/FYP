@@ -85,7 +85,7 @@ export default function DeleteItem({
 						strokeLinecap="round"
 						strokeLinejoin="round"
 					/>
-				</svg>{' '}
+				</svg>
 			</button>
 			<Modal showModal={showModal} setShowModal={setShowModal}>
 				<form

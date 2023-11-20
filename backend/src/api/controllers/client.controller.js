@@ -48,6 +48,9 @@ export async function getCompanyWithPrices(req, res, next) {
 	try {
 		const result = await Inventory.aggregate([
 			{
+				$match: { isDeleted: false }, // Filter out documents where isDeleted is true
+			},
+			{
 				$sort: { createdAt: -1 }, // Sort by createdAt in descending order to get the latest document
 			},
 			{
