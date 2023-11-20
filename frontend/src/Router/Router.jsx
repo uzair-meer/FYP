@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes } from "react-router-dom";
 
 import { Dashboard } from 'src/pages/company/dashbord/Dashboard'
 // import Employes from 'src/pages/company/employes/Employes'
@@ -43,13 +43,13 @@ import SetPrices from '../pages/company/setprice/SetPrices'
 // import FetchPricesForm from "../pages/services/GetPrices";
 
 const AppRouter = () => {
-	const { user } = useAuth()
-	return (
-		<Routes>
-			{/* public routes */}
-			<Route path="/" element={<Home />} />
-			<Route path="signup" element={<SignUp />} />
-			<Route path="signin" element={<SignIn />} />
+  const { user } = useAuth();
+  return (
+    <Routes>
+      {/* public routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="signup" element={<SignUp />} />
+      <Route path="signin" element={<SignIn />} />
 
 			{/* // client routes */}
 
@@ -116,4 +116,4 @@ const AppRouter = () => {
 	)
 }
 
-export default AppRouter
+export default AppRouter;
