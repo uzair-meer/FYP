@@ -13,7 +13,6 @@ const inventorySchema = new Schema({
       name: {
         type: String,
         required: true,
-        unique: true,
       },
       movingPrice: {
         type: Number,
@@ -33,6 +32,11 @@ const inventorySchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
+
 });
 
 const Inventory = mongoose.model("Inventory", inventorySchema);

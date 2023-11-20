@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@types/body-parser": "^1.19.3",
+    "@types/natural": "^5.1.5",
     "bcrypt": "^5.1.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
@@ -26,6 +27,9 @@
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^7.5.3",
-    "socket.io": "^4.7.2"
+    "natural": "^6.8.0",
+    "socket.io": "^4.7.2",
+    "spelling-corrector": "^3.0.0",
+    "stopword": "^2.0.8"
   }
 }

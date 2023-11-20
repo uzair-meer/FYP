@@ -42,7 +42,7 @@ export function MenuLayout({ menuItems }) {
         </div>
         <div className="mt-12">
           <ul className="flex flex-col items-start justify-start gap-5 text-textColor">
-            {menuItems.map((link) => (
+            {menuItems?.map((link) => (
               <Link to={link.route} key={link.name}>
                 <li
                   className={`w-[9rem] p-2 pl-0 border-primary cursor-pointer flex items-center hover:bg-white hover:text-primary text-white rounded-r-[10px]  transition-all ${

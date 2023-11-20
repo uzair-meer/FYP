@@ -7,7 +7,6 @@ export async function postBooking(req, res, next) {
 	console.log(req.body)
 	const {
 		clientId,
-		companyId,
 		pickUpAddress,
 		destinationAddress,
 		services,
@@ -15,6 +14,7 @@ export async function postBooking(req, res, next) {
 	} = req.body
 
 	try {
+		const companyId = new mongoose.Types.ObjectId(req.body.companyId)
 		//get latest inventoryId from inventroy
 		const inventoryId = await Inventory.findOne({ companyId })
 			.select('_id')
@@ -47,6 +47,9 @@ export async function getCompanyWithPrices(req, res, next) {
 
 	try {
 		const result = await Inventory.aggregate([
+			{
+				$match: { isDeleted: false }, // Filter out documents where isDeleted is true
+			},
 			{
 				$sort: { createdAt: -1 }, // Sort by createdAt in descending order to get the latest document
 			},

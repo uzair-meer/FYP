@@ -25,3 +25,8 @@ select {
 .equal-cols th, .equal-cols td {
 	width: calc(100% / var(--num-cols));
 }
+
+.driver-status option:not(:checked) {
+  background-color: #ffff;
+	/* font-size: 1.5rem; */
+}

@@ -1,258 +1,10 @@
 import { RiDashboardFill } from "react-icons/ri";
 
-import { FaUsers } from "react-icons/fa";
-import { MdReviews } from "react-icons/md";
-import { BsFillCalendarCheckFill } from "react-icons/bs";
-import { MdPriceChange } from "react-icons/md";
 import { BiSolidUserCircle } from "react-icons/bi";
-import { BsBookmark } from "react-icons/bs";
-import { BsGear } from "react-icons/bs";
+import { BsBookmark, BsFillCalendarCheckFill, BsGear } from "react-icons/bs";
+import { FaUsers } from "react-icons/fa";
+import { MdPriceChange, MdReviews } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
-export const EMPLOYES_TABLE_COLUMNS = [
-  {
-    Header: "Name",
-    accessor: "name",
-  },
-  {
-    Header: "Email",
-    accessor: "email",
-  },
-  {
-    Header: "Role",
-    accessor: "role",
-  },
-  {
-    Header: "Phone Number",
-    accessor: "phone",
-  },
-];
-
-export const COMPANY_RATES_COLUMNS = [
-  {
-    Header: "Name",
-    accessor: "companyName",
-  },
-  {
-    Header: "Services",
-    accessor: "services",
-  },
-  {
-    Header: "Cost",
-    accessor: "price",
-  },
-];
-
-export const TOTAL_COMPANIES_COLS = [
-  {
-    Header: "Company Name",
-    accessor: "companyname",
-  },
-  {
-    Header: "Company Services",
-    accessor: "companyservices",
-  },
-  {
-    Header: "Company Contact",
-    accessor: "companycontact",
-  },
-  {
-    Header: "Company Status",
-    accessor: "companystatus",
-  },
-];
-export const COMPANIES_DATA = [
-  {
-    id: 1,
-    companyname: "abc",
-    companyservices: ["packing", "unpacking"],
-    companycontact: "+921334550",
-    companystatus: "pending",
-  },
-  {
-    id: 2,
-    companyname: "xyz",
-    companyservices: ["packing", "unpacking"],
-    companycontact: "+921334550",
-    companystatus: "approved",
-  },
-  {
-    id: 3,
-    companyname: "qwerty",
-    companyservices: ["packing", "unpacking"],
-    companystatus: "approved",
-    companycontact: "+921339950",
-  },
-  {
-    id: 4,
-    companyname: "batmbolies",
-    companyservices: ["packing", "unpacking"],
-    companycontact: "+921334550",
-    companystatus: "declines",
-  },
-];
-export const COMPANY_BOOKINGS_TABLE_COLUMNS = [
-  {
-    Header: "Date",
-    accessor: "date",
-  },
-  {
-    Header: "Customer Name",
-    accessor: "name",
-  },
-  {
-    Header: "Services",
-    accessor: "services",
-  },
-  {
-    Header: "Quote",
-    accessor: "quote",
-  },
-];
-
-export const employees = [
-  {
-    id: 1,
-    name: "abc",
-    role: "driver",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-
-  {
-    id: 2,
-    name: "xyz",
-    role: "driver",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-  {
-    id: 3,
-    name: "abc",
-    role: "electrician",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-  {
-    id: 4,
-    name: "abc",
-    role: "labor",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-  {
-    id: 5,
-    name: "abc",
-    role: "driver",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-  {
-    id: 6,
-    name: "lmn",
-    role: "plumber",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-  {
-    id: 7,
-    name: "abc",
-    role: "electritian",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-  {
-    id: 8,
-    name: "abc",
-    role: "driver",
-    phone: "0303189384",
-    email: "abc@gmail.com",
-  },
-];
-
-// export const UserHistoryCols = ["Date", "Company Name", "Services", "Quote"];
-// export const CompanyHistoryCols = [
-//   "Date",
-//   "Customer Name",
-//   "Services",
-//   "Quote",
-//   "Status",
-// ];
-
-export const USER_BOOKINGS_TABLE_COLUMNS = [
-  {
-    Header: "Date",
-    accessor: "date",
-  },
-  {
-    Header: "Company Name",
-    accessor: "company",
-  },
-  {
-    Header: "Services",
-    accessor: "services",
-  },
-  {
-    Header: "Quote",
-    accessor: "quote",
-  },
-];
-
-export const User_History = [
-  {
-    id: 1,
-    date: "12 jan, 2023",
-    company: "Shehroz & Co",
-    services: "Packing",
-    quote: "12, 500",
-    status: "completed",
-    name: "hamza",
-  },
-  {
-    id: 2,
-    date: "2 feb, 2023",
-    company: "Hakim & Co",
-    services: "Packing, unpacking",
-    quote: "20, 500",
-    status: "completed",
-    name: "uzair",
-  },
-  {
-    id: 3,
-    date: "24 march, 2023",
-    company: "Shehroz & Co",
-    services: "moving",
-    quote: "12, 500",
-    status: "completed",
-    name: "abdul",
-  },
-  {
-    id: 1,
-    date: "12 jan, 2023",
-    company: "Shehroz & Co",
-    services: "Packing",
-    quote: "12, 500",
-    status: "completed",
-    name: "haji",
-  },
-  {
-    id: 3,
-    date: "22 jul, 2023",
-    company: "Anjum Movers",
-    services: "Packing, unpacking",
-    quote: "5, 500",
-    status: "completed",
-    name: "janum",
-  },
-  {
-    id: 4,
-    date: "11 dec, 2022",
-    company: "Shehroz & Co",
-    services: "moving",
-    quote: "7, 200",
-    status: "completed",
-    name: "salman",
-  },
-];
 
 export const CLIENT_PORTAL_ROUTES = [
   {
@@ -299,35 +51,35 @@ export const COMPANY_PORTAL_ROUTES = [
   },
   {
     name: "Employees",
-    route: "/company/employes",
+    route: "/company/employees",
     icon: (
       <FaUsers className="text-[1.4rem]   text-white mx-2 cursor-pointer" />
     ),
   },
   {
-    name: "Bookings",
-    route: "/company/bookings",
+    name: "Requested Bookings",
+    route: "/company/bookings/requested",
     icon: (
       <BsFillCalendarCheckFill className="text-[1.4rem] text-white hover:text-primary  mx-2 cursor-pointer" />
     ),
   },
-  // {
-  //   name: "Reviews",
-  //   route: "/company/reviews",
-  //   icon: (
-  //     <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
-  //   ),
-  // },
   {
-    name: "RequestedBookings",
-    route: "/company/requested",
+    name: "Completed Bookings",
+    route: "/company/bookings/completed",
     icon: (
       <MdReviews className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
     ),
   },
   {
-    name: "SetPrices",
-    route: "/company/setprice",
+    name: "Set Prices",
+    route: "/company/prices",
+    icon: (
+      <MdPriceChange className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+    ),
+  },
+  {
+    name: "Sentiment Analysis",
+    route: "/company/reviews/sentiment/report",
     icon: (
       <MdPriceChange className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
     ),
@@ -336,24 +88,24 @@ export const COMPANY_PORTAL_ROUTES = [
 
 export const ADMIN_ROUTES = [
   {
-    name: "Dashboard",
-    route: "/admin",
+    name: "Requests",
+    route: "/admin/companies/requests",
     icon: (
       <RiDashboardFill className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
     ),
   },
-  {
-    name: "Companeies",
-    route: "/admin/companies",
-    icon: (
-      <BsBookmark className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
-    ),
-  },
-  {
-    name: "Services",
-    route: "/admin/services",
-    icon: <BsGear className="text-[1.4rem] text-white  mx-2 cursor-pointer" />,
-  },
+  // {
+  //   name: "Companeies",
+  //   route: "/admin/companies",
+  //   icon: (
+  //     <BsBookmark className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+  //   ),
+  // },
+  // {
+  //   name: "Services",
+  //   route: "/admin/services",
+  //   icon: <BsGear className="text-[1.4rem] text-white  mx-2 cursor-pointer" />,
+  // },
 ];
 
 export const Driver_Routes = [

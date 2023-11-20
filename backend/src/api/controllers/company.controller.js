@@ -329,70 +329,199 @@ export async function getAllClientBookings(req, res, next) {
 	}
 }
 
-export async function postProduct(req, res, next) {
-	// const companyId = new mongoose.Types.ObjectId(req.body.companyId)
-	const { companyId, inventory } = req.body
+export async function postInventory(req, res, next) {
+	let { inventory } = req.body
+	const companyId = new mongoose.Types.ObjectId(req.body.companyId)
 
 	try {
-		//? Check if the company exists in the Inventory collection
-		// Check if the company exists in the Inventory collection
-		const existingInventory = await Inventory.findOne({ companyId }).sort({
-			createdAt: -1,
-		})
-		let result
-		let message
-		if (!existingInventory) {
-			// If the company doesn't exist, insert the data as a new document
-			const newInventory = new Inventory({ companyId, inventory })
-			result = await newInventory.save()
-			message = 'case 1: first time inventory created'
-		} else {
-			let shouldCreateNewCollection = false
+		// delete all previous record
+		await Inventory.updateMany(
+			{ companyId: companyId },
+			{ $set: { isDeleted: true } }
+		)
 
-			// Filter out existing products from the new inventory
-			const filteredInventory = inventory.filter((product) => {
-				const existingProductIndex = existingInventory.inventory.findIndex(
-					(existingProduct) => existingProduct.name === product.name
-				)
+		//! Case 1: we have to create a new inventory
+		const newInventory = new Inventory({ companyId, inventory })
+		await newInventory.save()
 
-				if (existingProductIndex === -1) {
-					// Product doesn't exist in the current inventory, add it
-					return true
-				} else {
-					// Product already exists in the current inventory, update its prices
-					existingInventory.inventory[existingProductIndex] = product
-					shouldCreateNewCollection = true
-					return false
-				}
-			})
-
-			if (shouldCreateNewCollection) {
-				// Create a new inventory document with the existing products and the new products
-				const updatedInventory = new Inventory({
-					companyId,
-					inventory: [...existingInventory.inventory, ...filteredInventory],
-				})
-
-				result = await updatedInventory.save()
-				message =
-					'case 2: new inventory created as some product already existed'
-			} else {
-				// Update the existing inventory with the filtered inventory
-				existingInventory.inventory = [
-					...existingInventory.inventory,
-					...filteredInventory,
-				]
-				result = await existingInventory.save()
-				message = 'case 3: add product to latest collection'
-			}
-		}
-		console.log(message)
-		res.status(200).json({
+		return res.status(201).json({
 			status: 'ok',
-			data: result,
+			data: inventory,
+			message: 'Case 1: first time creation',
 		})
 	} catch (error) {
 		next(error)
+	}
+}
+
+export async function updateInventory(req, res, next) {
+	let { inventory } = req.body
+	const companyId = new mongoose.Types.ObjectId(req.body.companyId)
+
+	try {
+		// Check if inventory exists for the given companyId
+		const existingInventory = await Inventory.findOne({
+			companyId,
+			isDeleted: false,
+		}).sort({
+			createdAt: -1,
+		})
+		let result
+
+		if (!existingInventory) {
+			//! Case 1: we have to create a new inventory
+			const newInventory = new Inventory({ companyId, inventory })
+			result = await newInventory.save()
+
+			return res.status(201).json({
+				status: 'ok',
+				data: inventory,
+				message: 'Case 1: first time creation',
+			})
+		}
+
+		// Convert MongoDB documents to plain objects
+		const plainExistingInventory = existingInventory.inventory.map((item) =>
+			item.toObject()
+		)
+
+		const isItemMatch = (item1, item2) => {
+			return (
+				item1.name === item2.name &&
+				item1.movingPrice === item2.movingPrice &&
+				item1.packingPrice === item2.packingPrice &&
+				item1.unpackingPrice === item2.unpackingPrice
+			)
+		}
+
+		// Check if all items and prices exactly match
+		const allMatch = inventory.every((inputItem) =>
+			plainExistingInventory.some((dataItem) =>
+				isItemMatch(inputItem, dataItem)
+			)
+		)
+
+		if (allMatch) {
+			//! Case 2: All items and prices exactly matched
+
+			//FIXME: find appropriate error for this
+			return res.status(200).json({
+				status: 'ok',
+				data: inventory,
+				message: 'Case 2: all items and prices are same No inventory created',
+			})
+		} else {
+			const allNamesDifferent = inventory.every(
+				(inputItem) =>
+					!plainExistingInventory.some(
+						(dataItem) => inputItem.name === dataItem.name
+					)
+			)
+
+			if (allNamesDifferent) {
+				//! Case 3: all inventory items are different update the latest inventory
+
+				const result = await Inventory.findOneAndUpdate(
+					{ companyId: companyId },
+					{ $push: { inventory: { $each: inventory } } },
+					{ new: true, sort: { createdAt: -1 } }
+				)
+
+				const resultObj = result.inventory.map((item) => item.toObject())
+				const resultWithoutId = resultObj.map(({ _id, ...rest }) => ({
+					...rest,
+				}))
+
+				return res.status(200).json({
+					status: 'ok',
+					data: resultWithoutId,
+					message:
+						'Case 3: all items and prices are different latest inventory updated',
+				})
+			} else {
+				//! Case 4: if some prices or some names are different then create a new inventory
+				// Function to remove _id property and clone the object
+				const cloneWithoutId = ({ _id, ...rest }) => ({ ...rest })
+
+				// new array which have all objects of inventory and dbInventory but with 2 conditions
+				// condition 1: put all objects of inventory and dbInventory into new array whose name dont match
+				// condition 2: if names match then push only inventory object
+				const mergedArray = [
+					...inventory,
+					...plainExistingInventory
+						.map(cloneWithoutId)
+						.filter(
+							(dbItem) =>
+								!inventory.some((invItem) => invItem.name === dbItem.name)
+						),
+				]
+
+				await Inventory.updateMany(
+					{ companyId: companyId },
+					{ $set: { isDeleted: true } }
+				)
+
+				const inventoryDBInstance = new Inventory({
+					companyId,
+					inventory: mergedArray,
+				})
+				result = await inventoryDBInstance.save()
+
+				return res.status(201).json({
+					status: 'ok',
+					data: mergedArray,
+					message:
+						'Case 4: items are different but some are same so new inventory is created ',
+				})
+			}
+		}
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function deleteInventory(req, res, next) {
+	const companyId = new mongoose.Types.ObjectId(req.body.companyId)
+	try {
+		// delete all previous record
+		await Inventory.updateMany(
+			{ companyId: companyId },
+			{ $set: { isDeleted: true } }
+		)
+
+		return res.status(200).json({
+			status: 'ok',
+			data: [],
+			message: 'items deleted',
+		})
+	} catch (error) {
+		next(error)
+	}
+}
+
+export async function getLatestInventory(req, res, next) {
+	const companyId = new mongoose.Types.ObjectId(req.query.companyId)
+
+	try {
+		const latestInventory = await Inventory.findOne({
+			companyId,
+			isDeleted: false,
+		}).sort({
+			createdAt: -1,
+		}) // Sort by createdAt in descending order
+
+		if (!latestInventory) {
+			return res
+				.status(200)
+				.json({ status: 'ok', data: [], message: 'Inventory not found' })
+		}
+
+		res.status(200).json({
+			status: 'ok',
+			data: latestInventory.inventory, // Just send the inventory array
+		})
+	} catch (error) {
+		next(error) // Pass errors to the error-handling middleware
 	}
 }
 
@@ -627,29 +756,6 @@ export async function getInprogressBooking(req, res, next) {
 		})
 	} catch (error) {
 		next(error)
-	}
-}
-
-export async function getLatestInventory(req, res, next) {
-	const companyId = new mongoose.Types.ObjectId(req.query.companyId)
-
-	try {
-		const latestInventory = await Inventory.findOne({ companyId })
-			.sort({ createdAt: -1 }) // Sort by createdAt in descending order
-			.exec() // Execute the query
-
-		if (!latestInventory) {
-			return res
-				.status(404)
-				.json({ status: 'error', message: 'Inventory not found' })
-		}
-
-		res.status(200).json({
-			status: 'ok',
-			data: latestInventory.inventory, // Just send the inventory array
-		})
-	} catch (error) {
-		next(error) // Pass errors to the error-handling middleware
 	}
 }
 
