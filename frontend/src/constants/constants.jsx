@@ -29,6 +29,11 @@ export const CLIENT_PORTAL_ROUTES = [
 		route: '/client/bookings/completed',
 		icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
 	},
+	{
+		name: 'Get Company Support',
+		route: '/client/chat',
+		icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
+	},
 	// {
 	//   name: "InprogressBookings",
 	//   route: "/user/inprogress-bookings",
@@ -81,6 +86,13 @@ export const COMPANY_PORTAL_ROUTES = [
 	{
 		name: 'Sentiment Analysis',
 		route: '/company/reviews/sentiment/report',
+		icon: (
+			<MdPriceChange className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
+		),
+	},
+	{
+		name: 'Client Messages',
+		route: '/company/chat',
 		icon: (
 			<MdPriceChange className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
 		),

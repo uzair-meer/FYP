@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react'
 import Table from 'src/components/Table/Table.jsx'
-import { COMPANY_RATES_COLUMNS } from 'src/constants/constants.jsx'
 import { useServices } from 'src/context/UserContext.jsx'
 import ConfirmBooking from '../components/ConfirmBooking'
 

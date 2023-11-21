@@ -1,7 +1,12 @@
-import Services from "src/pages/services/Services";
+import { CLIENT_PORTAL_ROUTES } from 'src/constants/constants'
+import MenuLayout from 'src/layout/MenuLayout/MenuLayout'
 
-export default function UserDashboard() {
-  return <Services />;
+export default function ClientDashboard() {
+	return (
+		<>
+			<MenuLayout menuItems={CLIENT_PORTAL_ROUTES} />
+		</>
+	)
 }
 
 // import L from "leaflet";

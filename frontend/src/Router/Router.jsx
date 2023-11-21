@@ -1,58 +1,33 @@
 import { Route, Routes } from 'react-router-dom'
-
-import SetPricesForm from 'src/pages/company/Setprice/SetPricesForm'
-import { Dashboard } from 'src/pages/company/dashbord/Dashboard'
-// import Employes from 'src/pages/company/employes/Employes'
-import CompanyHistory from 'src/pages/company/history/CompanyHistory'
-import Home from 'src/pages/home'
-import CompanyRates from 'src/pages/user/CompanyRates/CompanyRates.jsx'
 import SignUp from '../components/Signup/SignUp'
 import { useAuth } from '../context/AuthContext'
 import AdminPanel from '../pages/admin'
-import Companies from '../pages/admin/companies/Companies'
-import { AdminDashboard } from '../pages/admin/dashboard/AdminDashboard'
+import CompaniesRequests from '../pages/admin/companiesRequests/CompaniesRequests'
+import CompanyRates from '../pages/client/CompanyRates/CompanyRates'
+import ClientChatPage from '../pages/client/chat/ClientChatPage'
+import ClientCompletedBookings from '../pages/client/completedBookings/ClientCompletedBookings'
+import ClientDashboard from '../pages/client/dashboard/ClientDashboard'
+import ClientBookingDetail from '../pages/client/detailBooking/ClientBookingDetail'
+import Profile from '../pages/client/profile/Profile'
 import Company from '../pages/company'
+import CompanyChatPage from '../pages/company/chat/CompanyChatPage'
+import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
+import { Dashboard } from '../pages/company/dashbord/Dashboard'
+import Employees from '../pages/company/employees/Employees'
 import RequestedBookings from '../pages/company/requestedBookings/RequestedBookings'
-import DriverPanel from '../pages/driver'
-import DriverDashboard from '../pages/driver/dashboard/DriverDashboard'
-import DriverHistory from '../pages/driver/history/DriverHistory'
+import SentimentReport from '../pages/company/sentimentReport/SentimentReport'
+import SetPrices from '../pages/company/setprice/SetPrices'
+import EmployeeDashboard from '../pages/employee/dashboard/EmployeeDashboard'
+import Home from '../pages/home'
 import Services from '../pages/services/Services'
 import SignIn from '../pages/signin/SignIn'
-import User from '../pages/user'
-import UserDashboard from '../pages/user/dashboard/UserDashboard'
-import UserHistory from '../pages/user/history/UserHistory'
-import Profile from '../pages/user/profile/Profile'
 import UserProtectedRoute, {
 	AdminProtectedRoute,
 	CompanyProtectedRoute,
 	DriverProtectedRoute,
 } from './ProtectedRoutes'
-// import CurrentBooking from "../pages/user/currentBooking/CurrentBooking";
-import CompaniesRequests from '../pages/admin/companiesRequests/CompaniesRequests'
-import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
-import Employees from '../pages/company/employees/Employees'
-import DriverCurrentBooking from '../pages/driver/currentBooking/DriverCurrentBooking'
-import ClientCompletedBookings from '../pages/user/completedBookings/ClientCompletedBookings'
-import BookingDetail from '../pages/user/inprogressBookings/BookingDetail'
-import InprogressBookings from '../pages/user/inprogressBookings/InprogressBookings'
 
-// import CurrentBooking from "../pages/client/currentBooking/CurrentBooking";
-// import CompaniesRequests from '../pages/admin/companiesRequests/CompaniesRequests'
-// import CompanyCompletedBookings from '../pages/company/completedBookings/CompanyCompletedBookings'
-// import Employees from '../pages/company/employees/Employees'
-import SentimentReport from '../pages/company/sentimentReport/SentimentReport'
-// import DriverCurrentBooking from '../pages/employee//currentBooking/DriverCurrentBooking'
-// import ClientCompletedBookings from '../pages/client/completedBookings/ClientCompletedBookings'
-
-import ClientBookingDetail from '../pages/client/detailBooking/ClientBookingDetail'
-// import BookingDetail from '../pages/client/inprogressBookings/BookingDetail'
-// import InprogressBookings from '../pages/client/inprogressBookings/InprogressBookings'
-import SetPrices from '../pages/company/setprice/SetPrices'
-import EmployeeDashboard from '../pages/employee/dashboard/EmployeeDashboard'
-
-// import FetchPricesForm from "../pages/services/GetPrices";
-
-const AppRouter = () => {
+export default function AppRouter() {
 	const { user } = useAuth()
 	return (
 		<Routes>
@@ -62,58 +37,56 @@ const AppRouter = () => {
 			<Route path="signin" element={<SignIn />} />
 
 			{/* // client routes */}
-
 			<Route
 				path="client"
-				element={<UserProtectedRoute user={user} component={<User />} />}
+				element={
+					<UserProtectedRoute user={user} component={<ClientDashboard />} />
+				}
 			>
-				<Route index element={<UserDashboard />} />
-				<Route path="bookings" element={<UserHistory />} />
+				<Route index element={<Services />} />
 				<Route path="profile" element={<Profile />} />
 				<Route path="rates" element={<CompanyRates />} />
-				{/* <Route path="current-booking" element={<CurrentBooking />} /> */}
-				<Route path="inprogress-bookings" element={<InprogressBookings />} />
-				{/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
-				<Route path="inprogress-bookings/details" element={<BookingDetail />} />
+				<Route path="chat" element={<ClientChatPage />} />
 				<Route
 					path="bookings/completed"
 					element={<ClientCompletedBookings />}
 				/>
+				{/* FIXME: the followig route should no not be open if state is not provided as it is only opened by Link */}
+				<Route path="booking/detail" element={<ClientBookingDetail />} />
 			</Route>
 
+			{/* // company routes */}
 			<Route
 				path="company"
 				element={<CompanyProtectedRoute user={user} component={<Company />} />}
 			>
-				{/* Define your nested routes here */}
 				<Route index element={<Dashboard />} />
-				<Route path="bookings" element={<CompanyHistory />} />
-				{/* <Route path="employes" element={<Employes />} /> */}
 				<Route path="employees" element={<Employees />} />
 				<Route path="bookings/requested" element={<RequestedBookings />} />
-				<Route path="setprice" element={<SetPricesForm />} />
+				<Route path="setprice" element={<SetPrices />} />
 				<Route
 					path="bookings/completed"
 					element={<CompanyCompletedBookings />}
 				/>
+				{/* <Route path="bookings/detail" element={<Company />} /> */}
+				<Route path="reviews/sentiment/report" element={<SentimentReport />} />
+				<Route path="chat" element={<CompanyChatPage />} />
 			</Route>
 
+			{/* // company routes */}
 			<Route
 				path="admin"
 				element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
 			>
-				<Route index element={<AdminDashboard />} />
-				<Route path="companies" element={<Companies />} />
-				<Route path="companies/requests" element={<CompaniesRequests />} />
-				<Route path="services" element={<Services />} />
+				{/* <Route index element={<AdminDashboard />} /> */}
+				<Route
+					index
+					path="companies/requests"
+					element={<CompaniesRequests />}
+				/>
 			</Route>
 
-			<Route path="driver" element={<DriverPanel />}>
-				<Route index element={<DriverDashboard />} />
-				<Route path="bookings" element={<DriverHistory />} />
-				<Route path="current-booking" element={<DriverCurrentBooking />} />
-			</Route>
-
+			{/* // company routes */}
 			<Route
 				path="employee"
 				element={
@@ -121,12 +94,7 @@ const AppRouter = () => {
 				}
 			>
 				<Route index element={<EmployeeDashboard />} />
-				{/* <Route index element={<DriverDashboard />} />
-        {/* <Route path="bookings" element={<DriverHistory />} />
-        <Route path="current-booking" element={<DriverCurrentBooking />} /> */}
 			</Route>
 		</Routes>
 	)
 }
-
-export default AppRouter
