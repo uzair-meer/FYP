@@ -1,5 +1,9 @@
+import { handleChatEvents } from './chatHandler.js'
+
 const setupSocket = (io) => {
 	io.on('connection', (socket) => {
+		handleChatEvents(socket, io)
+
 		//my socket.io code
 		socket.on('joinRoom', ({ roomId }) => {
 			socket.join(roomId)
