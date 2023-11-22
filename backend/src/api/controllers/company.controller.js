@@ -264,7 +264,7 @@ export async function getAllClientBookings(req, res, next) {
 				$project: {
 					clientId: 1,
 					clientName: '$client.name', // Use the client's name from the 'client' field
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
@@ -567,7 +567,7 @@ export async function getBookingRequests(req, res, next) {
 				$project: {
 					clientId: 1,
 					clientName: '$client.name', // Use the client's name from the 'client' field
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
@@ -696,7 +696,7 @@ export async function getInprogressBooking(req, res, next) {
 				$project: {
 					clientId: 1,
 					clientName: '$client.name', // Use the client's name from the 'client' field
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
@@ -919,7 +919,7 @@ export async function getCompletedBookings(req, res, next) {
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					clientName: '$client.name',
 					clientPhone: '$client.phone',

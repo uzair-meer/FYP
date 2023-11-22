@@ -45,7 +45,7 @@ function DriverHistory() {
         <div key={booking._id} className="booking-card bg-primary p-1">
           <p>{booking.status}</p>
           <p>
-            <strong>Pick-Up Address:</strong> {booking.pickUpAddress}
+            <strong>Pick-Up Address:</strong> {booking.pickupAddress}
           </p>
           <p>
             <strong>Destination Address:</strong> {booking.destinationAddress}

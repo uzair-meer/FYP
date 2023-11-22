@@ -4,6 +4,7 @@ import 'dotenv/config'
 import express from 'express'
 import { adminRoutes } from './api/routes/admin.routes.js'
 import { authRoutes } from './api/routes/auth.routes.js'
+import { bookingRoutes } from './api/routes/booking.routes.js'
 import { chatRoutes } from './api/routes/chat.routes.js'
 import { clientRoutes } from './api/routes/client.routes.js'
 import { companyRoutes } from './api/routes/company.routes.js'
@@ -45,6 +46,7 @@ app.use('/admin', adminRoutes)
 app.use('/employee', employeeRoutes)
 app.use('/review', reviewRoutes)
 app.use('/chat', chatRoutes)
+app.use('/booking', bookingRoutes)
 
 //? Express Error Middleware
 // eslint-disable-next-line no-unused-vars
