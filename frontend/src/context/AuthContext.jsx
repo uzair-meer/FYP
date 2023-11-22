@@ -1,6 +1,5 @@
 // context/AuthContext.js
 import { createContext, useContext, useState } from "react";
-import httpCommon from "src/api/http-common.js";
 import {
   getCookieObject,
   setCookieObject,
@@ -27,7 +26,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, setUser }}>
       {children}
     </AuthContext.Provider>
   );

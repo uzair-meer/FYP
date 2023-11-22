@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "src/context/AuthContext";
 import { setCookieObject } from "src/utils/helpers/cookies.js";
 
-const Profile = () => {
+const CompanyProfile = () => {
   const { user, setUser } = useAuth();
   const [name, setName] = useState("");
   const [password, setPassword] = useState(""); // Password should not be pre-filled for security reasons
@@ -115,4 +115,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default CompanyProfile;
