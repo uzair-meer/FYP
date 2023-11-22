@@ -1,14 +1,18 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { FaBell } from "react-icons/fa6";
-import Tooltip from "src/components/Tooltip/Tooltip";
-import { BiMenu, BiSearch } from "react-icons/bi";
-import { AiFillSetting, AiOutlineClose } from "react-icons/ai";
+import { useAuth } from "src/context/AuthContext.jsx";
+
+import { BiMenu } from "react-icons/bi";
+import { AiOutlineClose } from "react-icons/ai";
 import { useEffect, useState } from "react";
 import { MyPopover } from "src/components/Popover/Popover.jsx";
 import truck from "src/assets/truck.png";
+
 export function MenuLayout({ menuItems }) {
+  const { user } = useAuth();
+
   const [route, setRoute] = useState("");
   const location = useLocation();
+
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
 
   useEffect(() => {
@@ -31,7 +35,7 @@ export function MenuLayout({ menuItems }) {
               alt="logo"
               className="w-[5rem] cursor-pointer my-2 p-2 ml-3 block"
             />
-            <p className="text-white font-bold ">HShift</p>
+            <p className="text-white font-bold ">{user?.name}</p>
           </div>
           <button
             className="absolute top-4 right-1 sm:hidden hover:bg-grey p-1 rounded-[5px]"
@@ -46,7 +50,7 @@ export function MenuLayout({ menuItems }) {
               <Link to={link.route} key={link.name}>
                 <li
                   className={`w-[9rem] p-2 pl-0 border-primary cursor-pointer flex items-center hover:bg-white hover:text-primary text-white rounded-r-[10px]  transition-all ${
-                    route.split("/")[2] === link.route.split("/")[2] &&
+                    route.startsWith(link.route) &&
                     "border-l-8 border-white bg-primary text-white"
                   }`}
                 >
@@ -73,8 +77,8 @@ export function MenuLayout({ menuItems }) {
                 <Link>
                   <MyPopover>
                     <img
-                      className="inline-block w-8 min-w-[2rem] rounded-full ring-2 ring-white border-black border-[1px]"
-                      src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                      class="inline-block h-9 w-9 rounded-full border-black border-[1px]"
+                      src="https://source.unsplash.com/random/35×35"
                       alt=""
                     />
                   </MyPopover>
