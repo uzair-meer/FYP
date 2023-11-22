@@ -27,19 +27,20 @@ import EmployeeDashboard from '../pages/employee/dashboard/EmployeeDashboard'
 import Home from '../pages/home'
 import SignIn from '../pages/signin/SignIn'
 import UserProtectedRoute, {
-	AdminProtectedRoute,
-	CompanyProtectedRoute,
-	DriverProtectedRoute,
-} from './ProtectedRoutes'
+  AdminProtectedRoute,
+  CompanyProtectedRoute,
+  DriverProtectedRoute,
+} from "./ProtectedRoutes";
+import CompanyProfile from "../pages/company/profile/CompanyProfile";
 
 export default function AppRouter() {
-	const { user } = useAuth()
-	return (
-		<Routes>
-			{/* public routes */}
-			<Route path="/" element={<Home />} />
-			<Route path="signup" element={<SignUp />} />
-			<Route path="signin" element={<SignIn />} />
+  const { user } = useAuth();
+  return (
+    <Routes>
+      {/* public routes */}
+      <Route path="/" element={<Home />} />
+      <Route path="signup" element={<SignUp />} />
+      <Route path="signin" element={<SignIn />} />
 
 			{/* // client routes */}
 			<Route
@@ -88,28 +89,28 @@ export default function AppRouter() {
 				<Route path="booking/detail" element={<CompanyBookingDetail />} />
 			</Route>
 
-			{/* // company routes */}
-			<Route
-				path="admin"
-				element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
-			>
-				{/* <Route index element={<AdminDashboard />} /> */}
-				<Route
-					index
-					path="companies/requests"
-					element={<CompaniesRequests />}
-				/>
-			</Route>
+      {/* // company routes */}
+      <Route
+        path="admin"
+        element={<AdminProtectedRoute user={user} component={<AdminPanel />} />}
+      >
+        {/* <Route index element={<AdminDashboard />} /> */}
+        <Route
+          index
+          path="companies/requests"
+          element={<CompaniesRequests />}
+        />
+      </Route>
 
-			{/* // company routes */}
-			<Route
-				path="employee"
-				element={
-					<DriverProtectedRoute user={user} component={<EmployeeDashboard />} />
-				}
-			>
-				<Route index element={<EmployeeDashboard />} />
-			</Route>
-		</Routes>
-	)
+      {/* // company routes */}
+      <Route
+        path="employee"
+        element={
+          <DriverProtectedRoute user={user} component={<EmployeeDashboard />} />
+        }
+      >
+        <Route index element={<EmployeeDashboard />} />
+      </Route>
+    </Routes>
+  );
 }
