@@ -225,98 +225,98 @@ export async function putClientReviews(req, res, next) {
 export async function getAllClientBookings(req, res, next) {
   const companyId = new mongoose.Types.ObjectId(req.query.companyId);
 
-  try {
-    const result = await Booking.aggregate([
-      {
-        $match: { companyId: companyId },
-      },
-      {
-        $lookup: {
-          from: "users", // Name of the users collection
-          localField: "clientId", // Match clientId in bookings with _id in users
-          foreignField: "_id",
-          as: "client",
-        },
-      },
-      {
-        $lookup: {
-          from: "inventories", // Name of the inventories collection
-          localField: "inventoryId",
-          foreignField: "_id",
-          as: "inventory",
-        },
-      },
-      {
-        $unwind: "$client",
-      },
-      {
-        $unwind: "$inventory",
-      },
-      {
-        $lookup: {
-          from: "users", // Name of the users collection
-          localField: "employees",
-          foreignField: "_id",
-          as: "employeesData",
-        },
-      },
-      {
-        $project: {
-          clientId: 1,
-          clientName: "$client.name", // Use the client's name from the 'client' field
-          pickupAddress: "$pickUpAddress",
-          destinationAddress: "$destinationAddress",
-          status: 1,
-          services: 1,
-          cart: {
-            $map: {
-              input: "$cart",
-              as: "cartItem",
-              in: {
-                name: "$$cartItem.name",
-                quantity: "$$cartItem.quantity",
-                movingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.movingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                packingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.packingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                unpackingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.unpackingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-          inventoryId: "$inventory._id",
-          employees: "$employeesData.name", // Use the names of employees from the new 'employeesData' field
-          createdAt: 1,
-        },
-      },
-    ]);
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: { companyId: companyId },
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'clientId', // Match clientId in bookings with _id in users
+					foreignField: '_id',
+					as: 'client',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories', // Name of the inventories collection
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$unwind: '$client',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$project: {
+					clientId: 1,
+					clientName: '$client.name', // Use the client's name from the 'client' field
+					pickupAddress: '$pickupAddress',
+					destinationAddress: '$destinationAddress',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								packingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								unpackingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: '$employeesData.name', // Use the names of employees from the new 'employeesData' field
+					createdAt: 1,
+				},
+			},
+		])
 
     console.log("hello");
 
@@ -528,98 +528,98 @@ export async function getLatestInventory(req, res, next) {
 export async function getBookingRequests(req, res, next) {
   const companyId = new mongoose.Types.ObjectId(req.query.companyId);
 
-  try {
-    const result = await Booking.aggregate([
-      {
-        $match: { companyId: companyId, status: "requested" },
-      },
-      {
-        $lookup: {
-          from: "users", // Name of the users collection
-          localField: "clientId", // Match clientId in bookings with _id in users
-          foreignField: "_id",
-          as: "client",
-        },
-      },
-      {
-        $lookup: {
-          from: "inventories", // Name of the inventories collection
-          localField: "inventoryId",
-          foreignField: "_id",
-          as: "inventory",
-        },
-      },
-      {
-        $unwind: "$client",
-      },
-      {
-        $unwind: "$inventory",
-      },
-      {
-        $lookup: {
-          from: "users", // Name of the users collection
-          localField: "employees",
-          foreignField: "_id",
-          as: "employeesData",
-        },
-      },
-      {
-        $project: {
-          clientId: 1,
-          clientName: "$client.name", // Use the client's name from the 'client' field
-          pickupAddress: "$pickUpAddress",
-          destinationAddress: "$destinationAddress",
-          status: 1,
-          services: 1,
-          cart: {
-            $map: {
-              input: "$cart",
-              as: "cartItem",
-              in: {
-                name: "$$cartItem.name",
-                quantity: "$$cartItem.quantity",
-                movingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.movingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                packingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.packingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                unpackingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.unpackingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-          inventoryId: "$inventory._id",
-          employees: "$employeesData.name", // Use the names of employees from the new 'employeesData' field
-          createdAt: 1,
-        },
-      },
-    ]);
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: { companyId: companyId, status: 'requested' },
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'clientId', // Match clientId in bookings with _id in users
+					foreignField: '_id',
+					as: 'client',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories', // Name of the inventories collection
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$unwind: '$client',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$project: {
+					clientId: 1,
+					clientName: '$client.name', // Use the client's name from the 'client' field
+					pickupAddress: '$pickupAddress',
+					destinationAddress: '$destinationAddress',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								packingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								unpackingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: '$employeesData.name', // Use the names of employees from the new 'employeesData' field
+					createdAt: 1,
+				},
+			},
+		])
 
     res.status(200).json({
       status: "ok",
@@ -654,101 +654,101 @@ export async function postBookingRequest(req, res, next) {
 export async function getInprogressBooking(req, res, next) {
   const companyId = new mongoose.Types.ObjectId(req.query.companyId);
 
-  try {
-    const result = await Booking.aggregate([
-      {
-        $match: {
-          companyId: companyId,
-          status: { $nin: ["requested", "completed"] }, // Exclude 'requested' and 'completed'
-        },
-      },
-      {
-        $lookup: {
-          from: "users", // Name of the users collection
-          localField: "clientId", // Match clientId in bookings with _id in users
-          foreignField: "_id",
-          as: "client",
-        },
-      },
-      {
-        $lookup: {
-          from: "inventories", // Name of the inventories collection
-          localField: "inventoryId",
-          foreignField: "_id",
-          as: "inventory",
-        },
-      },
-      {
-        $unwind: "$client",
-      },
-      {
-        $unwind: "$inventory",
-      },
-      {
-        $lookup: {
-          from: "users", // Name of the users collection
-          localField: "employees",
-          foreignField: "_id",
-          as: "employeesData",
-        },
-      },
-      {
-        $project: {
-          clientId: 1,
-          clientName: "$client.name", // Use the client's name from the 'client' field
-          pickupAddress: "$pickUpAddress",
-          destinationAddress: "$destinationAddress",
-          status: 1,
-          services: 1,
-          cart: {
-            $map: {
-              input: "$cart",
-              as: "cartItem",
-              in: {
-                name: "$$cartItem.name",
-                quantity: "$$cartItem.quantity",
-                movingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.movingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                packingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.packingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                unpackingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.unpackingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-          inventoryId: "$inventory._id",
-          employees: "$employeesData.name", // Use the names of employees from the new 'employeesData' field
-          createdAt: 1,
-        },
-      },
-    ]);
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: {
+					companyId: companyId,
+					status: { $nin: ['requested', 'completed'] }, // Exclude 'requested' and 'completed'
+				},
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'clientId', // Match clientId in bookings with _id in users
+					foreignField: '_id',
+					as: 'client',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories', // Name of the inventories collection
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$unwind: '$client',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users', // Name of the users collection
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$project: {
+					clientId: 1,
+					clientName: '$client.name', // Use the client's name from the 'client' field
+					pickupAddress: '$pickupAddress',
+					destinationAddress: '$destinationAddress',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								packingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								unpackingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: '$employeesData.name', // Use the names of employees from the new 'employeesData' field
+					createdAt: 1,
+				},
+			},
+		])
 
     res.status(200).json({
       status: "ok",
@@ -841,162 +841,162 @@ export async function putDeclineBookingReq(req, res, next) {
 export async function getCompletedBookings(req, res, next) {
   const companyId = new mongoose.Types.ObjectId(req.query.companyId);
 
-  try {
-    const result = await Booking.aggregate([
-      {
-        $match: {
-          companyId,
-          status: "completed",
-        },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "companyId",
-          foreignField: "_id",
-          as: "company",
-        },
-      },
-      {
-        $lookup: {
-          from: "inventories",
-          localField: "inventoryId",
-          foreignField: "_id",
-          as: "inventory",
-        },
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "clientId",
-          foreignField: "_id",
-          as: "client",
-        },
-      },
-      {
-        $unwind: {
-          path: "$client",
-          preserveNullAndEmptyArrays: true, // Use this if a booking may not have a client
-        },
-      },
-      {
-        $unwind: "$company",
-      },
-      {
-        $unwind: "$inventory",
-      },
-      {
-        $lookup: {
-          from: "users",
-          localField: "employees",
-          foreignField: "_id",
-          as: "employeesData",
-        },
-      },
-      {
-        $lookup: {
-          from: "employees",
-          localField: "employees",
-          foreignField: "_id",
-          as: "employeeTitles",
-        },
-      },
-      {
-        $lookup: {
-          from: "reviews",
-          localField: "_id",
-          foreignField: "_id",
-          as: "review",
-        },
-      },
-      {
-        $unwind: {
-          path: "$review",
-          preserveNullAndEmptyArrays: true, // Use this if a booking may not have a review
-        },
-      },
-      {
-        $project: {
-          companyId: "$company._id",
-          companyName: "$company.name",
-          pickupAddress: "$pickUpAddress",
-          destinationAddress: "$destinationAddress",
-          clientName: "$client.name",
-          clientPhone: "$client.phone",
-          clientEmail: "$client.email",
-          clientCnic: "$client.cnic",
-          status: 1,
-          services: 1,
-          cart: {
-            $map: {
-              input: "$cart",
-              as: "cartItem",
-              in: {
-                name: "$$cartItem.name",
-                quantity: "$$cartItem.quantity",
-                movingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.movingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                packingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.packingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-                unpackingPrice: {
-                  $arrayElemAt: [
-                    "$inventory.inventory.unpackingPrice",
-                    {
-                      $indexOfArray: [
-                        "$inventory.inventory.name",
-                        "$$cartItem.name",
-                      ],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-          inventoryId: "$inventory._id",
-          employees: {
-            $map: {
-              input: "$employeesData",
-              as: "employee",
-              in: {
-                name: "$$employee.name",
-                phone: "$$employee.phone",
-                title: {
-                  $arrayElemAt: [
-                    "$employeeTitles.title",
-                    {
-                      $indexOfArray: ["$employeeTitles._id", "$$employee._id"],
-                    },
-                  ],
-                },
-              },
-            },
-          },
-          createdAt: 1,
-          review: "$review",
-        },
-      },
-      {
-        $sort: { createdAt: -1 },
-      },
-    ]);
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: {
+					companyId,
+					status: 'completed',
+				},
+			},
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'companyId',
+					foreignField: '_id',
+					as: 'company',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories',
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'clientId',
+					foreignField: '_id',
+					as: 'client',
+				},
+			},
+			{
+				$unwind: {
+					path: '$client',
+					preserveNullAndEmptyArrays: true, // Use this if a booking may not have a client
+				},
+			},
+			{
+				$unwind: '$company',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$lookup: {
+					from: 'employees',
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeeTitles',
+				},
+			},
+			{
+				$lookup: {
+					from: 'reviews',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'review',
+				},
+			},
+			{
+				$unwind: {
+					path: '$review',
+					preserveNullAndEmptyArrays: true, // Use this if a booking may not have a review
+				},
+			},
+			{
+				$project: {
+					companyId: '$company._id',
+					companyName: '$company.name',
+					pickupAddress: '$pickupAddress',
+					destinationAddress: '$destinationAddress',
+					clientName: '$client.name',
+					clientPhone: '$client.phone',
+					clientEmail: '$client.email',
+					clientCnic: '$client.cnic',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								packingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								unpackingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: {
+						$map: {
+							input: '$employeesData',
+							as: 'employee',
+							in: {
+								name: '$$employee.name',
+								phone: '$$employee.phone',
+								title: {
+									$arrayElemAt: [
+										'$employeeTitles.title',
+										{
+											$indexOfArray: ['$employeeTitles._id', '$$employee._id'],
+										},
+									],
+								},
+							},
+						},
+					},
+					createdAt: 1,
+					review: '$review',
+				},
+			},
+			{
+				$sort: { createdAt: -1 },
+			},
+		])
 
     res.status(200).json({
       status: "ok",

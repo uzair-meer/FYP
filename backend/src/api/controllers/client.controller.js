@@ -7,7 +7,7 @@ export async function postBooking(req, res, next) {
 	console.log(req.body)
 	const {
 		clientId,
-		pickUpAddress,
+		pickupAddress,
 		destinationAddress,
 		services,
 		cart,
@@ -24,7 +24,7 @@ export async function postBooking(req, res, next) {
 		const booking = new Booking({
 			clientId,
 			companyId,
-			pickUpAddress,
+			pickupAddress,
 			destinationAddress,
 			services,
 			cart,
@@ -219,7 +219,7 @@ export async function getAllBookings(req, res, next) {
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
@@ -333,7 +333,7 @@ export async function getCurrentBooking(req, res, next) {
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
@@ -472,7 +472,7 @@ export async function getInprogressBookings(req, res, next) {
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
@@ -555,6 +555,166 @@ export async function getInprogressBookings(req, res, next) {
 	}
 }
 
+export async function getBookings(req, res, next) {
+	const clientId = new mongoose.Types.ObjectId(req.query.clientId)
+
+	//FIXME: it can be completed, requested, inprogress, all
+	const status = req.query.status
+	let query = {};
+	if (status === "completed") {
+			query = {status: 'completed'};
+	} else if (status === "inprogress") {
+			query = {status: { $nin: ['completed', 'declined'] }};
+	}
+
+	try {
+		const result = await Booking.aggregate([
+			{
+				$match: {
+					clientId: clientId,
+					...query
+				},
+			},
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'companyId',
+					foreignField: '_id',
+					as: 'company',
+				},
+			},
+			{
+				$lookup: {
+					from: 'inventories',
+					localField: 'inventoryId',
+					foreignField: '_id',
+					as: 'inventory',
+				},
+			},
+			{
+				$unwind: '$company',
+			},
+			{
+				$unwind: '$inventory',
+			},
+			{
+				$lookup: {
+					from: 'users',
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeesData',
+				},
+			},
+			{
+				$lookup: {
+					from: 'employees',
+					localField: 'employees',
+					foreignField: '_id',
+					as: 'employeeTitles',
+				},
+			},
+			{
+				$lookup: {
+					from: 'reviews',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'review',
+				},
+			},
+			{
+				$unwind: {
+					path: '$review',
+					preserveNullAndEmptyArrays: true, // Use this if a booking may not have a review
+				},
+			},
+			{
+				$project: {
+					companyId: '$company._id',
+					companyName: '$company.name',
+					pickupAddress: '$pickupAddress',
+					destinationAddress: '$destinationAddress',
+					status: 1,
+					services: 1,
+					cart: {
+						$map: {
+							input: '$cart',
+							as: 'cartItem',
+							in: {
+								name: '$$cartItem.name',
+								quantity: '$$cartItem.quantity',
+								movingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.movingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								packingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.packingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+								unpackingPrice: {
+									$arrayElemAt: [
+										'$inventory.inventory.unpackingPrice',
+										{
+											$indexOfArray: [
+												'$inventory.inventory.name',
+												'$$cartItem.name',
+											],
+										},
+									],
+								},
+							},
+						},
+					},
+					inventoryId: '$inventory._id',
+					employees: {
+						$map: {
+							input: '$employeesData',
+							as: 'employee',
+							in: {
+								name: '$$employee.name',
+								phone: '$$employee.phone',
+								title: {
+									$arrayElemAt: [
+										'$employeeTitles.title',
+										{
+											$indexOfArray: ['$employeeTitles._id', '$$employee._id'],
+										},
+									],
+								},
+							},
+						},
+					},
+					createdAt: 1,
+					review: '$review',
+				},
+			},
+			{
+				$sort: { createdAt: -1 },
+			},
+		])
+
+		res.status(200).json({
+			status: 'ok',
+			data: result,
+		})
+	} catch (error) {
+		console.error('Error fetching user bookings:', error)
+		next(error)
+	}
+}
 export async function getCompletedBookings(req, res, next) {
 	const clientId = new mongoose.Types.ObjectId(req.query.clientId)
 
@@ -622,7 +782,7 @@ export async function getCompletedBookings(req, res, next) {
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
-					pickupAddress: '$pickUpAddress',
+					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,

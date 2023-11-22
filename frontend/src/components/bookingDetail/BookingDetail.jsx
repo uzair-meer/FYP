@@ -1,7 +1,9 @@
+import { useLoadScript } from '@react-google-maps/api'
 import PropTypes from 'prop-types'
 import { useRef } from 'react'
 import { useAuth } from 'src/context/AuthContext.jsx'
 import Button from '../Button/Button'
+import GMap from '../googleMaps/GMap'
 import ProgressBar from '../progressbar/ProgressBar'
 
 BookingDetail.propTypes = {
@@ -10,13 +12,20 @@ BookingDetail.propTypes = {
 	isSupervisor: PropTypes.bool,
 }
 
+const libraries = ['places']
+
 export default function BookingDetail({
 	data,
 	statusChangeHandler = () => {},
-	isSupervisor = true,
+	isSupervisor = false,
 }) {
 	const { user } = useAuth()
 	const bottomRef = useRef(null)
+
+	const { isLoaded, loadError } = useLoadScript({
+		googleMapsApiKey: 'AIzaSyCaorXTBQtpCqvTDwKSZID-DMfOaNTewRY',
+		libraries,
+	})
 
 	if (!data) {
 		//FIXME: navigate to 404 page
@@ -121,10 +130,17 @@ export default function BookingDetail({
 						</p>
 					)}
 				</div>
-				<div className="w-1/2 bg-red-800"></div>
+				<div className="w-1/2">
+					{isLoaded && !loadError && (
+						<GMap
+							destinationLocation={data.destinationAddress}
+							pickupLocation={data.pickupAddress}
+						/>
+					)}
+				</div>
 			</div>
 
-			<hr className="my-[4rem] border-1 border-[#E4503A]" />
+			<hr className="my-[4rem] border-1" />
 
 			<div className="flex w-full flex-col" ref={bottomRef}>
 				<h2 className="font-bold text-lg">Leopard ltd</h2>

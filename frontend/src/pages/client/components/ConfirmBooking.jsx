@@ -33,7 +33,7 @@ export default function ConfirmBooking({ data, id }) {
 		const booking = {
 			clientId: user._id,
 			companyId: id,
-			pickUpAddress: pickupLocation,
+			pickupAddress: pickupLocation,
 			destinationAddress: destinationLocation,
 			services: selectedServices,
 			cart: cart,

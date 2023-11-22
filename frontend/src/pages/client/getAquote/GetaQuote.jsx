@@ -1,8 +1,13 @@
-import {useState } from 'react'
+import { useState } from 'react'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { FaCirclePlus } from 'react-icons/fa6'
 import { useNavigate } from 'react-router-dom'
 import { useServices } from 'src/context/UserContext.jsx'
+import {
+	useLoadScript,
+} from '@react-google-maps/api'
+import AutoCompleteInput from '../../../components/googleMaps/AutoCompleteInput'
+import GMap from '../../../components/googleMaps/GMap'
 
 const stuff = [
 	{ name: 'Bed' },
@@ -11,7 +16,9 @@ const stuff = [
 	{ name: 'Oven' },
 ]
 
-function Services() {
+const libraries = ['places']
+
+export default function GetaQuote() {
 	const {
 		pickupLocation,
 		setPickupLocation,
@@ -29,6 +36,23 @@ function Services() {
 	const [selectedItem, setSelectedItem] = useState('') // contains drop down item only not quantity
 	const [quantity, setQuantity] = useState('')
 
+	const { isLoaded, loadError } = useLoadScript({
+		googleMapsApiKey: 'AIzaSyCaorXTBQtpCqvTDwKSZID-DMfOaNTewRY',
+		libraries,
+	})
+
+	const onPickupPlaceSelected = (place) => {
+		if (place.geometry) {
+			setPickupLocation(place.formatted_address)
+		}
+	}
+
+	const onDestinationPlaceSelected = (place) => {
+		if (place.geometry) {
+			setDestinationLocation(place.formatted_address)
+		}
+	}
+
 	const handleServiceChange = (service) => {
 		setSelectedServices((prevServices) =>
 			prevServices.includes(service)
@@ -38,10 +62,15 @@ function Services() {
 	}
 
 	const handleAddItem = () => {
-		if (!selectedItem || quantity < 1 || selectedItem === "" || isNaN(quantity)) {
+		if (
+			!selectedItem ||
+			quantity < 1 ||
+			selectedItem === '' ||
+			isNaN(quantity)
+		) {
 			alert('pls enter qunatity and select item')
-      return
-    }
+			return
+		}
 
 		setItems((prevItems) => {
 			const existingItem = prevItems.find((item) => item.name === selectedItem)
@@ -80,26 +109,20 @@ function Services() {
 					<div className="flex gap-5 mt-10">
 						<div className="flex flex-col">
 							<label htmlFor="pickupLocation">Pickup</label>
-
-							<input
-								type="text"
+							<AutoCompleteInput
 								id="pickupLocation"
-								value={pickupLocation}
-								onChange={(e) => setPickupLocation(e.target.value)}
-								className="border rounded-md"
-								required
+								placeholder="Enter pickup location"
+								onPlaceSelected={onPickupPlaceSelected}
+								disabled={!isLoaded && loadError}
 							/>
 						</div>
 						<div className="flex flex-col">
 							<label htmlFor="destinationLocation">Destination</label>
-
-							<input
-								type="text"
+							<AutoCompleteInput
 								id="destinationLocation"
-								value={destinationLocation}
-								onChange={(e) => setDestinationLocation(e.target.value)}
-								className="border rounded-md"
-								required
+								placeholder="Enter destination"
+								onPlaceSelected={onDestinationPlaceSelected}
+								disabled={!isLoaded && loadError}
 							/>
 						</div>
 					</div>
@@ -149,7 +172,7 @@ function Services() {
 						<select
 							onChange={(event) => setSelectedItem(event.target.value)}
 							className="w-1/4 rounded-md border px-2 py-1"
-              value={selectedItem}
+							value={selectedItem}
 						>
 							<option value="">Select</option>
 							{/* Add your item options here */}
@@ -171,6 +194,15 @@ function Services() {
 							onClick={handleAddItem}
 							className="inline text-[1.6rem] mx-2 mb-1 cursor-pointer text-primary"
 						/>
+					</div>
+
+					<div className="flex mt-[5rem]">
+						{isLoaded && !loadError && (
+							<GMap
+								pickupLocation={pickupLocation}
+								destinationLocation={destinationLocation}
+							/>
+						)}
 					</div>
 				</form>
 				<div className=" flex flex-col m-10 ml-20 p-5 justify-between">
@@ -246,4 +278,5 @@ function Services() {
 	)
 }
 
-export default Services
+
+

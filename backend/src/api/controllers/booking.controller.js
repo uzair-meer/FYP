@@ -1,39 +1,37 @@
 import mongoose from 'mongoose'
 import Booking from '../models/Booking.model.js'
 
-export async function getEmployeeBookings(req, res, next) {
-	const employeeId = req.query.driverId // Adjust according to your authentication setup
-	console.log(employeeId)
+export async function getBookings(req, res, next) {
+	const id = new mongoose.Types.ObjectId(req.query.id)
+
+	//FIXME: it can be completed, requested, inprogress, all
+	const { status, role } = req.query
+	//role must be taken from auth token
 	try {
-		if (!mongoose.Types.ObjectId.isValid(employeeId)) {
-			return res.status(400).json({ message: 'Invalid employee ID' })
+		let queryId = {}
+		if (role === 'client') {
+			queryId = { clientId: id }
+		} else if (role === 'company') {
+			queryId = { companyId: id }
+		} else {
+			throw new Error('wrong role')
 		}
 
-		// Convert employeeId to ObjectId
-		const driverId = new mongoose.Types.ObjectId(employeeId)
-		const bookings = await Booking.find({
-			employees: driverId,
-		})
-		// No need for projection as we need most of the fields
+		let query = {}
 
-		res.status(200).json(bookings)
-	} catch (error) {
-		console.error(error)
-		res
-			.status(500)
-			.json({ message: 'Error fetching bookings for the employee' })
-	}
-}
+		if (status === 'completed') {
+			query = { status: 'completed' }
+		} else if (status === 'inprogress') {
+			query = { status: { $nin: ['completed', 'declined'] } }
+		} else if (status === 'requested') {
+			query = { status: 'requested' }
+		}
 
-export async function getCurrentEmployeeBooking(req, res, next) {
-	const employeeId = new mongoose.Types.ObjectId(req.query.employeeId)
-
-	//add field to get supervisor
-	try {
 		const result = await Booking.aggregate([
 			{
 				$match: {
-					employees: { $in: [employeeId] },
+					...queryId,
+					...query,
 				},
 			},
 			{
@@ -50,20 +48,6 @@ export async function getCurrentEmployeeBooking(req, res, next) {
 					localField: 'inventoryId',
 					foreignField: '_id',
 					as: 'inventory',
-				},
-			},
-			{
-				$lookup: {
-					from: 'users',
-					localField: 'clientId',
-					foreignField: '_id',
-					as: 'client',
-				},
-			},
-			{
-				$unwind: {
-					path: '$client',
-					preserveNullAndEmptyArrays: true, // Use this if a booking may not have a client
 				},
 			},
 			{
@@ -89,15 +73,25 @@ export async function getCurrentEmployeeBooking(req, res, next) {
 				},
 			},
 			{
+				$lookup: {
+					from: 'reviews',
+					localField: '_id',
+					foreignField: '_id',
+					as: 'review',
+				},
+			},
+			{
+				$unwind: {
+					path: '$review',
+					preserveNullAndEmptyArrays: true, // Use this if a booking may not have a review
+				},
+			},
+			{
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
 					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
-					clientName: '$client.name',
-					clientPhone: '$client.phone',
-					clientEmail: '$client.email',
-					clientCnic: '$client.cnic',
 					status: 1,
 					services: 1,
 					cart: {
@@ -151,7 +145,6 @@ export async function getCurrentEmployeeBooking(req, res, next) {
 							in: {
 								name: '$$employee.name',
 								phone: '$$employee.phone',
-								employeeId: '$$employee._id',
 								title: {
 									$arrayElemAt: [
 										'$employeeTitles.title',
@@ -164,34 +157,20 @@ export async function getCurrentEmployeeBooking(req, res, next) {
 						},
 					},
 					createdAt: 1,
+					review: '$review',
 				},
 			},
 			{
 				$sort: { createdAt: -1 },
 			},
-			{
-				$limit: 1, // This will get you only the latest booking
-			},
 		])
 
-		res.status(200).json({ status: 'ok', data: result })
+		res.status(200).json({
+			status: 'ok',
+			data: result,
+		})
 	} catch (error) {
-		next(error)
-	}
-}
-
-export async function putBookingStatus(req, res, next) {
-	const bookingId = new mongoose.Types.ObjectId(req.body.bookingId)
-	const status = req.body.status
-	try {
-		const result = await Booking.findByIdAndUpdate(
-			bookingId,
-			{ status: status },
-			{ new: true }
-		)
-
-		res.status(200).json({ status: 'ok', data: result._doc })
-	} catch (error) {
+		console.error('Error fetching user bookings:', error)
 		next(error)
 	}
 }
