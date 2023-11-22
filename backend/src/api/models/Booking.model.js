@@ -67,6 +67,10 @@ const bookingSchema = new Schema({
 		ref: 'Inventory',
 		required: true,
 	},
+	supervisorId: {
+		type: Schema.Types.ObjectId,
+		ref: 'User',
+	},
 	employees: [
 		{
 			type: Schema.Types.ObjectId,

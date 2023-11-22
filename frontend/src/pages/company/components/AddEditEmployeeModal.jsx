@@ -219,7 +219,7 @@ export default function AddEditEmployeeModal({
 						<option value="electrician">Electrician</option>
 						<option value="driver">Driver</option>
 						<option value="plumber">Plumber</option>
-						<option value="other">Other</option>
+						{/* <option value="other">Other</option> */}
 					</select>
 				</div>
 				<button

@@ -159,6 +159,7 @@ export async function getReview(req, res, next) {
 			{
 				$project: {
 					companyId: 1,
+					supervisorId: 1,
 					companyName: '$user.name',
 					comment: '$review.comment',
 					reply: '$review.reply',
@@ -223,6 +224,7 @@ export async function getAllBookings(req, res, next) {
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
+					supervisorId: 1,
 					cart: {
 						$map: {
 							input: '$cart',
@@ -337,6 +339,7 @@ export async function getCurrentBooking(req, res, next) {
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
+					supervisorId: 1,
 					cart: {
 						$map: {
 							input: '$cart',
@@ -388,6 +391,7 @@ export async function getCurrentBooking(req, res, next) {
 							in: {
 								name: '$$employee.name',
 								phone: '$$employee.phone',
+								_id: '$$employee._id',
 								title: {
 									$arrayElemAt: [
 										'$employeeTitles.title',
@@ -476,6 +480,7 @@ export async function getInprogressBookings(req, res, next) {
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
+					supervisorId: 1,
 					cart: {
 						$map: {
 							input: '$cart',
@@ -527,6 +532,7 @@ export async function getInprogressBookings(req, res, next) {
 							in: {
 								name: '$$employee.name',
 								phone: '$$employee.phone',
+								_id: '$$employee._id',
 								title: {
 									$arrayElemAt: [
 										'$employeeTitles.title',
@@ -635,6 +641,7 @@ export async function getBookings(req, res, next) {
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
+					supervisorId: 1,
 					cart: {
 						$map: {
 							input: '$cart',
@@ -686,6 +693,7 @@ export async function getBookings(req, res, next) {
 							in: {
 								name: '$$employee.name',
 								phone: '$$employee.phone',
+								_id: '$$employee._id',
 								title: {
 									$arrayElemAt: [
 										'$employeeTitles.title',
@@ -786,6 +794,7 @@ export async function getCompletedBookings(req, res, next) {
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
+					supervisorId: 1,
 					cart: {
 						$map: {
 							input: '$cart',
@@ -837,6 +846,7 @@ export async function getCompletedBookings(req, res, next) {
 							in: {
 								name: '$$employee.name',
 								phone: '$$employee.phone',
+								_id: '$$employee._id',
 								title: {
 									$arrayElemAt: [
 										'$employeeTitles.title',

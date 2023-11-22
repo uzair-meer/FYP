@@ -85,6 +85,7 @@ export default function CompletedBookings({ fetchUrl, role }) {
 
 	return (
 		<div className="px-4">
+			<h1 className="my-6 font-bold text-2xl">Completed Bookings</h1>
 			<Table
 				columns={[
 					'Sr. ',

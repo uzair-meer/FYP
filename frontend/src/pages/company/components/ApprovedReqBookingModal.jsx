@@ -21,15 +21,24 @@ export default function ApprovedReqBookingModal({
 	setBookings,
 }) {
 	const [selectedEmployeeIds, setSelectedEmployeeIds] = useState([])
+	const [selectedSupervisorId, setSelectedSupervisorId] = useState(null)
 
 	const handleOnChange = (id) => {
 		if (selectedEmployeeIds.includes(id)) {
 			setSelectedEmployeeIds(
 				selectedEmployeeIds.filter((employeeId) => employeeId !== id)
 			)
+			// If the deselected employee was the supervisor, clear the supervisor selection
+			if (selectedSupervisorId === id) {
+				setSelectedSupervisorId(null)
+			}
 		} else {
 			setSelectedEmployeeIds([...selectedEmployeeIds, id])
 		}
+	}
+
+	const handleSupervisorChange = (id) => {
+		setSelectedSupervisorId(id)
 	}
 
 	const submitHandler = async (event) => {
@@ -45,6 +54,7 @@ export default function ApprovedReqBookingModal({
 				body: JSON.stringify({
 					bookingId: bookingId,
 					employeeIds: selectedEmployeeIds,
+					supervisorId: selectedSupervisorId,
 				}),
 			})
 			const data = await response.json()
@@ -91,6 +101,7 @@ export default function ApprovedReqBookingModal({
 						<p className="font-semibold">Title</p>
 					</div>
 					<p className="font-semibold">Assign</p>
+					<p className="font-semibold">Supervisor</p>
 				</div>
 				{employees?.map((employee, index) => (
 					<div
@@ -101,23 +112,42 @@ export default function ApprovedReqBookingModal({
 								: 'bg-white'
 						}`}
 					>
-						<div className="flex">
+						<div className="flex w-full">
 							<strong className="font-semibold min-w-[12rem]">
 								{employee.name}
 							</strong>
+						</div>
+						<div className="w-full">
 							<p>{employee.title}</p>
 						</div>
-						<input
-							type="checkbox"
-							checked={selectedEmployeeIds.includes(employee._id)}
-							onChange={() => handleOnChange(employee._id)}
-						/>
+
+						<div className="w-full text-center">
+							<input
+								type="checkbox"
+								checked={selectedEmployeeIds.includes(employee._id)}
+								onChange={() => handleOnChange(employee._id)}
+							/>
+						</div>
+						<div className="w-full text-center">
+							<input
+								type="radio"
+								name="supervisor"
+								value={employee._id}
+								required
+								onChange={() => handleSupervisorChange(employee._id)}
+								checked={selectedSupervisorId === employee._id}
+								disabled={!selectedEmployeeIds.includes(employee._id)}
+							/>
+						</div>
 					</div>
 				))}
 
 				<div className="flex justify-end items-center gap-3 my-3 mt-8">
 					<Button onClick={() => setShowModal(false)}>Close</Button>
-					<Button type="submit">Submit</Button>
+					{/* also check condition to must be the supervisor */}
+					{employees.length > 0 &&
+						selectedEmployeeIds.length > 0 &&
+						selectedSupervisorId && <Button type="submit">Submit</Button>}
 				</div>
 			</form>
 		</Modal>

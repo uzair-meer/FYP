@@ -1,8 +1,8 @@
+import PropTypes from 'prop-types'
 import { useState } from 'react'
 import Button from 'src/components/Button/Button'
 import Modal from 'src/components/Modal/Modal'
-
-import PropTypes from 'prop-types'
+import { useAuth } from '../../context/AuthContext'
 
 BookingDetailModal.propTypes = {
 	data: PropTypes.object,
@@ -10,6 +10,8 @@ BookingDetailModal.propTypes = {
 
 export default function BookingDetailModal({ data }) {
 	const [showModal, setShowModal] = useState(false)
+
+	const { user } = useAuth()
 
 	let total = 0
 
@@ -46,8 +48,12 @@ export default function BookingDetailModal({ data }) {
 					<div className="flex justify-between">
 						<div className="flex flex-col w-full">
 							<div className="flex flex-col">
-								<h2 className="font-medium text-2xl">Company Name</h2>
-								<p className="mt-3">{data.companyName}</p>
+								<h2 className="font-medium text-2xl">
+									{user.role === 'client' ? 'Company' : 'Client'} Name
+								</h2>
+								<p className="mt-3">
+									{user.role === 'client' ? data.companyName : data.clientName}
+								</p>
 							</div>
 							<h2 className=" mt-4 font-medium text-2xl">Destination</h2>
 							<p className="my-3">

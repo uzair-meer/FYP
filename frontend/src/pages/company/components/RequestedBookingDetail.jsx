@@ -22,10 +22,19 @@ export default function RequestedBookingDetail({
 	const [showApprovedReqModal, setShowApprovedReqModal] = useState(false)
 	const [showDeclineReqModal, setShowDeclineReqModal] = useState(false)
 
+
+	console.log(data)
+
 	return (
 		<div className="flex w-full flex-col bg-[#FFEFEE] p-5">
-			<h2 className="font-bold">Leopard ltd</h2>
-			<p>Ratings: 4.5</p>
+			<h2 className="font-semibold text-xl">Client Name:</h2>
+			<p>{data.clientName}</p>
+			<h2 className="my-4 font-medium text-lg">Route: </h2>
+			<p className="mb-4">
+				{data.pickupAddress} <span className="mx-4 mb-8">-</span>
+				{data.destinationAddress}
+			</p>
+
 			<h2 className="font-semibold mt-6">Details:</h2>
 			<table
 				className=" table-fixed equal-cols"
