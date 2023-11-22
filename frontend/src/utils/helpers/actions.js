@@ -2,7 +2,7 @@ import { toast } from "react-toastify";
 
 export default async function downloadFile(
   imageSrc,
-  nameOfDownload = "my-image.png",
+  nameOfDownload = "my-image.png"
 ) {
   const response = await fetch(imageSrc);
 
@@ -36,7 +36,13 @@ export const handleResponse = (promise) => {
       return response.data;
     })
     .catch((error) => {
-      toast.error(error.message);
+      if (error.response && error.response.data && error.response.data.error) {
+        // Display the custom error message from the server
+        alert(error.response.data.error);
+      } else {
+        // Generic error message for other types of errors
+        alert("An error occurred");
+      }
       throw error; // Re-throw the error for the caller to handle
     });
 };

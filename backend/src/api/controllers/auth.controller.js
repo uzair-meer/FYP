@@ -45,14 +45,17 @@ export const login = async (req, res, next) => {
   try {
     const user = await User.findOne({ email: req.body.email });
 
-    if (!user) return next(createError(404, "User not found!"));
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
 
     //FIXME: hashed pswds should match
     // const isCorrect = bcrypt.compareSync(req.body.password, user.password)
     const isCorrect = req.body.password === user.password;
 
-    if (!isCorrect)
-      return next(createError(400, "Wrong password or username!"));
+    if (!isCorrect) {
+      return res.status(401).json({ error: "Invalid email or password" });
+    }
 
     //check if company status is not approved then throw error
     if (user.role === "company") {
@@ -75,7 +78,7 @@ export const login = async (req, res, next) => {
       process.env.JWT_KEY,
       { expiresIn: "60d" }
     );
-    const { ...info } = user._doc;
+    const { password, ...info } = user._doc;
     // console.log("user ID : ", req.userId)
     res
       .cookie("access_token", token, {
