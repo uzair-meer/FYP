@@ -65,6 +65,7 @@ export const getSentimentReport = async (req, res, next) => {
 					clientEmail: '$client.email',
 					status: 1,
 					createdAt: 1,
+					supervisorId: 1,
 					review: '$review',
 				},
 			},

@@ -69,6 +69,10 @@ export default function EmployeeDashboard() {
 
 	// return <div>hello from employee dashboard</div>
 	return (
-		<BookingDetail data={booking} statusChangeHandler={statusChangeHandler} />
+		<BookingDetail
+			data={booking}
+			statusChangeHandler={statusChangeHandler}
+			isSupervisor={booking.supervisorId === user._id}
+		/>
 	)
 }

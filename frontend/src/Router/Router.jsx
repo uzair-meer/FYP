@@ -23,7 +23,9 @@ import CompanyInprogressBookings from "../pages/company/inprogressBookings/Compa
 import RequestedBookings from "../pages/company/requestedBookings/RequestedBookings";
 import SentimentReport from "../pages/company/sentimentReport/SentimentReport";
 import SetPrices from "../pages/company/setprice/SetPrices";
+import EmployeePanel from "../pages/employee";
 import EmployeeDashboard from "../pages/employee/dashboard/EmployeeDashboard";
+import EmployeeProfile from "../pages/employee/profile/EmployeeProfile";
 import Home from "../pages/home";
 import SignIn from "../pages/signin/SignIn";
 import UserProtectedRoute, {
@@ -73,8 +75,8 @@ export default function AppRouter() {
       >
         <Route index element={<Dashboard />} />
         <Route path="employees" element={<Employees />} />
-        <Route path="requested/bookings" element={<RequestedBookings />} />
-        <Route path="setprice" element={<SetPrices />} />
+        <Route path="bookings/requested" element={<RequestedBookings />} />
+        <Route path="prices" element={<SetPrices />} />
         <Route
           path="bookings/completed"
           element={<CompanyCompletedBookings />}
@@ -87,7 +89,6 @@ export default function AppRouter() {
           element={<CompanyInprogressBookings />}
         />
         <Route path="booking/detail" element={<CompanyBookingDetail />} />
-        <Route path="profile" element={<CompanyProfile />} />
       </Route>
 
       {/* // company routes */}
@@ -107,10 +108,11 @@ export default function AppRouter() {
       <Route
         path="employee"
         element={
-          <DriverProtectedRoute user={user} component={<EmployeeDashboard />} />
+          <DriverProtectedRoute user={user} component={<EmployeePanel />} />
         }
       >
         <Route index element={<EmployeeDashboard />} />
+        <Route path="profile" element={<EmployeeProfile />} />
       </Route>
     </Routes>
   );

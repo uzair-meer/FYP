@@ -2,6 +2,7 @@ import { useLoadScript } from '@react-google-maps/api'
 import PropTypes from 'prop-types'
 import { useRef } from 'react'
 import { useAuth } from 'src/context/AuthContext.jsx'
+import { PROGRESSBAR_STATUS } from '../../constants/constants'
 import Button from '../Button/Button'
 import GMap from '../googleMaps/GMap'
 import ProgressBar from '../progressbar/ProgressBar'
@@ -33,7 +34,7 @@ export default function BookingDetail({
 	}
 
 	//FIXME: had to decide what would be statues as per each service e.g if packing then no of status will change
-	const bookingStatus = ['packing', 'unpacking', 'dispatched', 'completed']
+	// const bookingStatus = ['packing', 'unpacking', 'dispatched', 'completed']
 
 	// Scroll to bottom function
 	const scrollToBottom = () => {
@@ -43,12 +44,12 @@ export default function BookingDetail({
 	let grandTotal = 0
 	const role = user.role
 
-	const employee = data.employees?.find(
-		(employee) => employee.title === 'driver'
+	const supervisor = data.employees?.find(
+		(employee) => employee._id === data.supervisorId
 	)
 
-	let name = employee?.name
-	let phone = employee?.phone
+	let name = supervisor?.name
+	let phone = supervisor?.phone
 
 	if (role === 'employee') {
 		name = data.clientName
@@ -66,12 +67,15 @@ export default function BookingDetail({
 						id="status"
 						value={data.status}
 						onChange={statusChangeHandler}
+						disabled={data.status === 'completed'}
 					>
 						<option value="">Change status</option>
-						<option value="arrived">arrived</option>
-						<option value="packing">packing</option>
-						<option value="unpacking">unpacking</option>
-						<option value="completed">completed</option>
+						{data.status !== 'completed' && (
+							<option value="inprogress">Inprogress</option>
+						)}
+						{data.status === 'inprogress' && (
+							<option value="completed">Completed</option>
+						)}
 					</select>
 				) : (
 					<h2 className="font-semibold text-xl px-6 py-4 rounded-full bg-[#FFEFEE]">
@@ -95,8 +99,8 @@ export default function BookingDetail({
 				</div>
 				{/* Progress Bar */}
 				<ProgressBar
-					steps={bookingStatus}
-					currentStepIndex={1}
+					steps={PROGRESSBAR_STATUS}
+					currentStatus={data.status}
 					className="mt-24"
 				/>
 			</div>
@@ -104,7 +108,7 @@ export default function BookingDetail({
 			<div className="flex mt-14">
 				<div className="w-1/2">
 					<h2 className="font-semibold text-2xl mb-10">
-						{role === 'employee' ? 'Client' : 'Driver'} Information
+						{role === 'employee' ? 'Client' : 'Supervisor'} Information
 					</h2>
 					{data.employees.length > 0 ? (
 						<>
@@ -116,12 +120,12 @@ export default function BookingDetail({
 								<strong className="w-[10rem]">Phone no: </strong>
 								<p>{phone}</p>
 							</div>
-							{role === 'client' && (
+							{/* {role === 'client' && (
 								<div className="flex justify-start items-center">
 									<strong className="w-[10rem]">Arrival: </strong>
 									<p>11: 00</p>
 								</div>
-							)}
+							)} */}
 						</>
 					) : (
 						<p>

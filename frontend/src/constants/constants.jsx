@@ -7,6 +7,8 @@ import { MdPriceChange, MdReviews } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
 import { SiCodereview } from "react-icons/si";
 
+export const PROGRESSBAR_STATUS = ['Approved', 'Inprogress', 'Completed']
+
 export const CLIENT_PORTAL_ROUTES = [
   {
     name: "Dashboard",
@@ -26,8 +28,18 @@ export const CLIENT_PORTAL_ROUTES = [
     icon: <BiSolidUserCircle className="text-[1.4rem]  mx-2 cursor-pointer" />,
   },
   {
+    name: "Inprogress Bookings",
+    route: "/client/bookings/inprogress",
+    icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  },
+  {
     name: "Completed Bookings",
     route: "/client/bookings/completed",
+    icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  },
+  {
+    name: "All Bookings",
+    route: "/client/bookings/all",
     icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
   },
   {
@@ -67,8 +79,18 @@ export const COMPANY_PORTAL_ROUTES = [
     ),
   },
   {
+    name: "Inprogress Bookings",
+    route: "/company/bookings/inprogress",
+    icon: <MdReviews className="text-[1.4rem]   mx-2 cursor-pointer" />,
+  },
+  {
     name: "Completed Bookings",
     route: "/company/bookings/completed",
+    icon: <MdReviews className="text-[1.4rem]   mx-2 cursor-pointer" />,
+  },
+  {
+    name: "All Bookings",
+    route: "/company/bookings/all",
     icon: <MdReviews className="text-[1.4rem]   mx-2 cursor-pointer" />,
   },
   {
@@ -116,7 +138,7 @@ export const ADMIN_ROUTES = [
   // },
 ];
 
-export const Driver_Routes = [
+export const Employee_Routes = [
   // {
   //   name: "Dashboard",
   //   route: "/driver",
@@ -124,6 +146,11 @@ export const Driver_Routes = [
   //     <RiDashboardFill className="text-[1.4rem] text-white  mx-2 cursor-pointer" />
   //   ),
   // },
+  {
+    name: "Profile",
+    route: "/employee/profile",
+    icon: <BiSolidUserCircle className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  },
   {
     name: "Dashboard",
     route: "/employee",

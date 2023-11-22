@@ -1,5 +1,6 @@
 import mongoose from 'mongoose'
 import Booking from '../models/Booking.model.js'
+import Employee from '../models/Employee.model.js'
 
 export async function getEmployeeBookings(req, res, next) {
 	const employeeId = req.query.driverId // Adjust according to your authentication setup
@@ -100,6 +101,7 @@ export async function getCurrentEmployeeBooking(req, res, next) {
 					clientCnic: '$client.cnic',
 					status: 1,
 					services: 1,
+					supervisorId: 1,
 					cart: {
 						$map: {
 							input: '$cart',
@@ -189,6 +191,16 @@ export async function putBookingStatus(req, res, next) {
 			{ status: status },
 			{ new: true }
 		)
+
+		if (status === 'completed') {
+			const employeesList = result._doc.employees
+
+			await Employee.updateMany(
+				{ _id: { $in: employeesList } }, // Query to target specific employees
+				{ $set: { status: 'free' } }, // Update operation
+				{ new: true, multi: true }
+			)
+		}
 
 		res.status(200).json({ status: 'ok', data: result._doc })
 	} catch (error) {
