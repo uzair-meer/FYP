@@ -1,13 +1,17 @@
 import PropTypes from 'prop-types'
+import { PROGRESSBAR_STATUS } from '../../constants/constants'
 
 ProgressBar.propTypes = {
 	steps: PropTypes.array,
-	currentStepIndex: PropTypes.number,
+	currentStatus: PropTypes.string,
 	className: PropTypes.string,
 }
 
-export default function ProgressBar({ steps, currentStepIndex, className }) {
-	const currentIndex = currentStepIndex // as we passed 0 indexed indexes here we needed to index to start form 1
+export default function ProgressBar({ steps, currentStatus, className }) {
+	const lower_case_progress = steps.map((value) => value.toLowerCase())
+	const currentIndex = lower_case_progress.findIndex(
+		(value) => value === currentStatus.toLowerCase()
+	) // as we passed 0 indexed indexes here we needed to index to start form 1
 
 	return (
 		<div
@@ -27,7 +31,7 @@ export default function ProgressBar({ steps, currentStepIndex, className }) {
 						className={`absolute -mt-3 transform -translate-x-1/2 w-6 h-6 top-1 ${
 							index <= currentIndex - 1
 								? 'bg-primary border-primary'
-								: 'bg-[#D9D9D9] border-[#D9D9D9]'
+								: `bg-[#D9D9D9] border-[#D9D9D9] ${currentStatus === "completed" && "bg-primary border-primary"}`
 							//ring color
 						} border-2 rounded-full`}
 						style={{

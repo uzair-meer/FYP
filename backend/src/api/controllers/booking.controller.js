@@ -44,6 +44,14 @@ export async function getBookings(req, res, next) {
 			},
 			{
 				$lookup: {
+					from: 'users',
+					localField: 'clientId',
+					foreignField: '_id',
+					as: 'client',
+				},
+			},
+			{
+				$lookup: {
 					from: 'inventories',
 					localField: 'inventoryId',
 					foreignField: '_id',
@@ -52,6 +60,9 @@ export async function getBookings(req, res, next) {
 			},
 			{
 				$unwind: '$company',
+			},
+			{
+				$unwind: '$client',
 			},
 			{
 				$unwind: '$inventory',
@@ -90,10 +101,13 @@ export async function getBookings(req, res, next) {
 				$project: {
 					companyId: '$company._id',
 					companyName: '$company.name',
+					clientName: '$client.name',
+					clientId: '$client._id',
 					pickupAddress: '$pickupAddress',
 					destinationAddress: '$destinationAddress',
 					status: 1,
 					services: 1,
+					supervisorId: 1,
 					cart: {
 						$map: {
 							input: '$cart',
@@ -145,6 +159,7 @@ export async function getBookings(req, res, next) {
 							in: {
 								name: '$$employee.name',
 								phone: '$$employee.phone',
+								_id: '$$employee._id',
 								title: {
 									$arrayElemAt: [
 										'$employeeTitles.title',

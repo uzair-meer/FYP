@@ -51,15 +51,17 @@ export default function ConfirmBooking({ data, id }) {
 				})
 
 				const result = await response.json()
-				
+
 				if (result.status === 'ok') {
 					// FIXME: also show some kind of success to user at this point
-					result.data.cart.forEach(cartItem => {
-						const inventoryItem = data.inventory.find(item => item.name === cartItem.name);
+					result.data.cart.forEach((cartItem) => {
+						const inventoryItem = data.inventory.find(
+							(item) => item.name === cartItem.name
+						)
 						if (inventoryItem) {
-							Object.assign(cartItem, inventoryItem);
+							Object.assign(cartItem, inventoryItem)
 						}
-					});
+					})
 					//clear context of cart
 					setPickupLocation('')
 					setDestinationLocation('')
@@ -67,7 +69,7 @@ export default function ConfirmBooking({ data, id }) {
 					setItems([])
 					console.log(result.data, 'updated data')
 
-					navigate('/client/booking/detail', {state: result.data})
+					navigate('/client/booking/detail', { state: result.data })
 				}
 			} catch (e) {
 				console.log(e)
@@ -82,8 +84,12 @@ export default function ConfirmBooking({ data, id }) {
 	return (
 		<div className="flex w-full flex-col bg-[#FFEFEE] p-5">
 			<h2 className="font-bold">Leopard ltd</h2>
-			<p>Ratings: 4.5</p>
+			{/* <p>Ratings: 4.5</p> */}
 			<h2 className="font-semibold mt-6">Details:</h2>
+			<p className="my-4">
+				{pickupLocation} <span className="mx-4 mb-8">-</span>
+				{destinationLocation}
+			</p>
 			<table
 				className=" table-fixed equal-cols"
 				style={{ '--num-cols': selectedServices.length + 3 }}

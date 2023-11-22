@@ -16,7 +16,7 @@ export default function AllBookings({ bookingStatus }) {
 	const [bookings, setBookings] = useState([])
 
 	useEffect(() => {
-		if (user.role !== 'client') return
+		// if (user.role !== 'client') return
 
 		const fetchReq = async () => {
 			try {
@@ -25,6 +25,7 @@ export default function AllBookings({ bookingStatus }) {
 				)
 				const result = await response.json()
 
+				// console.log(result)
 				if (result.status !== 'ok') {
 					throw new Error('something wrong wiht api')
 				}
@@ -53,9 +54,7 @@ export default function AllBookings({ bookingStatus }) {
 		components = [
 			{
 				Component: NavigateButton,
-				props: {
-					bookingStatus: bookingStatus,
-				},
+				
 			},
 		]
 	}
@@ -86,11 +85,10 @@ export default function AllBookings({ bookingStatus }) {
 }
 
 NavigateButton.propTypes = {
-	bookingStatus: PropTypes.string,
 	data: PropTypes.object,
 }
 
-function NavigateButton({ bookingStatus, data }) {
+function NavigateButton({ data }) {
 	const { user } = useAuth()
 	const navigate = useNavigate()
 	return (

@@ -140,15 +140,15 @@ function TableRow({
 	let className = ''
 	if (isSentiment) {
 		className =
-			data.sentimentScore <= -2
-				? 'bg-red-400'
-				: data.sentimentScore < -1
-				? 'bg-red-300'
-				: data.sentimentScore <= 1
-				? 'bg-yellow-100'
-				: data.sentimentScore < 2
-				? 'bg-green-200'
-				: 'bg-green-300'
+			data.sentimentScore <= -1
+				? 'bg-red-400' // very negative
+				: data.sentimentScore < 0
+				? 'bg-red-300' // negative
+				: data.sentimentScore === 0
+				? 'bg-yellow-100' // neutral
+				: data.sentimentScore < 1
+				? 'bg-green-200' // positive
+				: 'bg-green-300' // very positive
 	}
 
 	return (
