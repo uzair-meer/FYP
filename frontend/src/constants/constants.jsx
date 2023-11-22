@@ -61,7 +61,7 @@ export const COMPANY_PORTAL_ROUTES = [
   },
   {
     name: "Requested Bookings",
-    route: "/company/bookings/requested",
+    route: "/company/requested/bookings",
     icon: (
       <BsFillCalendarCheckFill className="text-[1.4rem]    mx-2 cursor-pointer" />
     ),
@@ -73,7 +73,7 @@ export const COMPANY_PORTAL_ROUTES = [
   },
   {
     name: "Set Prices",
-    route: "/company/prices",
+    route: "/company/setprice",
     icon: <MdPriceChange className="text-[1.4rem]   mx-2 cursor-pointer" />,
   },
   {

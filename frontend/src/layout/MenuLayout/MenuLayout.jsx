@@ -50,7 +50,7 @@ export function MenuLayout({ menuItems }) {
               <Link to={link.route} key={link.name}>
                 <li
                   className={`w-[9rem] p-2 pl-0 border-primary cursor-pointer flex items-center hover:bg-white hover:text-primary text-white rounded-r-[10px]  transition-all ${
-                    route.startsWith(link.route) &&
+                    route.split("/")[2] === link.route.split("/")[2] &&
                     "border-l-8 border-white bg-primary text-white"
                   }`}
                 >
@@ -77,7 +77,7 @@ export function MenuLayout({ menuItems }) {
                 <Link>
                   <MyPopover>
                     <img
-                      class="inline-block h-9 w-9 rounded-full border-black border-[1px]"
+                      className="inline-block h-9 w-9 rounded-full border-black border-[1px]"
                       src="https://source.unsplash.com/random/35×35"
                       alt=""
                     />

@@ -89,7 +89,7 @@ const SignIn = () => {
                   <div>
                     <button
                       type="submit"
-                      className="flex w-full justify-center rounded-md text-white bg-primary px-3 m-0 py-1.5 text-sm font-semibold leading-6 text-primary shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="flex w-full justify-center rounded-md text-white bg-primary px-3 m-0 py-1.5 text-sm font-semibold leading-6  shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
                       disabled={loading}
                     >
                       Sign in

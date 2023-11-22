@@ -3,7 +3,6 @@ import { createContext, useContext, useState } from "react";
 import {
   getCookieObject,
   setCookieObject,
-  setHeadersInCookies,
   signOutUser,
 } from "src/utils/helpers/cookies.js";
 import AuthService from "src/api/services/auth.service.js";
