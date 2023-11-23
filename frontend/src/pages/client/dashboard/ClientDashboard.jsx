@@ -1,12 +1,12 @@
-import { CLIENT_PORTAL_ROUTES } from 'src/constants/constants'
-import MenuLayout from 'src/layout/MenuLayout/MenuLayout'
+import { CLIENT_PORTAL_ROUTES } from "src/constants/constants";
+import MenuLayout from "src/layout/MenuLayout/MenuLayout";
 
 export default function ClientDashboard() {
-	return (
-		<>
-			<MenuLayout menuItems={CLIENT_PORTAL_ROUTES} />
-		</>
-	)
+  return (
+    <>
+      <MenuLayout menuItems={CLIENT_PORTAL_ROUTES} />
+    </>
+  );
 }
 
 // import L from "leaflet";
