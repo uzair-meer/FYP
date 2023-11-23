@@ -7,7 +7,7 @@ import { MdPriceChange, MdReviews } from "react-icons/md";
 import { TbBrandBooking } from "react-icons/tb";
 import { SiCodereview } from "react-icons/si";
 
-export const PROGRESSBAR_STATUS = ['Approved', 'Inprogress', 'Completed']
+export const PROGRESSBAR_STATUS = ["Approved", "Inprogress", "Completed"];
 
 export const CLIENT_PORTAL_ROUTES = [
   {
@@ -95,7 +95,7 @@ export const COMPANY_PORTAL_ROUTES = [
   },
   {
     name: "Set Prices",
-    route: "/company/setprice",
+    route: "/company/prices",
     icon: <MdPriceChange className="text-[1.4rem]   mx-2 cursor-pointer" />,
   },
   {
