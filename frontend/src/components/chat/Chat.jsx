@@ -6,85 +6,152 @@ import ChatSidebar from './ChatSidebar.jsx'
 
 export default function Chat() {
 	const { user } = useAuth()
+	const { role, _id: userId } = user
 	const [sidebarData, setSidebarData] = useState([])
 	const [selectedUserId, setSelectedUserId] = useState('')
-	const [messages, setMessages] = useState([])
+	const [allMessages, setAllMessages] = useState([])
+	const [selectedUserMessages, setSelectedUserMessages] = useState([])
 
-	const socket = useSocket(user._id)
+	const socket = useSocket(userId)
 
 	useEffect(() => {
-		const fetchReq = async () => {
+		const fetchData = async () => {
 			try {
-				let url
-				if (user.role === 'company') {
-					url = `http://localhost:5000/chat/get/all/clients?companyId=${user._id}`
-				} else if (user.role === 'client') {
-					url = `http://localhost:5000/chat/get/all/companies`
-				}
+				const url =
+					role === 'company'
+						? `http://localhost:5000/chat/get/all/clients?companyId=${userId}`
+						: `http://localhost:5000/chat/get/all/companies`
+
 				const response = await fetch(url)
 
-				const result = await response.json()
+				const { data, status } = await response.json()
 
-				if (result.status !== 'ok') {
-					throw new Error('wrong with api')
+				if (status !== 'ok') {
+					throw new Error('Error fetching data')
 				}
 
-				// console.log(result.data)
-
-				setSidebarData(result.data)
+				setSidebarData(data)
 			} catch (error) {
-				console.log(error)
+				// Consider how to handle/display this error
+				console.error(error.message)
 			}
 		}
 
-		fetchReq()
-	}, [user])
+		fetchData()
+	}, [role, userId])
 
 	useEffect(() => {
-		if (selectedUserId === '') {
-			return
-		}
-
-		// find a way to store all chats in redux so every time user change the receiver we dont send new fetch request
-		const fetchReq = async () => {
+		const fetchMessages = async () => {
 			try {
 				const response = await fetch(
-					`http://localhost:5000/chat/get/messages?id=${selectedUserId}&role=${user.role}`
+					`http://localhost:5000/chat/get/messages?id=${userId}&role=${role}`
 				)
 
-				const result = await response.json()
+				const { data, status } = await response.json()
 
-				if (result.status !== 'ok') {
-					throw new Error('wrong with api')
+				if (status !== 'ok') {
+					throw new Error('Error fetching messages')
 				}
 
-				// console.log(result.data)
-				const allMessages = result?.data?.length > 0 ? result?.data[0]?.messages : []
-				setMessages(allMessages)
+				setAllMessages(data ?? [])
 			} catch (error) {
-				console.log(error)
+				console.error(error.message)
 			}
 		}
 
-		fetchReq()
-	}, [selectedUserId, user.role])
+		fetchMessages()
+	}, [role, userId])
 
 	useEffect(() => {
-		if (socket == null) return
+		if (!selectedUserId) return
 
-		if (selectedUserId) {
-			socket.emit('joinRoom', { userId: selectedUserId })
+		const findMessages = () => {
+			const field = role === 'client' ? 'companyId' : 'clientId'
+			const selectedData = allMessages.find(
+				(data) => data[field] === selectedUserId
+			)
+			return selectedData ? selectedData.messages : []
 		}
 
-		socket.on('newMessage', (newMessages) => {
-			console.log(newMessages)
-			setMessages(newMessages)
-		})
+		setSelectedUserMessages(findMessages())
+	}, [selectedUserId, allMessages, role])
 
-		// return () => {
-		// 	socket.off('newMessage')
-		// }
-	}, [socket, selectedUserId])
+	useEffect(() => {
+		if (!socket) return
+
+		const newMessageHandler = (conversation) => {
+			console.log(conversation)
+			setAllMessages((prevMessages) => {
+				const updatedMessages = [...prevMessages]
+				let conversationIndex
+
+				if (role === 'client') {
+					conversationIndex = updatedMessages.findIndex(
+						(m) => m.companyId === conversation.companyId
+					)
+				} else {
+					conversationIndex = updatedMessages.findIndex(
+						(m) => m.clientId === conversation.clientId
+					)
+				}
+
+				if (conversationIndex > -1) {
+					// Conversation exists, replace its messages
+					updatedMessages[conversationIndex].messages = conversation.messages
+				} else {
+					// New conversation, add it
+					const newConversation = {
+						clientId: conversation.clientId,
+						companyId: conversation.companyId,
+						messages: conversation.messages,
+					}
+					updatedMessages.push(newConversation)
+				}
+
+				console.log(updatedMessages)
+				return updatedMessages
+			})
+		}
+
+		socket.on('newMessage', newMessageHandler)
+
+		// Clean up on component unmount
+		return () => {
+			socket.off('newMessage', newMessageHandler)
+		}
+	}, [socket, role])
+
+	const handleNewMessage = (newMessage) => {
+		setAllMessages((prevMessages) => {
+			const updatedMessages = [...prevMessages]
+			let conversationIndex
+
+			if (user.role === 'client') {
+				conversationIndex = updatedMessages.findIndex(
+					(m) => m.companyId === newMessage.companyId
+				)
+			} else {
+				conversationIndex = updatedMessages.findIndex(
+					(m) => m.clientId === newMessage.clientId
+				)
+			}
+
+			if (conversationIndex > -1) {
+				// Conversation exists, append the new message
+				updatedMessages[conversationIndex].messages.push(newMessage)
+			} else {
+				// New conversation, add it
+				const newConversation = {
+					clientId: newMessage.clientId,
+					companyId: newMessage.companyId,
+					messages: [newMessage], // Start with the new message
+				}
+				updatedMessages.push(newConversation)
+			}
+
+			return updatedMessages
+		})
+	}
 
 	return (
 		<>
@@ -97,8 +164,9 @@ export default function Chat() {
 					/>
 					{/* Chat */}
 					<ChatBox
-						messages={messages}
+						messages={selectedUserMessages}
 						isUserSelected={true}
+						onNewMessage={handleNewMessage}
 						receiverId={selectedUserId}
 					/>
 				</div>

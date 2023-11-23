@@ -147,7 +147,7 @@ export default function BookingDetail({
 			<hr className="my-[4rem] border-1" />
 
 			<div className="flex w-full flex-col" ref={bottomRef}>
-				<h2 className="font-bold text-lg">Leopard ltd</h2>
+				<h2 className="font-bold text-lg">{data.companyName}</h2>
 
 				{/* {role !== 'employee' && <p>Ratings: 4.5</p>} */}
 				<h2 className="font-semibold my-8 text-xl">Details:</h2>

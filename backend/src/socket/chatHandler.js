@@ -18,7 +18,10 @@ export const handleChatEvents = (socket, io) => {
       } else if (role === 'company') {
         room = clientId
       }
-      io.to(room).emit('newMessage', result.messages);
+
+      console.log(result)
+
+      io.to(room).emit('newMessage', result);
 
     } catch (error) {
       console.log(error, ' in socket io chatHandler')
