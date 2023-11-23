@@ -67,7 +67,7 @@ export default function ConfirmBooking({ data, id }) {
 					setDestinationLocation('')
 					setSelectedServices([])
 					setItems([])
-					console.log(result.data, 'updated data')
+					// console.log(result.data, 'updated data')
 
 					navigate('/client/booking/detail', { state: result.data })
 				}
@@ -83,7 +83,7 @@ export default function ConfirmBooking({ data, id }) {
 
 	return (
 		<div className="flex w-full flex-col bg-[#FFEFEE] p-5">
-			<h2 className="font-bold">Leopard ltd</h2>
+			<h2 className="font-bold">{data.companyName}</h2>
 			{/* <p>Ratings: 4.5</p> */}
 			<h2 className="font-semibold mt-6">Details:</h2>
 			<p className="my-4">

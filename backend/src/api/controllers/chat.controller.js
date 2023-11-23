@@ -103,10 +103,10 @@ export const getAllMessages = async (req, res, next) => {
 		let query = {}
 		let idKey
 		if (role === 'client') {
-			query = { companyId: objectId }
+			query = { clientId: objectId }
 			idKey = 'companyId'
 		} else if (role === 'company') {
-			query = { clientId: objectId }
+			query = { companyId: objectId }
 			idKey = 'clientId'
 		} else {
 			return res.status(400).json({ status: 'error', message: 'Invalid role' })

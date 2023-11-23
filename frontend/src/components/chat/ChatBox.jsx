@@ -7,10 +7,13 @@ ChatBox.propTypes = {
 	messages: PropTypes.array,
 	isUserSelected: PropTypes.bool,
 	receiverId: PropTypes.string,
+	onNewMessage: PropTypes.func,
 }
-export default function ChatBox({ messages, isUserSelected, receiverId }) {
+export default function ChatBox({ messages, isUserSelected, receiverId, onNewMessage }) {
 	const messagesContainerRef = useRef(null)
 	const { user } = useAuth()
+
+	console.log(messages, 'in chatbox')
 
 	const [message, setMessage] = useState('')
 	const socket = useSocket(user._id)
@@ -44,6 +47,7 @@ export default function ChatBox({ messages, isUserSelected, receiverId }) {
 					messagesContainerRef.current.scrollHeight
 			}
 
+			onNewMessage(newMessage);
 			// const response = await fetch('http://localhost:5000/chat/post/message', {
 			// 	headers: {
 			// 		'Content-Type': 'application/json',
@@ -78,16 +82,16 @@ export default function ChatBox({ messages, isUserSelected, receiverId }) {
 								<div className="flex flex-col h-full">
 									<div className="grid grid-cols-12 gap-y-2" >
 										{/* sender */}
-										{messages?.map((message) =>
+										{messages?.map((message, index) =>
 											user.role === message.sender ? (
 												<SenderMessage
-													key={message._id}
+													key={`${message._id}-${index}`}
 													message={message.message}
 													date={message.createdAt}
 												/>
 											) : (
 												<ReceiverMessage
-													key={message._id}
+													key={`${message._id}-${index}`}
 													message={message.message}
 													date={message.createdAt}
 												/>
