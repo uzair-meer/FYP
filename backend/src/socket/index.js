@@ -1,22 +1,33 @@
-import { handleChatEvents } from './chatHandler.js'
+// ./socket/index.js
 
 const setupSocket = (io) => {
-	io.on('connection', (socket) => {
-		handleChatEvents(socket, io)
+  io.on("connection", (socket) => {
+    console.log("New client connected:", socket.id);
 
-		//my socket.io code
-		socket.on('joinRoom', ({ roomId }) => {
-			socket.join(roomId)
-		})
+    // Join a specific room based on booking ID
+    socket.on("joinRoom", ({ roomId }) => {
+      socket.join(roomId);
+      console.log(`Socket ${socket.id} joined room ${roomId}`);
+    });
 
-		socket.on('updateLocation', ({ location, roomId }) => {
-			io.to(roomId).emit('updateLocationToClient', location)
-		})
+    // Leave a specific room
+    socket.on("leaveRoom", ({ roomId }) => {
+      socket.leave(roomId);
+      console.log(`Socket ${socket.id} left room ${roomId}`);
+    });
 
-		socket.on('leaveRoom', ({ roomId }) => {
-			socket.leave(roomId)
-		})
-	})
-}
+    // Handle location updates
+    socket.on("updateLocation", ({ location, roomId }) => {
+      // Broadcast location to all clients in the room, except the sender
+      socket.to(roomId).emit("driverLocationUpdate", location);
+      console.log(`Location updated for room ${roomId}:`, location);
+    });
 
-export default setupSocket
+    // Handle disconnection
+    socket.on("disconnect", () => {
+      console.log("Client disconnected:", socket.id);
+    });
+  });
+};
+
+export default setupSocket;

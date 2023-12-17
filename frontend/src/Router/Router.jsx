@@ -34,6 +34,7 @@ import UserProtectedRoute, {
   DriverProtectedRoute,
 } from "./ProtectedRoutes";
 import CompanyProfile from "../pages/company/profile/CompanyProfile";
+import EmployeeHistory from "../pages/employee/history/DriverHistory";
 
 export default function AppRouter() {
   const { user } = useAuth();
@@ -75,7 +76,7 @@ export default function AppRouter() {
       >
         <Route index element={<Dashboard />} />
         <Route path="employees" element={<Employees />} />
-        <Route path="bookings/requested" element={<RequestedBookings />} />
+        <Route path="requested/bookings" element={<RequestedBookings />} />
         <Route path="prices" element={<SetPrices />} />
         <Route
           path="bookings/completed"
@@ -104,7 +105,7 @@ export default function AppRouter() {
         />
       </Route>
 
-      {/* // company routes */}
+      {/* // employee routes */}
       <Route
         path="employee"
         element={
@@ -113,6 +114,7 @@ export default function AppRouter() {
       >
         <Route index element={<EmployeeDashboard />} />
         <Route path="profile" element={<EmployeeProfile />} />
+        <Route path="history" element={<EmployeeHistory />} />
       </Route>
     </Routes>
   );
