@@ -17,11 +17,14 @@ import {
   putDeclineBookingReq,
   putEmployee,
   updateInventory,
+  postEmployee,
 } from "../controllers/company.controller.js";
 
 const router = express.Router();
 
 router.put(`/put/employee`, putEmployee);
+router.post(`/add/employee`, postEmployee);
+
 router.delete(`/delete/employee`, deleteEmployee);
 router.get(`/get/employees`, getCompanyEmployees);
 router.get(`/get/free/employees`, getCompanyFreeEmployees);

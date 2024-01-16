@@ -1,5 +1,3 @@
-import { toast } from "react-toastify";
-
 export const handleResponse = (promise) => {
   return promise
     .then((response) => {
@@ -13,8 +11,14 @@ export const handleResponse = (promise) => {
       ) {
         const errorMessage = error.response.data.message;
 
-        if (errorMessage.includes("Email already exists")) {
-          alert("Email already exists. Please use a different email.");
+        if (errorMessage.includes("Invalid email or password")) {
+          alert("Invalid email or password. Please try again.");
+        } else if (errorMessage.includes("User not found")) {
+          alert("User not found. Please check your email.");
+        } else if (
+          errorMessage.includes("Company cannot log in because its status is")
+        ) {
+          alert(errorMessage); // Display the specific error message for company status
         } else {
           // Display a generic error message for other types of errors
           alert("An error occurred");

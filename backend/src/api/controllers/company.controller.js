@@ -6,6 +6,39 @@ import Review from "../models/Review.model.js";
 import User from "../models/User.model.js";
 
 //Add Employee
+export async function postEmployee(req, res, next) {
+  const { name, email, password, phone, cnic, title, companyId } = req.body;
+  console.log(companyId);
+
+  try {
+    // const hash = bcrypt.hashSync(req.body.password, 5);
+
+    //create user as an employee
+    const user = new User({
+      ...req.body,
+      // password: hash,
+      role: "employee",
+    });
+
+    const userResult = await user.save();
+    const userId = userResult._doc._id;
+
+    const employee = new Employee({
+      _id: userId,
+      companyId,
+      title,
+    });
+
+    const employeeResult = await employee.save();
+
+    res.status(200).json({
+      status: "ok",
+      data: { ...userResult._doc, ...employeeResult._doc },
+    });
+  } catch (error) {
+    next(error);
+  }
+}
 
 export async function deleteEmployee(req, res, next) {
   const { employeeId } = req.body;
