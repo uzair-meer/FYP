@@ -36,7 +36,7 @@ export default function MenuLayout2({ menuItems }) {
               alt="logo"
               className="w-[5rem] cursor-pointer my-2 p-2 ml-3 block"
             />
-            <p className="text-white font-bold ">{user?.name}</p>
+            {/* <p className="text-white font-bold ">{user?.name}</p> */}
           </div>
           <button
             className="absolute top-4 right-1 sm:hidden hover:bg-grey p-1 rounded-[5px]"

@@ -13,9 +13,11 @@ function Footer() {
             Let Us Deliver Your Package To Its Destination
           </h1>
 
-          <button className="bg-primary rounded-full text-white mt-7 mb-12 px-7 p-2">
-            Register Now
-          </button>
+          <Link to="signup">
+            <button className="bg-primary rounded-full text-white mt-7 mb-12 px-7 p-2">
+              Register Now
+            </button>
+          </Link>
         </div>
 
         <div className="p-4 sm:flex justify-between border-t mt-6  items-center">

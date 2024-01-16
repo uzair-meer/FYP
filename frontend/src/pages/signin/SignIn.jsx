@@ -26,9 +26,9 @@ const SignIn = () => {
   }, [user, navigate]);
 
   return (
-    <div className="flex">
-      <img src={signin} className="w-[51%]" />
-      <div className="flex h-screen flex-1 overflow-y-hidden justify-center items-center mx-auto">
+    <div className="flex h-screen">
+      <img src={signin} className="w-[51%] object-cover" alt="Signin" />
+      <div className="flex flex-1 overflow-y-hidden justify-center items-center mx-auto">
         <div className="flex flex-1 flex-col justify-center px-4 py-12 sm:px-6 lg:flex-none lg:px-20 xl:px-24">
           <div className="mx-auto w-full max-w-sm lg:w-96">
             <div className="grid place-items-center">
@@ -90,7 +90,7 @@ const SignIn = () => {
                     <button
                       type="submit"
                       className="flex w-full justify-center rounded-md text-white bg-primary px-3 m-0 py-1.5 text-sm font-semibold leading-6  shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                      disabled={loading}
+                      // disabled={loading} // Uncomment if you have loading state
                     >
                       Sign in
                     </button>

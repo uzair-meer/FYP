@@ -2,6 +2,7 @@ import { DirectionsRenderer, GoogleMap, Marker } from "@react-google-maps/api";
 import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import io from "socket.io-client";
+import { useServices } from "src/context/UserContext.jsx";
 
 GMap.propTypes = {
   pickupLocation: PropTypes.any,
@@ -16,11 +17,28 @@ export default function GMap({
   socketUrl,
   bookingId,
 }) {
-  const [directions, setDirections] = useState(null);
+  const { distance, setDistance } = useServices();
+  const { time, setTime } = useServices();
 
+  const [directions, setDirections] = useState(null);
+  const [duration, setDuration] = useState(null);
   const [currentLocation, setCurrentLocation] = useState(null);
   const [driverLocation, setDriverLocation] = useState(null);
   const [socket, setSocket] = useState(null);
+  function getNumericDistance(distanceString) {
+    // Extract the numeric part using a regular expression
+    const numericPart = distanceString.match(/[0-9.]+/);
+
+    // Check if the numeric part was found
+    if (numericPart) {
+      // Convert the numeric part to a floating point number and return
+      return parseFloat(numericPart[0]);
+    } else {
+      // Return 0 or handle error appropriately if no numeric part is found
+      return 0;
+    }
+  }
+
   useEffect(() => {
     if (pickupLocation && destinationLocation) {
       const directionsService = new window.google.maps.DirectionsService();
@@ -37,10 +55,12 @@ export default function GMap({
 
             // Extract distance and duration
             const route = result.routes[0];
-            const distance = route.legs[0].distance.text;
-            const duration = route.legs[0].duration.text;
+            const numerDistance = getNumericDistance(
+              route.legs[0].distance.text
+            );
+            setDistance(numerDistance);
 
-            console.log(`Distance: ${distance}, Duration: ${duration}`);
+            setTime(route.legs[0].duration.text);
             // You can set these values in state to use elsewhere in your component
           } else {
             console.error(`Error fetching directions ${result}`);
@@ -138,6 +158,7 @@ export default function GMap({
   };
   return (
     <>
+      <div></div>
       <GoogleMap
         center={
           driverLocation ||

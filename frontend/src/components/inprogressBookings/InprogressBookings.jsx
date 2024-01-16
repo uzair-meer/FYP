@@ -37,9 +37,7 @@ export default function InprogressBookings() {
   return (
     <div className="p-6">
       <h1 className="font-bold text-2xl my-6">
-        {bookings.length > 0
-          ? "Inprogress Bookings"
-          : "No Bookings right now. :)"}
+        {bookings.length > 0 ? "Loading..." : "No Bookings right now. :)"}
       </h1>
       {bookings.length > 0 && (
         <Table

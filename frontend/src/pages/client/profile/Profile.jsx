@@ -54,17 +54,7 @@ const Profile = () => {
   };
 
   return (
-    <div className="overflow-hidden bg-white m-3 shadow sm:rounded-lg text-textColor">
-      <div className="my-2 flex justify-between items-center">
-        <img
-          src="https://source.unsplash.com/random/300×300"
-          alt="Uploaded"
-          className="h-24 w-24 rounded-full bg-primary cursor-pointer object-cover mx-4"
-        />
-        <div className="mr-10 flex items-center">
-          <p>{user?.name}</p>
-        </div>
-      </div>
+    <div className="overflow-hidden bg-white mt-5 m-3 shadow sm:rounded-lg text-textColor">
       <div className="px-4 py-6 sm:px-6">
         <h3 className="text-base font-semibold leading-7 text-gray-900">
           User Information

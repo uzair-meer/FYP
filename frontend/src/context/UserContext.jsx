@@ -10,6 +10,8 @@ export const ServicesProvider = ({ children }) => {
   const [destinationLocation, setDestinationLocation] = useState("");
   const [selectedServices, setSelectedServices] = useState([]);
   const [items, setItems] = useState([]);
+  const [distance, setDistance] = useState();
+  const [time, setTime] = useState("");
 
   const [bookingData, setBookingData] = useState({
     destinationAddress: "",
@@ -33,6 +35,10 @@ export const ServicesProvider = ({ children }) => {
     setItems,
     bookingData,
     updateBookingData,
+    distance,
+    setDistance,
+    time,
+    setTime,
   };
 
   return (
