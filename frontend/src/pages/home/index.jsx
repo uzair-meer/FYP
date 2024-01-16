@@ -3,13 +3,13 @@ import company from "../../assets/compnay.png";
 import hero from "../../assets/hero.jpg";
 import Footer from "src/layout/Footer/Footer";
 import truck from "src/assets/truck.png";
-import Testimonials from "./Testimonials/Testimonials";
 import { FaTruckMoving } from "react-icons/fa";
 import { FaBoxesPacking } from "react-icons/fa6";
 import { GiBoxUnpacking } from "react-icons/gi";
 import { FaPeopleCarry } from "react-icons/fa";
 import { FaLocationArrow } from "react-icons/fa";
 import { Link } from "react-router-dom";
+import { Link as ScrollLink } from "react-scroll";
 const Home = () => {
   return (
     <>
@@ -30,9 +30,16 @@ const Home = () => {
               the 1500s, when an unknown printer took a galley of type and
               scrambled it to make a type specimen book.
             </p>
-
-            <button className="bg-primary rounded-full text-white text-[1.2rem] px-5 p-2 mt-3">
-              Learn more
+            <button className="rounded-full w-fit mx-auto text-whit px-5 text-white p-2 bg-primary">
+              <ScrollLink
+                to="services"
+                spy={true}
+                smooth={true}
+                duration={500}
+                activeClass="text-primary underline"
+              >
+                learn more
+              </ScrollLink>
             </button>
           </div>
           {/* //hero img */}
@@ -148,17 +155,21 @@ const Home = () => {
             <div className="p-10 my-2 bg-primary text-center rounded-md">
               <img src={truck} className="mx-auto" />
               <h2 className="text-white text-headings ">I want to move</h2>
-              <button className="text-primary bg-white px-4 py-2 my-1 rounded-full">
-                Sign Up
-              </button>
+              <Link to="/signup">
+                <button className="text-primary bg-white px-4 py-2 my-1 rounded-full">
+                  Sign Up
+                </button>
+              </Link>
             </div>
 
             <div className="p-10 my-2 bg-redish text-center rounded-md">
               <img src={company} className="mx-auto" />
               <h2 className=" text-headings my-1 ">I am a Compnay</h2>
-              <button className="text-white  bg-primary px-4 py-2 my-1 rounded-full">
-                Sign Up
-              </button>
+              <Link to="/signup">
+                <button className="text-white  bg-primary px-4 py-2 my-1 rounded-full">
+                  Sign Up
+                </button>
+              </Link>
             </div>
           </div>
         </div>

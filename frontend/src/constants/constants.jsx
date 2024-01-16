@@ -158,6 +158,12 @@ export const Employee_Routes = [
       <BsFillCalendarCheckFill className="text-[1.4rem]  hover:text-primary  mx-2 cursor-pointer" />
     ),
   },
+
+  {
+    name: "All Bookings",
+    route: "/employee/bookings",
+    icon: <TbBrandBooking className="text-[1.4rem]  mx-2 cursor-pointer" />,
+  },
   // {
   //   name: "CurrentBooking",
   //   route: "/driver/current-booking",

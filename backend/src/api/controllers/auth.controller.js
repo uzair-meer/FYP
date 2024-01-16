@@ -5,9 +5,44 @@ import User from "../models/User.model.js";
 import createError from "../utils/createError.js";
 
 //FIXME: register user and register company both cases should be handeled in this single api
+// export const registerUser = async (req, res, next) => {
+//   try {
+//     //FIXME: use hash passwords
+//     // const hash = bcrypt.hashSync(req.body.password, 5);
+//     const { name, email, password, phone, role } = req.body;
+
+//     let cnic = role !== "company" ? req.body.cnic : undefined;
+
+//     const user = new User({
+//       name,
+//       email,
+//       password,
+//       phone,
+//       cnic,
+//       role,
+//     });
+
+//     await user.save();
+
+//     const { _id } = user._doc;
+
+//     if (role === "company") {
+//       const company = new Company({
+//         _id,
+//         ntn: req.body.ntn,
+//       }); // we can get addionatl info from front end and add it here status will be requested by default
+//       await company.save();
+//     }
+
+//     res.status(201).json({ message: "User has been created." });
+//   } catch (err) {
+//     //FIXME:by looking error we can check if email is not same or type of and appropriate response
+//     next(err);
+//   }
+// };
 export const registerUser = async (req, res, next) => {
   try {
-    //FIXME: use hash passwords
+    // FIXME: use hash passwords
     // const hash = bcrypt.hashSync(req.body.password, 5);
     const { name, email, password, phone, role } = req.body;
 
@@ -30,14 +65,21 @@ export const registerUser = async (req, res, next) => {
       const company = new Company({
         _id,
         ntn: req.body.ntn,
-      }); // we can get addionatl info from front end and add it here status will be requested by default
+      }); // we can get additional info from the frontend and add it here; status will be requested by default
       await company.save();
     }
 
     res.status(201).json({ message: "User has been created." });
   } catch (err) {
-    //FIXME:by looking error we can check if email is not same or type of and appropriate response
-    next(err);
+    if (err.code === 11000 && err.keyPattern && err.keyPattern.email) {
+      // Duplicate email error
+      res.status(400).json({
+        message: "Email already exists. Please use a different email.",
+      });
+    } else {
+      // Other errors
+      next(err);
+    }
   }
 };
 

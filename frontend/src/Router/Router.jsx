@@ -33,7 +33,6 @@ import UserProtectedRoute, {
   CompanyProtectedRoute,
   DriverProtectedRoute,
 } from "./ProtectedRoutes";
-import CompanyProfile from "../pages/company/profile/CompanyProfile";
 import EmployeeHistory from "../pages/employee/history/DriverHistory";
 
 export default function AppRouter() {
@@ -114,7 +113,7 @@ export default function AppRouter() {
       >
         <Route index element={<EmployeeDashboard />} />
         <Route path="profile" element={<EmployeeProfile />} />
-        <Route path="history" element={<EmployeeHistory />} />
+        <Route path="bookings" element={<EmployeeHistory />} />
       </Route>
     </Routes>
   );

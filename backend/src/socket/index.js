@@ -2,7 +2,7 @@
 
 const setupSocket = (io) => {
   io.on("connection", (socket) => {
-    console.log("New client connected:", socket.id);
+    // console.log("New client connected:", socket.id);
 
     // Join a specific room based on booking ID
     socket.on("joinRoom", ({ roomId }) => {

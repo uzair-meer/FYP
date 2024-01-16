@@ -16,6 +16,7 @@ import http from "http";
 import { Server as SocketIO } from "socket.io";
 
 import setupSocket from "./socket/index.js";
+import ChatSocket from "./socket/chatHandler.js";
 
 const app = express();
 //passing same instance of http with express and socket.io
@@ -59,6 +60,7 @@ app.use((error, req, res, next) => {
 });
 
 setupSocket(io);
+ChatSocket(io);
 server.listen(process.env.PORT, () =>
   console.log(`server is running on port ${process.env.PORT}`)
 );

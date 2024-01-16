@@ -11,9 +11,13 @@ function SignUp() {
 
   return (
     <>
-      <div className="flex">
-        <img src={signup} className="w-[45%]" />
-        <div className="mt-5 w-[30%] mx-auto ml-25 bg-white ">
+      <div className="flex overflow-hidden h-screen">
+        <img
+          src={signup}
+          className="w-[45%] h-full object-cover"
+          alt="Signup"
+        />
+        <div className="mt-20 w-[30%] mx-auto bg-white overflow-hidden">
           <div className="flex justify-center mb-4 space-x-4">
             <button
               className={`${

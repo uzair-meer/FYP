@@ -54,16 +54,16 @@ function EmployeeHistory() {
       <table className="min-w-full table-auto">
         <thead className="border-b">
           <tr>
-            <th className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+            <th className="text-sm font-bold text-gray-900 px-6 py-4 text-left">
               Client Name
             </th>
-            <th className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+            <th className="text-sm font-bold text-gray-900 px-6 py-4 text-left">
               Phone
             </th>
-            <th className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+            <th className="text-sm font-bold text-gray-900 px-6 py-4 text-left">
               Services
             </th>
-            <th className="text-sm font-medium text-gray-900 px-6 py-4 text-left">
+            <th className="text-sm font-bold text-gray-900 px-6 py-4 text-left">
               Cart Items
             </th>
           </tr>
