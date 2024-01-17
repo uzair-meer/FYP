@@ -77,7 +77,7 @@ const SignIn = () => {
                       />
                     </div>
                     <p className="mt-3">
-                      Don{"'"}t have an account?{" "}
+                      Don't have an account?
                       <Link to="/signup">
                         <span className="text-primary">SignUp</span>
                       </Link>

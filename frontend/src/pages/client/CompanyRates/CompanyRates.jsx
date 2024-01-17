@@ -78,6 +78,7 @@ export default function CompanyRates() {
         enableRowToggle={true}
         data={companiesData}
         idKey={"companyId"}
+        distance={distance}
       />
     </div>
   );

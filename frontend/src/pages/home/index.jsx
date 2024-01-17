@@ -66,11 +66,9 @@ const Home = () => {
                       <h1 className="text-[1.3rem] font-bold text-sky">
                         Moving Service
                       </h1>
-                      <h2 className="title-font font-medium text-3xl mt-3 mt-3">
-                        Lorem ipsum, dolor sit amet consectetur adipisicing
-                        elit. Placeat veritatis, eaque harum quisquam voluptate,
-                        reprehenderit quam vel reiciendis neque, natus in sequi.
-                        Dolore nisi quis nam ratione, mollitia repellat debitis?
+                      <h2 className="title-font font-medium text-3xl mt-3 ">
+                        Experience a seamless, stress-free relocation with
+                        expert handling and timely transportation.
                       </h2>
                     </div>
                   </div>
@@ -84,10 +82,9 @@ const Home = () => {
                         Packing Service
                       </h1>
                       <h2 className="title-font font-medium text-3xl mt-3 text-gray-900">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Possimus, illum aperiam in minus nesciunt iste corrupti
-                        voluptatem dignissimos neque quisquam eaque nam,
-                        cupiditate ad fugiat necessitatibus distinctio
+                        Rely on professional packers for the safety of your
+                        items, using high-quality materials and efficient
+                        techniques.
                       </h2>
                     </div>
                   </div>
@@ -101,10 +98,8 @@ const Home = () => {
                         Unpacking Service
                       </h1>
                       <h2 className="title-font font-medium text-3xl mt-3 text-">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Harum nam quibusdam, voluptatem, optio numquam quos
-                        voluptates, illum et a dicta asperiores amet! Numquam
-                        illo doloribus voluptas,
+                        Simplify your move—let us handle unpacking, item
+                        placement, and disposal of packing materials.
                       </h2>
                     </div>
                   </div>
@@ -117,10 +112,9 @@ const Home = () => {
                         Workforce
                       </h1>
                       <h2 className="title-font font-medium text-3xl mt-3 ">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Harum nam quibusdam, voluptatem, optio numquam quos
-                        voluptates, illum et a dicta asperiores amet! Numquam
-                        illo doloribus voluptas,
+                        Get reliable assistance for heavy lifting, furniture
+                        assembly, and other manual tasks to streamline your
+                        moving process.
                       </h2>
                     </div>
                   </div>
@@ -133,10 +127,9 @@ const Home = () => {
                         Track Your Move
                       </h1>
                       <h2 className="title-font font-medium text-3xl mt-3">
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Harum nam quibusdam, voluptatem, optio numquam quos
-                        voluptates, illum et a dicta asperiores amet! Numquam
-                        illo doloribus voluptas,
+                        Stay in control with real-time location updates during
+                        transit, ensuring a transparent and convenient moving
+                        experience.
                       </h2>
                     </div>
                   </div>
