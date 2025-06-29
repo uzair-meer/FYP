@@ -10,7 +10,7 @@ import { clientRoutes } from "./api/routes/client.routes.js";
 import { companyRoutes } from "./api/routes/company.routes.js";
 import { employeeRoutes } from "./api/routes/employee.routes.js";
 import { reviewRoutes } from "./api/routes/review.routes.js";
-import "./api/utils/database.js"; //! connection with mongodb
+import "./api/utils/database.js"; 
 
 import http from "http";
 import { Server as SocketIO } from "socket.io";
